@@ -1,7 +1,8 @@
 import flask
 import flask.ext.sqlalchemy
 import flask.ext.restless
-from sqlalchemy import Column, Integer, String, ForeignKey, Date, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey,\
+    Date, DateTime, Boolean, Float
 from sqlalchemy.orm import relationship, backref
 
 app = flask.Flask(__name__)
@@ -24,29 +25,36 @@ class User(db.Model):
 class Measure(db.Model):
     __tablename__ = 'measure'
     id = Column(Integer, primary_key=True)
-    sensor_id = Column(Integer, ForeignKey('sensor.id'), nullable=False)
-    value = Column(Integer, nullable=False)
+    sensor_id = Column(Integer, ForeignKey('sensor.id'),
+                       nullable=False)
+    value = Column(Float, nullable=False)
     timestamp = Column(DateTime)
 
 
 class Drug(db.Model):
     __tablename__ = 'drug'
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    name = Column(String(50), nullable=False)
+    user_id = Column(Integer,
+                     ForeignKey('user.id'),
+                     nullable=False)
+    name = Column(String(50), unique=True, nullable=False)
     dose = Column(String(50))
 
 
 class Sensor(db.Model):
     __tablename__ = 'sensor'
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True, nullable=False)
-    sensor_type_id = Column(Integer, ForeignKey('sensortype.id'), nullable=False)
+    #name = Column(String(50), unique=True, nullable=False)
+    sensor_type_id = Column(Integer,
+                            ForeignKey('sensortype.id'),
+                            nullable=False)
     alert_min = Column(Integer)
     alert_max = Column(Integer)
     warning_min = Column(Integer)
     warning_max = Column(Integer)
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user_id = Column(Integer,
+                     ForeignKey('user.id'),
+                     nullable=False)
 
 
 class SensorType(db.Model):
@@ -57,13 +65,17 @@ class SensorType(db.Model):
     automatic = Column(Boolean, nullable=False)
 
 
-class Messages(db.Model):
-    __tablename__ = 'messages'
+class Message(db.Model):
+    __tablename__ = 'message'
     id = Column(Integer, primary_key=True)
-    sender_user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    receiver_user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    sender_user_id = Column(Integer,
+                            ForeignKey('user.id'),
+                            nullable=False)
+    receiver_user_id = Column(Integer,
+                              ForeignKey('user.id'),
+                              nullable=False)
     text = Column(String(500), nullable=False)
-    new = Column(Boolean, nullable=False)
+    new = Column(Boolean, nullable=False, default=False)
 
 
 class Schedule(db.Model):
@@ -81,7 +93,14 @@ class Schedule(db.Model):
 
 ##
 db.create_all()
-manager = flask.ext.restless.APIManager(app, flask_sqlalchemy_db=db)
+manager = flask.ext.restless.APIManager(app,
+                                        flask_sqlalchemy_db=db)
 manager.create_api(User, methods=['GET', 'POST'])
 manager.create_api(Drug, methods=['GET', 'POST'])
+manager.create_api(Message, methods=['GET', 'POST'])
+manager.create_api(SensorType, methods=['GET', 'POST'])
+manager.create_api(Sensor, methods=['GET', 'POST'])
+manager.create_api(Measure, methods=['GET', 'POST'])
+manager.create_api(Schedule, methods=['GET', 'POST'])
+
 app.run()
