@@ -1,15 +1,21 @@
+import os
 import flask
 import flask.ext.sqlalchemy
 import flask.ext.restless
+from flask.ext.login import current_user, login_user, LoginManager, UserMixin
 from sqlalchemy import Column, Integer, String, ForeignKey,\
     Date, DateTime, Boolean, Float
 from sqlalchemy.orm import relationship, backref
 
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test2.db'
+app.config['TESTING'] = True
+app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = flask.ext.sqlalchemy.SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.setup_app(app)
 
 ## Models
 class User(db.Model):
@@ -21,6 +27,21 @@ class User(db.Model):
     first_name = Column(String(120), nullable=False)
     type = Column(Integer, nullable=False)
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
+    def __repr__(self):
+        return '<User %s, %s %s>' % (self.login, self.last_name, self.first_name)
+
 
 class Measure(db.Model):
     __tablename__ = 'measure'
@@ -29,6 +50,11 @@ class Measure(db.Model):
                        nullable=False)
     value = Column(Float, nullable=False)
     timestamp = Column(DateTime)
+
+    def __repr__(self):
+        return '<Measure from id:%s: %s at %s>' % (str(self.sensor_id),
+                                                   str(self.value),
+                                                   str(self.timestamp))
 
 
 class Drug(db.Model):
@@ -39,6 +65,9 @@ class Drug(db.Model):
                      nullable=False)
     name = Column(String(50), unique=True, nullable=False)
     dose = Column(String(50))
+
+    def __repr__(self):
+        return '<Drug: %s>' % (self.name)
 
 
 class Sensor(db.Model):
@@ -56,6 +85,9 @@ class Sensor(db.Model):
                      ForeignKey('user.id'),
                      nullable=False)
 
+    def __repr__(self):
+        return '<Sensor: type_id:%d user_id:%d>' % (self.sensor_type_id, self.user_id)
+
 
 class SensorType(db.Model):
     __tablename__ = 'sensortype'
@@ -63,6 +95,9 @@ class SensorType(db.Model):
     name = Column(String(50), unique=True, nullable=False)
     unit = Column(String(10))
     automatic = Column(Boolean, nullable=False)
+
+    def __repr__(self):
+        return '<SensorType: %s %s>' % (self.name)
 
 
 class Message(db.Model):
@@ -76,6 +111,11 @@ class Message(db.Model):
                               nullable=False)
     text = Column(String(500), nullable=False)
     new = Column(Boolean, nullable=False, default=False)
+
+    def __repr__(self):
+        return '<Message: from:%d to:%d text:%s>' % (self.sender_user_id,
+                                                     self.receiver_user_id,
+                                                     self.text[:10])
 
 
 class Schedule(db.Model):
@@ -91,16 +131,48 @@ class Schedule(db.Model):
     sensor_id = Column(Integer, ForeignKey('sensor.id'))
     drug_id = Column(Integer, ForeignKey('drug.id'))
 
+    def __repr__(self):
+        return '<Schedule id:%d>' % (self.id)
+## routes
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = flask.request.form['login']
+    password = flask.request.form['password']
+
+    # search for users w/ submitted login/pass
+    matches = User.query.filter_by(login=username,
+                                   password=password).all()
+    if len(matches) > 0:
+        login_user(matches[0])
+        return "Gratz! You're logged in!"
+    else:
+        return "Nope nope nope. Bad login/pass."
+
+
+## things and stuff
+def auth_func(**kw):    # easy auth function.
+    if not current_user.is_authenticated():
+        raise flask.ext.restless.ProcessingException(message='Not authenticated!')
+
 ##
 db.create_all()
-manager = flask.ext.restless.APIManager(app,
+manager_api = flask.ext.restless.APIManager(app,
                                         flask_sqlalchemy_db=db)
-manager.create_api(User, methods=['GET', 'POST'])
-manager.create_api(Drug, methods=['GET', 'POST'])
-manager.create_api(Message, methods=['GET', 'POST'])
-manager.create_api(SensorType, methods=['GET', 'POST'])
-manager.create_api(Sensor, methods=['GET', 'POST'])
-manager.create_api(Measure, methods=['GET', 'POST'])
-manager.create_api(Schedule, methods=['GET', 'POST'])
+manager_api.create_api(User, methods=['GET', 'POST'])
+manager_api.create_api(Drug, methods=['GET', 'POST'])
+manager_api.create_api(Message, methods=['GET', 'POST'],
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func]))
+manager_api.create_api(SensorType, methods=['GET', 'POST'])
+manager_api.create_api(Sensor, methods=['GET', 'POST'])
+manager_api.create_api(Measure, methods=['GET', 'POST'])
+manager_api.create_api(Schedule, methods=['GET', 'POST'])
 
 app.run()

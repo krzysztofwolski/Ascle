@@ -2,7 +2,7 @@ import json
 import requests
 import logging
 
-url = 'http://127.0.0.1:5000/api'
+url = 'http://localhost:5000/api'
 headers = {'Content-Type': 'application/json'}
 logging.basicConfig(level=logging.WARNING)
 
@@ -24,7 +24,7 @@ placeholder_users = [dict(login='Zeus',
                      dict(login='Athena',
                           password="potato",
                           last_name="Greek",
-                          first_name="Zeus",
+                          first_name="Athena",
                           type=1)]
 
 placeholder_drugs = [dict(name="Aspiryna", dose="5mg", user_id=1),
@@ -70,7 +70,7 @@ testing_set = [('user', placeholder_users),
 for name, data in testing_set:
     # is database table empty?
     response = requests.get(url+'/'+name, headers=headers)
-    assert response.status_code == 200
+    assert response.status_code == 200, response
     if response.json()['num_results'] == 0:
         # let's add some!
         logging.warning("I'm addin': "+name)
@@ -80,7 +80,7 @@ for name, data in testing_set:
 
         # chceck if all added
         response = requests.get(url+'/'+name, headers=headers)
-        assert response.status_code == 200
+        assert response.status_code == 200, response
         assert response.json()['num_results'] == len(data)
     else:
         logging.warning('Already in database: '+name)
