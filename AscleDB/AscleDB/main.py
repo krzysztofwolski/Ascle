@@ -1,4 +1,5 @@
 import os
+import datetime
 import flask
 import flask.ext.sqlalchemy
 import flask.ext.restless
@@ -49,7 +50,7 @@ class Measure(db.Model):
     sensor_id = Column(Integer, ForeignKey('sensor.id'),
                        nullable=False)
     value = Column(Float, nullable=False)
-    timestamp = Column(DateTime)
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __repr__(self):
         return '<Measure from id:%s: %s at %s>' % (str(self.sensor_id),
@@ -158,9 +159,12 @@ def login():
 
 ## things and stuff
 def auth_func(**kw):    # easy auth function.
+    pass
     if not current_user.is_authenticated():
         raise flask.ext.restless.ProcessingException(message='Not authenticated!')
 
+def now():
+    return datetime.datetime.now()
 ##
 db.create_all()
 manager_api = flask.ext.restless.APIManager(app,

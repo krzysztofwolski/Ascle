@@ -49,7 +49,7 @@ placeholder_sensors = [dict(sensor_type_id=0,
                        dict(sensor_type_id=0,
                             user_id=4),
                        dict(sensor_type_id=3,
-                            user_id=4),]
+                            user_id=4)]
 
 placeholder_messages = [dict(sender_user_id=1,
                              receiver_user_id=2,
