@@ -1,5 +1,6 @@
 import os
 import datetime
+import json
 import flask
 import flask.ext.sqlalchemy
 import flask.ext.restless
@@ -26,6 +27,8 @@ class User(db.Model):
     password = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     first_name = Column(String(120), nullable=False)
+    sex = Column(Boolean) #
+    birth_date = Column(DateTime, default=datetime.datetime.utcnow)
     type = Column(Integer, nullable=False)
 
     def is_authenticated(self):
@@ -156,6 +159,9 @@ def login():
     else:
         return "Nope nope nope. Bad login/pass."
 
+@app.route('/api/stats', methods=['GET'])
+def stats():
+    return json.dumps(dict(online=True))
 
 ## things and stuff
 def auth_func(**kw):    # easy auth function.
