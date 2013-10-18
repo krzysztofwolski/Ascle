@@ -1,4 +1,5 @@
 ﻿$(document).ready(function() {
+	// Function hide button and shows picutres
 	$("#showpic_1").on('click',function()
 	{
 		$('#showpic_1').hide();
@@ -22,6 +23,8 @@
 
 		
 	});
+	
+	// Function should show data form server
 	$("#showpic_2").on('click',function()
 	{
 		var api = "http://kuchnia.mooo.com:5000/api/user";
@@ -36,5 +39,31 @@
  		});
 	});
 
+	
+
+	$('.subpage').hide();
+    $('#login').slideDown();
+    
+    var active = $('#login');
+	//collapse
+	function changePage(page){
+				active.stop().slideUp('slow', function() {
+	      page.stop().slideDown();
+	      active = page;
+	      active.show();
+		  });
+			};
+		
+		$('#trustButton').on('click',function () {
+	    changePage($('#showData'));
+	   	 });
+	  	$('#showMagic').click(function () {
+	     changePage($("#fun"));
+	  	});
+	  	$('#logout').click(function () {
+	     changePage($("#login"));
+	  	});
+
+	  	
 });
 
