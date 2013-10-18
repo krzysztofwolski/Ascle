@@ -41,6 +41,7 @@ class User(db.Model):
         return False
 
     def get_id(self):
+        print 1, wanted_sensor_types, 2
         return unicode(self.id)
 
     def __repr__(self):
@@ -166,8 +167,8 @@ def stats():
 ## things and stuff
 def auth_func(**kw):    # easy auth function.
     pass
-    # if not current_user.is_authenticated():
-    #     raise flask.ext.restless.ProcessingException(message='Not authenticated!')
+    if not current_user.is_authenticated():
+        raise flask.ext.restless.ProcessingException(message='Not authenticated!')
 
 def now():
     return datetime.datetime.now()

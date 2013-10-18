@@ -86,11 +86,15 @@ for name, data in testing_set:
         logging.warning('Already in database: '+name)
 
 # print it out~!
-for name, data in testing_set:
-    # Make a GET request for the entire collection.
-    response = requests.get(url+'/'+name, headers=headers)
-    assert response.status_code == 200
-    print(json.dumps(response.json(), sort_keys=True, indent=2, separators=(',', ': ')))
+# for name, data in testing_set:
+#     # Make a GET request for the entire collection.
+#     response = requests.get(url+'/'+name, headers=headers)
+#     assert response.status_code == 200
+#     print(json.dumps(response.json(), sort_keys=True, indent=2, separators=(',', ': ')))
+#
+response = requests.get(url+'/measure', headers=headers)
+assert response.status_code == 200
+print(json.dumps(response.json(), sort_keys=True, indent=2, separators=(',', ': ')))
 
 #
 ## Make a GET request for an individual instance of the model.
