@@ -1,11 +1,5 @@
-import com.google.gson.*;
-import com.google.gson.reflect.*;
 import java.util.Map;
 
-//for test only
-import java.io.FileReader;
-import java.io.BufferedReader;
-//End tets imports
 
 //Encog
 import org.encog.Encog;
@@ -27,9 +21,9 @@ public class ANN {
 	private BasicNetwork network;
 	public ANN(){
 		network = new BasicNetwork();
-		network.addLayer(new BasicLayer(null,true,100/*TODO: Set proper value of neurons*/));						//INPUT LAYER
-		network.addLayer(new BasicLayer(new ActivationSigmoid(),true,100/*TODO: Set proper value of neurons*/));	//HIDDEN LAYER
-		network.addLayer(new BasicLayer(new ActivationSigmoid(),false,1/*TODO: Set proper value of neurons*/));	//OUTPUT LAYER
+		network.addLayer(new BasicLayer(null,true,100/*TODO: Set proper value of number of neurons*/));						//INPUT LAYER
+		network.addLayer(new BasicLayer(new ActivationSigmoid(),true,100/*TODO: Set proper value of number of neurons*/));	//HIDDEN LAYER
+		network.addLayer(new BasicLayer(new ActivationSigmoid(),false,1/*TODO: Set proper value of number of neurons*/));	//OUTPUT LAYER
 		network.getStructure().finalizeStructure();
 		network.reset();
 	};
@@ -47,15 +41,7 @@ public class ANN {
 	};
 	
 	private void loadData(){
-		Gson gson = new Gson();
-		/*TEST PURPOSE AGIN!*/String path = "/home/tomasz/Documents/Projekty_uczelnia/HeartDiseaseDetection/jsonEx2.json";
-		try{
-			BufferedReader read = new BufferedReader(new FileReader(path));
-			Map<String,String> out = gson.fromJson(read, new TypeToken<Map<String, String>>() {}.getType());
-			System.out.println(out);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		
 	};
 	
 	private void prepareDataSet(){
@@ -63,6 +49,10 @@ public class ANN {
 	};
 	
 	private void trainNetwork(){
+		
+	};
+	
+	private void saveSynapses(){
 		
 	};
 	
