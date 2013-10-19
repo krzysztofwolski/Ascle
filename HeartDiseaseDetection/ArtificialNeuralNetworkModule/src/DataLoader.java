@@ -42,52 +42,96 @@ public class DataLoader {
 	
 	@SuppressWarnings("incomplete-switch")
 	public void load() throws JsonSyntaxException, IOException{
-		List<Response> responses = new ArrayList<Response>();
 		String addr;
 		for(Table t : Table.values()){
 			addr = "";
 			switch (t){
 			case sensor:
 				addr = this.srvAddr + "sensor/" + this.patient_id;
-				responses.add(new Gson().fromJson(this.getJson(addr),SensorResponse.class));
+				this.responses.add(new Gson().fromJson(this.getJson(addr),SensorResponse.class));
 				break;
 			case sensortype:
-				addr = this.srvAddr + "sensortype/" + this.patient_id;
-				responses.add(new Gson().fromJson(this.getJson(addr),SensorTypesResponse.class));
+				int sensorTypeID = this.responses.get(0).getForeginKey();	/*TODO: this is lame solution, but it is sufficient*/
+				addr = this.srvAddr + "sensortype/" + sensorTypeID;
+				this.responses.add(new Gson().fromJson(this.getJson(addr),SensorTypesResponse.class));
 				break;
 			case measure:
 				addr = this.srvAddr + "measure/" + this.patient_id;
-				responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
+				this.responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
 				break;
 			}
 		}	
 	}
+	
+//	private <T> Response findResponse(Class<T> c ){
+//		for(Response i : this.responses){
+//			if(i instanceof ){
+//				return i;
+//			}
+//		}
+//		return null;
+//	}
 	
 }
 
 
 abstract class Response{
 	 Integer id;
+	 public abstract Integer getForeginKey();
+	 public abstract Integer getPrimaryKey();
 }
 
 class SensorResponse extends Response{
+	
 	Integer sensor_type_id;
 	Integer user_id;
 	Float alert_min;
 	Float alert_max;
 	Float warning_min;
     Float warning_max;
+    
+    @Override
+    /*TODO: This method returns only ONE FK, need to change this to all FK just for correctness*/
+    public Integer getForeginKey(){
+    	return this.sensor_type_id;
+    }
+    
+	@Override
+	public Integer getPrimaryKey() {
+		return this.id;
+	}
 }
 
 class SensorTypesResponse extends Response{
 	String name;
 	String unit;
 	Boolean automatic;
+	
+	@Override
+    public Integer getForeginKey(){
+		throw new RuntimeException("No foregin key in this table! This table should not even exist!!!");
+	}
+
+	@Override
+	public Integer getPrimaryKey() {
+		return this.id;
+	}
 }
 
 class MeasuresResponse extends Response{
 	Integer sensor_id;
 	Float value;
 	String timestamp;
+	
+	@Override
+    public Integer getForeginKey(){
+		return this.sensor_id;
+	}
+	
+	@Override
+	public Integer getPrimaryKey() {
+		return this.id;
+	}
 }
+
 
