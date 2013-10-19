@@ -61,17 +61,7 @@ public class DataLoader {
 				break;
 			}
 		}	
-	}
-	
-//	private <T> Response findResponse(Class<T> c ){
-//		for(Response i : this.responses){
-//			if(i instanceof ){
-//				return i;
-//			}
-//		}
-//		return null;
-//	}
-	
+	}	
 }
 
 
