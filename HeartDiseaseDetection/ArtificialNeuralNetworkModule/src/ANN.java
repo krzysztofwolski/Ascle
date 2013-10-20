@@ -11,16 +11,26 @@ import org.encog.neural.networks.training.propagation.resilient.ResilientPropaga
 //end Encog
 
 
+
+
+
+
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class ANN {
 	private BasicNetwork network;
 	private final int[] attrIndex = {3,4,9,10,12,16,19,32,38,40,41,44,51};
 	private final int desiredOutputIndex = 58;
+	
+	double [][]selectedAttr;
+	double[][] desiredOutput;
+	
 	public ANN(){
 		network = new BasicNetwork();
 		network.addLayer(new BasicLayer(null,true,13));	//INPUT LAYER
@@ -31,7 +41,8 @@ public class ANN {
 	};
 	
 	public void run(){
-
+		this.prepareDataSet();
+		this.trainNetwork();
 	};
 	
 	private String loadDataFile(String fileName) throws IOException{
@@ -39,19 +50,23 @@ public class ANN {
 		String temp;
 		StringBuilder sb = new StringBuilder();
 		while( (temp = reader.readLine()) != null){
-			temp.replace(".","");
+			temp.replace("\\.","");
 			sb.append(temp + " ");
 		}
 		reader.close();
 		return sb.toString();
 	};
 	
-	private float normalize(int val,int min,int max){
-		return ( (val - min)/(max - min) ) * (1 - (-1)) + (-1);
+	private double normalize(double val,double min,double max){
+		if( max == min ){
+			return 0.5;
+		}
+		//return ( (val - min)/(max - min) ) * (1 - (-1)) + (-1);
+		return (val - min)/(max -min);
 	}
 	
 	private void prepareDataSet(){
-		String fileName = "";/*TODO:FILE NAME HERE*/
+		String fileName = "/home/tomasz/Documents/Projekty_uczelnia/HeartDiseaseDetection/dataSet/hungarian.data";
 		String data_tmp = "";
 		try{
 			data_tmp = this.loadDataFile(fileName);
@@ -59,15 +74,66 @@ public class ANN {
 			e.printStackTrace();
 		}
 		String []data = data_tmp.split(" ");
-		
+		final int numPatientData = 76;
+		final int numPatients = data.length/numPatientData;
+		this.selectedAttr = new double[numPatients][numPatientData];
+		this.desiredOutput = new double[numPatients][1];
+		for(int i=0;i<numPatients;i++){
+			for(int j=0;j<numPatientData;j++){
+				if(j+1==this.desiredOutputIndex){
+					double value = this.normalize(Double.parseDouble(data[i*numPatientData+j]), 0, 4);
+					this.desiredOutput[i][0] = value;
+				}
+				else if(this.contains(j+1)){
+					this.selectedAttr[i][j] = Double.parseDouble(data[i*numPatientData+j]);
+				}
+			}
+		}
+		//min and max form selected attrs
+		for(int i=0;i<this.attrIndex.length;i++){
+			double max = Integer.MIN_VALUE;
+			double min = Integer.MAX_VALUE;
+			for(int j=0;j<numPatients;j++){
+				if(this.selectedAttr[j][i]>max){
+					max = this.selectedAttr[j][i];
+				}
+				if(this.selectedAttr[j][i]<min){
+					min = this.selectedAttr[j][i];
+				}
+			}
+			for(int j=0;j<numPatients;j++){
+				this.selectedAttr[j][i] = this.normalize(this.selectedAttr[j][i], min, max);
+			}
+		}
 	};
 	
 	private void trainNetwork(){
-		
+		MLDataSet tSet = new BasicMLDataSet(this.selectedAttr,this.desiredOutput);
+		final ResilientPropagation trainer = new ResilientPropagation(this.network,tSet);
+		int epoch = 1;
+		do{
+			trainer.iteration();
+			System.out.println("Epoch: #"+epoch+" Error is: "+trainer.getError());
+			epoch++;
+		}while(trainer.getError()>0.0321);
+		trainer.finishTraining();
+		for(MLDataPair pair: tSet){
+			final MLData out = network.compute(pair.getInput());
+			System.out.println("actual=" + out.getData(0) + " ideal=" + pair.getIdeal().getData(0));
+			
+		}
 	};
 	
 	private void saveSynapses(){
 		
 	};
 	
+	private boolean contains(int val){
+		for(int i=0;i<this.attrIndex.length;i++){
+			if(val == this.attrIndex[i]){
+				return true;
+			}
+		}
+		return false;
+	}
 }
