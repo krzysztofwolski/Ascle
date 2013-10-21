@@ -186,4 +186,4 @@ manager_api.create_api(Sensor, methods=['GET', 'POST'])
 manager_api.create_api(Measure, methods=['GET', 'POST'])
 manager_api.create_api(Schedule, methods=['GET', 'POST'])
 
-app.run()
+app.run(host='0.0.0.0')
