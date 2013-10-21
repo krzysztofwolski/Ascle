@@ -8,19 +8,14 @@ import org.encog.ml.data.basic.BasicMLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
+import org.encog.util.obj.SerializeObject;
+
 //end Encog
-
-
-
-
-
-
-
+import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 public class ANN {
@@ -40,9 +35,10 @@ public class ANN {
 		network.reset();
 	};
 	
-	public void run(){
+	public void run() throws IOException{
 		this.prepareDataSet();
 		this.trainNetwork();
+		this.saveNetwork();
 	};
 	
 	private String loadDataFile(String fileName) throws IOException{
@@ -61,8 +57,12 @@ public class ANN {
 		if( max == min ){
 			return 0.5;
 		}
-		//return ( (val - min)/(max - min) ) * (1 - (-1)) + (-1);
-		return (val - min)/(max -min);
+		return ((val - min) / (max - min))* (1 - 0) + 0;
+		
+	}
+	
+	private double denormalize(double val,double min,double max){
+		return ((min- max) * val - 1 * min + max * 0)/ (0 - 1);
 	}
 	
 	private void prepareDataSet(){
@@ -115,17 +115,19 @@ public class ANN {
 			trainer.iteration();
 			System.out.println("Epoch: #"+epoch+" Error is: "+trainer.getError());
 			epoch++;
-		}while(trainer.getError()>0.0321);
+		}while(trainer.getError()>0.033);
 		trainer.finishTraining();
 		for(MLDataPair pair: tSet){
 			final MLData out = network.compute(pair.getInput());
-			System.out.println("actual=" + out.getData(0) + " ideal=" + pair.getIdeal().getData(0));
+			System.out.println("actual=" + this.denormalize(out.getData(0),0,4) + " ideal=" + this.denormalize(pair.getIdeal().getData(0),0,4));
 			
 		}
 	};
 	
-	private void saveSynapses(){
-		
+	private void saveNetwork() throws IOException{
+		final String filename = "/home/tomasz/Documents/Projekty_uczelnia/Network.ser";
+		System.out.println("Network is ready to work! Saving to file: "+filename);
+		SerializeObject.save(new File(filename), this.network);
 	};
 	
 	private boolean contains(int val){
