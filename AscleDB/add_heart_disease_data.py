@@ -4,7 +4,6 @@
 import json
 import requests
 import glob
-import datetime
 import random
 
 #
@@ -56,19 +55,25 @@ def check_sensors():
 
 
 def upload_data(data_tab):
-    # input - data list from file
+    # input - data row from file
 
     # let's make new user!
     sex = False
-    if data_tab[3] == "0":  # fixme: probably bad index
+    if data_tab[3] == "1":
         sex = True
 
+    birth_date = "%d-%d-%dT01:30:55.752000" % (2013-int(data_tab[2]),
+                                              random.randint(1, 12),
+                                              random.randint(1, 25))
+
     # fixme: date of birth not included!
-    user_dict = dict(login='Zeus'+str(random.randint(1,999999)),
-                          password="potato",
-                          last_name="Greek",
-                          first_name="Zeus",
-                          type=3)
+    user_dict =  dict(login='HD'+str(random.randint(1, 999999)),
+                      password="potato",
+                      last_name="Nazwisko",
+                      first_name="Imie",
+                      type=3,
+                      sex=sex,
+                      birth_date=birth_date)
 
     response = requests.post(url+'/user', data=json.dumps(user_dict), headers=headers)
     assert response.status_code == 201, response # chceck if created
@@ -96,7 +101,6 @@ def upload_data(data_tab):
 
 def data_loader():
     # test if database is running
-
     response = requests.get(url+'/stats', headers=headers)
     if not response.status_code == 200:
        raise Exception("Cannot connect w/ api!\nResponse code: " +

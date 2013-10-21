@@ -167,8 +167,8 @@ def stats():
 ## things and stuff
 def auth_func(**kw):    # easy auth function.
     pass
-    if not current_user.is_authenticated():
-        raise flask.ext.restless.ProcessingException(message='Not authenticated!')
+    #if not current_user.is_authenticated():
+    #    raise flask.ext.restless.ProcessingException(message='Not authenticated!')
 
 def now():
     return datetime.datetime.now()
