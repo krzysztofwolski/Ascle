@@ -1,7 +1,6 @@
 Flask
 SQLAlchemy
-nose
-mock
 
 Flask-Login
 Flask-SQLAlchemy
+Flask-restless
