@@ -70,7 +70,7 @@ class Drug(db.Model):
 class Sensor(db.Model):
     __tablename__ = 'sensor'
     id = Column(Integer, primary_key=True)
-    #name = Column(String(50), unique=True, nullable=False)
+    name = Column(String(50), unique=True)
     sensor_type_id = Column(Integer,
                             ForeignKey('sensortype.id'),
                             nullable=False)

@@ -24,11 +24,9 @@ db = flask.ext.sqlalchemy.SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.setup_app(app)
 
-db.create_all()
-
-
 import views, models
 
+db.create_all()
 
 methods = ['GET', 'POST', 'PUT', "DELETE"]
 
