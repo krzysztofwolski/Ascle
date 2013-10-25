@@ -7,6 +7,19 @@
 body {
 	background-color: #3498db;
 }
+.subpage {
+}
+.auto-style1 {
+	text-align: right;
+}
+#container {
+	height: 400px;
+	width: 80%;
+	margin: 0 auto;
+    padding: 10px;
+	position: relative;
+}
+
 .top {
 	border: 1px dashed #FF6600;
 	text-align: center;
