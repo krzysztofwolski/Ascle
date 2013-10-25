@@ -2,6 +2,8 @@
 	// Function hide button and shows picutres
 	$("#showpic_1").on('click',function()
 	{
+		console.log( "hide" );
+
 		$('#showpic_1').hide();
 		var api = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 		$.getJSON(api,	
@@ -64,6 +66,7 @@
 	     changePage($("#login"));
 	  	});
 
-	  	
+
+		  	
 });
 
