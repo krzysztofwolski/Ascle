@@ -1,10 +1,11 @@
 ﻿$(document).ready(function() {
 	// Function hide button and shows picutres
+	// $("$menu").hide();
 	$("#showpic_1").on('click',function()
 	{
 		console.log( "hide" );
 
-		$('#showpic_1').hide();
+		$('#showpic_1').slideToggle();
 		var api = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 		$.getJSON(api,	
 		{
@@ -44,9 +45,9 @@
 	
 
 	$('.subpage').hide();
-    $('#login').slideDown();
+    $('#myLogin').slideToggle();
     
-    var active = $('#login');
+    var active = $('#myLogin');
 	//collapse
 	function changePage(page){
 				active.stop().slideUp('slow', function() {
@@ -57,13 +58,17 @@
 			};
 		
 		$('#trustButton').on('click',function () {
+
 	    changePage($('#showData'));
+	    // $("$menu").show();
 	   	 });
 	  	$('#showMagic').click(function () {
 	     changePage($("#fun"));
 	  	});
 	  	$('#logout').click(function () {
-	     changePage($("#login"));
+	     changePage($("#myLogin"));
+	      // $("$menu").hide();
+
 	  	});
 
 
