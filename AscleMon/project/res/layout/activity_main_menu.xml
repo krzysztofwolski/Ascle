@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
+        android:text="jakies logo"
         android:textColor="#33b5e5"
         android:textSize="50sp"
         android:textStyle="bold" />
@@ -40,7 +40,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="bottom|center_horizontal|center_vertical"
-            android:background="@color/black_overlay"
             android:orientation="horizontal"
             tools:ignore="UselessParent,NewApi" >
 
@@ -62,6 +61,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
+                    android:onClick="goToGraphsMenu"
                     android:text="Graph"
                     android:textSize="40dp" />
 
@@ -70,6 +70,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
+                    android:onClick="goToAutoAcquisitionMenu"
                     android:text="Auto"
                     android:textSize="40dp" />
 
@@ -86,6 +87,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
+                    android:onClick="goToDrugsMenu"
                     android:text="Drugs"
                     android:textSize="40dp" />
 
@@ -94,6 +96,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
+                    android:onClick="goToManualAcquisitionMenu"
                     android:text="Manual"
                     android:textSize="40dp" />
 

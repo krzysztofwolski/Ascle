@@ -24,6 +24,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.asclemon.AutoAcquisition"
+            android:label="@string/title_activity_auto_acquisition" >
+        </activity>
+        <activity
+            android:name="com.example.asclemon.ManualAcquisition"
+            android:label="@string/title_activity_manual_acquisition"
+            android:parentActivityName="com.example.asclemon.MainMenu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asclemon.MainMenu" />
+        </activity>
+        <activity
+            android:name="com.example.asclemon.GraphsActivity"
+            android:label="@string/title_activity_graphs"
+            android:parentActivityName="com.example.asclemon.MainMenu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asclemon.MainMenu" />
+        </activity>
+        <activity
+            android:name="com.example.asclemon.DrugsActivity"
+            android:label="@string/title_activity_drugs"
+            android:parentActivityName="com.example.asclemon.MainMenu" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.asclemon.MainMenu" />
+        </activity>
     </application>
 
 </manifest>
