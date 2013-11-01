@@ -1,6 +1,6 @@
 APP = {}
-APP['DEBUG'] = False
-APP['TESTING'] = False
+APP['DEBUG'] = True
+APP['TESTING'] = True
 APP['SECRET_KEY'] = 'super-secret-key'
 APP['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 

@@ -12,14 +12,10 @@ from models import *
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 
 
-class RegistrationForm(Form):
-    username = TextField('Username', [validators.Length(min=4, max=25)])
-    password = PasswordField('New Password', [
-        validators.Required(),
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
 
-## routes
+class LoginForm(Form):
+    username = TextField('username', validators = [validators.Required()])
+    password = TextField('password', validators = [validators.Required()])
 
 
 
@@ -30,10 +26,13 @@ def load_user(id):
 
 @app.route('/login', methods=['POST'])
 def login():
-    form = RegistrationForm(flask.request.form)
+
+    form = LoginForm(flask.request.form)
     if form.validate():
+
         username = form.username.data
         password = form.password.data
+        print username, password
         # search for users w/ submitted login/pass
         matches = User.query.filter_by(login=username,
                                        password=password).all()
@@ -42,9 +41,11 @@ def login():
             return json.dumps(dict(message="Success! Logged in."))
         else:
             return json.dumps(dict(message="Wrong username or password."))
+    else:
+        return json.dumps(dict(message="Enter both username and password!"))
 
 
-@app.route("/logout")
+@app.route("/logout", methods=['GET'])
 @login_required
 def logout():
     logout_user()
@@ -58,7 +59,8 @@ def stats():
                                logged_in=True,
                                is_authenticated=current_user.is_authenticated(),
                                username=current_user.login,
-                               type=current_user.type))
+                               type=current_user.type,
+                               user_id=current_user.id))
     else:
         return json.dumps(dict(online=True,
                                logged_in=False))
