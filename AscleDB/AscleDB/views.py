@@ -32,7 +32,6 @@ def login():
 
         username = form.username.data
         password = form.password.data
-        print username, password
         # search for users w/ submitted login/pass
         matches = User.query.filter_by(login=username,
                                        password=password).all()

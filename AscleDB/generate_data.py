@@ -10,6 +10,7 @@ import random
 #
 url = 'http://localhost:5000/api'
 headers = {'Content-Type': 'application/json'}
+cookies = None
 
 f_names = []
 m_names = []
@@ -31,7 +32,7 @@ wanted_sensor_types =  {u"Ból klatki piersiowej": {"unit": "Id", "index_db": -1
 def check_sensors():
     # method checks if all needed sensor types are in database. If not, they're added
 
-    response = requests.get(url+'/sensortype?results_per_page=999', headers=headers)
+    response = requests.get(url+'/sensortype?results_per_page=999', headers=headers, cookies=cookies)
     # fixme: we need better pagination query
     if not response.status_code == 200:
         raise Exception('Cannot connect w/ database :(')
@@ -52,11 +53,11 @@ def check_sensors():
         if found is None:
             # if not, we must make it!
             new_sensor = dict(name=name, unit=unit, automatic=False)
-            response = requests.post(url+'/sensortype', data=json.dumps(new_sensor), headers=headers)
+            response = requests.post(url+'/sensortype', data=json.dumps(new_sensor), headers=headers, cookies=cookies)
             assert response.status_code == 201, response
             found = response.json()
 
-    wanted_sensor_types[stype]['index_db'] = found['id']
+        wanted_sensor_types[stype][u'index_db'] = found[u'id']
 
 
 def upload_data(data_tab):
@@ -72,15 +73,8 @@ def upload_data(data_tab):
                                               random.randint(1, 25))
 
     user_dict = generate_user(sex, birth_date)
-    # user_dict =  dict(login='HD'+str(random.randint(11, 99)),
-    #                   password="potato",
-    #                   last_name="Nazwisko",
-    #                   first_name="Imie",
-    #                   type=3,
-    #                   sex=sex,
-    #                   birth_date=birth_date)
 
-    response = requests.post(url+'/user', data=json.dumps(user_dict), headers=headers)
+    response = requests.post(url+'/user', data=json.dumps(user_dict), headers=headers, cookies=cookies)
     assert response.status_code == 201, response # chceck if created
     user = response.json()
 
@@ -91,7 +85,7 @@ def upload_data(data_tab):
             user_id = user['id']
             )
 
-        response = requests.post(url+'/sensor', data=json.dumps(sensor_dict), headers=headers)
+        response = requests.post(url+'/sensor', data=json.dumps(sensor_dict), headers=headers, cookies=cookies)
         assert response.status_code == 201, response # chceck if created
         sensor_id = response.json()['id']
 
@@ -100,13 +94,13 @@ def upload_data(data_tab):
                             value=float(data_tab[wanted_sensor_types[sensortype]['index']-1])
                            )
 
-        response = requests.post(url+'/measure', data=json.dumps(measure_dict), headers=headers)
+        response = requests.post(url+'/measure', data=json.dumps(measure_dict), headers=headers, cookies=cookies)
         assert response.status_code == 201, response # chceck if created
 
 
 def data_loader():
     # test if database is running
-    response = requests.get(url+'/stats', headers=headers)
+    response = requests.get(url+'/stats', headers=headers, cookies=cookies)
     if not response.status_code == 200:
        raise Exception("Cannot connect w/ api!\nResponse code: " +
                        str(response.status_code))
@@ -183,17 +177,21 @@ def generate_users():
     users.append(generate_user(type =3, login="patient", password="patient"))
 
     for u in users:
-        response = requests.post(url+'/user', data=json.dumps(u), headers=headers)
+        response = requests.post(url+'/user', data=json.dumps(u), headers=headers, cookies=cookies)
         assert response.status_code == 201, response # chceck if created
 
 def login_as_admin():
     # kids, don't try this at home
     payload = {'username': 'admin', 'password': 'admin'}
-    r = requests.post(url, data=json.dumps(payload))
+    r = requests.post("http://localhost:5000/login", data=payload)
+    global cookies
+    cookies = r.cookies
 
 # here we run magic
 f_names, m_names, l_names = load_names()
-login_as_admin()
+
+
 generate_users()
+login_as_admin()
 check_sensors()
 data_loader()
