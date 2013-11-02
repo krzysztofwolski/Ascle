@@ -177,18 +177,23 @@ def generate_user(sex=None, birth_date=None, login=None, password = "potato", ty
 
 
 def generate_users():
-    # lets generate 1 admin & 5 doctors & 1 patient
-    users = []#generate_user(type=1, login="doc%d"%i, password="doc") for i in xrange(5)]
-    # users.append(generate_user(type =0, login="admin", password="admin"))
+    # let's generate 1 admin & 5 doctors & 1 patient
+    users = [generate_user(type=1, login="doc%d"%i, password="doc") for i in xrange(5)]
+    users.append(generate_user(type =0, login="admin", password="admin"))
     users.append(generate_user(type =3, login="patient", password="patient"))
 
     for u in users:
         response = requests.post(url+'/user', data=json.dumps(u), headers=headers)
         assert response.status_code == 201, response # chceck if created
 
+def login_as_admin():
+    # kids, don't try this at home
+    payload = {'username': 'admin', 'password': 'admin'}
+    r = requests.post(url, data=json.dumps(payload))
+
 # here we run magic
 f_names, m_names, l_names = load_names()
-
-# check_sensors()
-# data_loader()
+login_as_admin()
 generate_users()
+check_sensors()
+data_loader()

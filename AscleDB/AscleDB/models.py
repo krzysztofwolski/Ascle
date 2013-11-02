@@ -15,6 +15,7 @@ from helpers import now
 class User(db.Model):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
+    pesel = Column(Integer)
     login = Column(String(50), unique=True, nullable=False)
     password = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
@@ -74,10 +75,10 @@ class Sensor(db.Model):
     sensor_type_id = Column(Integer,
                             ForeignKey('sensortype.id'),
                             nullable=False)
-    alert_min = Column(Integer)
-    alert_max = Column(Integer)
-    warning_min = Column(Integer)
-    warning_max = Column(Integer)
+    alert_min = Column(Float)
+    alert_max = Column(Float)
+    warning_min = Column(Float)
+    warning_max = Column(Float)
     user_id = Column(Integer,
                      ForeignKey('user.id'),
                      nullable=False)

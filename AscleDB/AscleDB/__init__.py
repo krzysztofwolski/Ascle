@@ -38,15 +38,40 @@ manager_api = flask.ext.restless.APIManager(app,
                                         flask_sqlalchemy_db=db)
 
 manager_api.create_api(models.User, methods=methods,
-                       preprocessors=dict(GET_SINGLE=[get_single_chceck_user],
-                                          GET_MANY=[get_many_chceck_user]),#chceck_user_get_single]),
-                       postprocessors=dict(GET_MANY=[]))
-manager_api.create_api(models.Drug, methods=methods)
-manager_api.create_api(models.Message, methods=methods)
-manager_api.create_api(models.SensorType, methods=methods)
-manager_api.create_api(models.Sensor, methods=methods)
-manager_api.create_api(models.Measure, methods=methods,postprocessors=dict(GET_MANY=[calculate_avg,
-                                                                                     calculate_max,
-                                                                                     calculate_med,
-                                                                                     calculate_min]))
-manager_api.create_api(models.Schedule, methods=methods)
+                       preprocessors=dict(GET_SINGLE=[auth_func, get_single_chceck_user],
+                                          GET_MANY=[auth_func, get_many_chceck_user],
+                                          DELETE=[auth_func]))
+manager_api.create_api(models.Drug, methods=methods,
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func],
+                                          POST=[auth_func],
+                                          DELETE=[auth_func]))
+manager_api.create_api(models.Message, methods=methods,
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func],
+                                          POST=[auth_func],
+                                          DELETE=[auth_func]))
+manager_api.create_api(models.SensorType, methods=methods,
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func],
+                                          POST=[auth_func],
+                                          DELETE=[auth_func]))
+manager_api.create_api(models.Sensor, methods=methods,
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func],
+                                          POST=[auth_func],
+                                          DELETE=[auth_func]))
+manager_api.create_api(models.Measure, methods=methods,
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func],
+                                          POST=[auth_func],
+                                          DELETE=[auth_func]),
+                       postprocessors=dict(GET_MANY=[calculate_avg,
+                                                     calculate_max,
+                                                     calculate_med,
+                                                     calculate_min]))
+manager_api.create_api(models.Schedule, methods=methods,
+                       preprocessors=dict(GET_SINGLE=[auth_func],
+                                          GET_MANY=[auth_func],
+                                          POST=[auth_func],
+                                          DELETE=[auth_func]))
