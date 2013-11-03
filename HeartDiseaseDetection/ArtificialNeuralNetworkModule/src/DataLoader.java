@@ -2,16 +2,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.*;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 public class DataLoader {
+	private String cookie;
+	//private String cookieName;
+	//private String cookieValue;
 	private int patient_id;
 	private final String srvAddr = "http://kuchnia.mooo.com:5000/api/";
 	private List<Response> responses;
@@ -19,16 +24,55 @@ public class DataLoader {
 		sensor,sensortype,measure
 	}
 	
-	DataLoader(int id){
+	DataLoader(int id) throws IOException{
+		this.logIn();
 		this.patient_id = id;
 		responses = new ArrayList<Response>();
 	}
-	
+	private void logIn() throws IOException{
+		String charset = "UTF-8";
+		String username = "admin";
+		String pass = "admin";
+		String urlParams = String.format("username=%s&password=%s",URLEncoder.encode(username,charset),URLEncoder.encode(pass,charset));
+		URL url = new URL("http://kuchnia.mooo.com:5000/login");
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setDoOutput(true);
+		con.setRequestMethod("POST");
+		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+		OutputStream writer = con.getOutputStream();
+		writer.write(urlParams.getBytes(charset));
+		writer.flush();
+		String headerName = null;
+		for(int i=1;(headerName = con.getHeaderFieldKey(i))!=null;i++){
+			if(headerName.equals("Content-Length")){
+				int contentLen = Integer.parseInt(con.getHeaderField(i));
+				if(contentLen != 34){
+					throw new RuntimeException("Invlid Login");
+				}else{
+					break;
+				}
+			}
+		}
+		headerName = null;
+		String tmp_cookie = null;
+		for(int i=1;(headerName = con.getHeaderFieldKey(i))!=null;i++){
+			if(headerName.equals("Set-Cookie")){
+				tmp_cookie = con.getHeaderField(i);
+			}
+		}
+		tmp_cookie = tmp_cookie.substring(0,tmp_cookie.indexOf(";"));
+		this.cookie = tmp_cookie.substring(0);
+//		this.cookieName = tmp_cookie.substring(0, tmp_cookie.indexOf("="));
+//		this.cookie = tmp_cookie.substring(tmp_cookie.indexOf("=")+1,tmp_cookie.length());
+		writer.close();
+		con.disconnect();
+	}
 	private String getJson(String addr) throws IOException{
 		URL url = new URL(addr);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setRequestProperty("Content-Type", "application/json");
+		con.setRequestProperty("Cookie", this.cookie);
 		
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String line;
@@ -36,7 +80,7 @@ public class DataLoader {
 		while((line = in.readLine())!= null){
 			output.append(line);
 		}
-		
+		con.disconnect();
 		return output.toString();
 	}
 	
@@ -60,8 +104,12 @@ public class DataLoader {
 				this.responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
 				break;
 			}
-		}	
-	}	
+		}
+	}
+	//Drunken class method 
+	public List<Response> getData(){
+		 return this.responses;
+	}
 }
 
 
@@ -73,12 +121,13 @@ abstract class Response{
 
 class SensorResponse extends Response{
 	
+	String name;
 	Integer sensor_type_id;
-	Integer user_id;
 	Float alert_min;
 	Float alert_max;
 	Float warning_min;
     Float warning_max;
+    Integer user_id;
     
     @Override
     /*TODO: This method returns only ONE FK, need to change this to all FK just for correctness*/
@@ -111,7 +160,7 @@ class SensorTypesResponse extends Response{
 class MeasuresResponse extends Response{
 	Integer sensor_id;
 	Float value;
-	String timestamp;
+//	String timestamp;
 	
 	@Override
     public Integer getForeginKey(){
