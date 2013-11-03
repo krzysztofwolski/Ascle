@@ -1,10 +1,13 @@
 package com.example.asclemon;
 
+import com.example.asclemon.database.DataBase;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -18,6 +21,12 @@ public class ManualAcquisition extends Activity {
 		setContentView(R.layout.activity_manual_acquisition);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		TextView txt = (TextView) findViewById(R.id.textView1);
+		
+		DataBase db = DataBase.INSTANCE;
+		
+		txt.setText(db.message);
 	}
 
 	/**

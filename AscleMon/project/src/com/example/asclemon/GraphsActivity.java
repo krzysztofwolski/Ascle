@@ -18,6 +18,7 @@ public class GraphsActivity extends Activity {
 		setContentView(R.layout.activity_graphs);
 		// Show the Up button in the action bar.
 		setupActionBar();
+
 	}
 
 	/**
