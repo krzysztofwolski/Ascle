@@ -318,8 +318,9 @@ public enum DataBase implements Runnable {
 						client.wait(timeout);
 						updateSensorsTypes("",getSensorTypeIDs());
 						client.wait(timeout);
+						addMySensors(getSensorTypeIDs());
+						client.wait(timeout);
 						updateSensors("",getSensorTypeIDs());
-						//addMySensors(getSensorTypeIDs());
 						client.wait(timeout);
 						downloadMeasure("",getSensorTypeIDs());
 						currentState = State.UpdateMeasure;
