@@ -49,10 +49,10 @@
 					<input name="Text2" type="password" class="form-control" placeholder="Twoje hasło" />
 				</div>
 				<br />
-				<input name="Button1" type="button" value="Możesz mi zaufać i wpuścić bez logowania" id="trustButton" class="btn btn-primary" />
-				<button name="Button1" id="trustButton" class="btn myButton">
+				<input name="Button1" type="button" value="Możesz mi zaufać i wpuścić bez logowania" id="trustButton" class="btn myButton" />
+				<!-- <button name="Button1" id="trustButton" class="btn myButton">
 					Możesz mi zaufać i wpuścić bez logowania
-				</button>
+				</button> -->
 			</fieldset>		
 			</form>
 
@@ -69,8 +69,12 @@
 				<input id="logout" name="Button3" type="button" value="Wyloguj" class="btn" />
 			</div>
 		</form>
-		<form method="post">
-			<input class="btn" name="Button4" type="button" value="Wyświetl" id="2" />
+		<form class="navbar-form" method="post" role"search">
+			<div class="form-group">
+				<input type="text" class ="form-control" placeholder="Szukaj">
+				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="2" />
+			</div>
+			
 		</form>
 		<div class="myTable">
 			<table name="patient-info" class="table table-hover table-condensed myTable">
