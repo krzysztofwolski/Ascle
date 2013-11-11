@@ -59,7 +59,8 @@
 		
 		$('#trustButton').on('click',function () {
 
-	    changePage($('#showData'));
+	    // changePage($('#showData'));
+	    changePage($('#addDoctor'));
 	    // $("$menu").show();
 	   	 });
 	  	$('#showMagic').click(function () {
