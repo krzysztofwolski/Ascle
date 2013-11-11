@@ -86,7 +86,7 @@ public enum DataBase implements Runnable {
 		sensor.sensor_type_id = sensor_type_id;
 		sensor.unit = unit;
 		sensor.automatic = automatic;
-		
+		sensor.lastUpdateTime = new Date();
 		//sensor.measures = new ArrayList<Measure>();
 		sensors.add(sensor);
 	}

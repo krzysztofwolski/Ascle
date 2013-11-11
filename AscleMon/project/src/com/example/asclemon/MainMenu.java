@@ -44,7 +44,7 @@ public class MainMenu extends Activity {
 		dataBase.start();
 		//example how to add new measure 
 		// adding new measure --------------------------------------------------------------
-		db.getSensor("Termometr 2000").addNewMeasure(999.0f, new Date());
+		db.getSensor("termometr 2000").addNewMeasure(999.0f, new Date());
 		//and its all.
 	}
 	
