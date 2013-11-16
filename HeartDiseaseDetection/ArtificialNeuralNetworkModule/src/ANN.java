@@ -35,11 +35,17 @@ public class ANN {
 		network.reset();
 	};
 	
-	public void run() throws IOException{
+	public void runTraining() throws IOException{
 		this.prepareDataSet();
 		this.trainNetwork();
 		this.saveNetwork();
 	};
+	
+	public int runDiagnosis(double [][]attr){
+		int type = 0;
+		
+		return type;
+	}
 	
 	private String loadDataFile(String fileName) throws IOException{
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));

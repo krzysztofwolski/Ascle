@@ -1,16 +1,17 @@
 import java.io.IOException;
 
 import com.google.gson.JsonSyntaxException;
-
-
+//Java version od srv
+//java version "1.7.0_40"
+//Java(TM) SE Runtime Environment (build 1.7.0_40-b43)
+//Java HotSpot(TM) 64-Bit Server VM (build 24.0-b56, mixed mode)
 public class ArtificialNeuralNetworkModule {
 
 	public static void main(String[] args) throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-//		ANN ann = new ANN();
-//		ann.run();
-		DataLoader d = new DataLoader(5);
+
+		DataLoader d = new DataLoader(5/*ID ARG HERE*/);
 		d.load();
+		d.getData();
 		
 	}
 

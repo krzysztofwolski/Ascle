@@ -21,7 +21,7 @@ public class DataLoader {
 	private final String srvAddr = "http://kuchnia.mooo.com:5000/api/";
 	private List<Response> responses;
 	private enum Table{
-		sensor,sensortype,measure
+		user,sensor,sensortype,measure
 	}
 	
 	DataLoader(int id) throws IOException{
@@ -90,12 +90,18 @@ public class DataLoader {
 		for(Table t : Table.values()){
 			addr = "";
 			switch (t){
+			case user:
+				addr = this.srvAddr + "user/" + this.patient_id;
+				UserResponse tmp = new Gson().fromJson(this.getJson(addr),UserResponse.class);
+				tmp.setProperAge();
+				this.responses.add(tmp);
+				break;
 			case sensor:
 				addr = this.srvAddr + "sensor/" + this.patient_id;
 				this.responses.add(new Gson().fromJson(this.getJson(addr),SensorResponse.class));
 				break;
 			case sensortype:
-				int sensorTypeID = this.responses.get(0).getForeginKey();	/*TODO: this is lame solution, but it is sufficient*/
+				int sensorTypeID = this.responses.get(1).getPrimaryKey();	/*TODO: this is lame solution, but it is sufficient*/
 				addr = this.srvAddr + "sensortype/" + sensorTypeID;
 				this.responses.add(new Gson().fromJson(this.getJson(addr),SensorTypesResponse.class));
 				break;
@@ -106,7 +112,7 @@ public class DataLoader {
 			}
 		}
 	}
-	//Drunken class method 
+	
 	public List<Response> getData(){
 		 return this.responses;
 	}
@@ -173,4 +179,30 @@ class MeasuresResponse extends Response{
 	}
 }
 
+class UserResponse extends Response{
+	String login;
+	String password;
+	String last_name;
+	String first_name;
+	Boolean sex;
+	String birth_date;
+	Integer type;
+	int age;
+	public void setProperAge(){
+		String []year = this.birth_date.split("-");
+		this.age = 2013 - Integer.parseInt(year[0]); // /*TODO*/need to fix to get current system YEAR
+	}
+	@Override
+	public Integer getForeginKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getPrimaryKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}
 
