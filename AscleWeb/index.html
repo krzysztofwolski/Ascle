@@ -27,9 +27,10 @@
 			<div class="container">
 				<!-- <a href = "#" class = "navbar-brand">Ascle</a> -->
 				<ul class = "nav navbar-nav navbar-right">
-					<li><a href = "#">Home</a></li>
-					<li><a href="#">Pacjenci</a></li>
-					<li><a href="#">Dodaj lekarza</a>
+					<li id="home"><a href = "#">Home</a></li>
+					<li id="patients"><a href="#">Pacjenci</a></li>
+					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
+					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
 				</ul>	
 			</div>
 		</div>
@@ -96,6 +97,48 @@
 				</fieldset>
 				</br>
 				<input name="addDoctorButton" type="button" value="Dodaj lekarza" id="addDcotorButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
+
+	<div class="subpage myForm" id="addPatient">
+		<div>
+			<form class="form-horizontal" method="post" role="form">
+				<fieldset>
+					<legend>Dodaj pacjenta</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
+
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+						</label>
+					</div>
+				</fieldset>
+				</br>
+				<input name="addPatientButton" type="button" value="Dodaj pacjenta" id="addPatientButton" class="btn myButton" />
 			</form>
 		</div>
 	</div>

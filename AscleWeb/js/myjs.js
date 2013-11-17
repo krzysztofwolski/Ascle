@@ -69,8 +69,24 @@
 	  	$('#logout').click(function () {
 	     changePage($("#myLogin"));
 	      // $("$menu").hide();
-
 	  	});
+	  	$('#addDoctorLi').click(function()
+	  	{
+	  		changePage($("#addDoctor"));
+	  	});
+	  	$('#addPatientLi').click(function()
+	  	{
+	  		changePage($("#addPatient"));
+	  	});
+	  	$("#patients").click(function(){
+	  		changePage($("#showData"));
+	  	});
+
+	  	$("#home").click(function()
+	  	{
+	  		changePage(active);
+	  	});
+
 
 
 		  	
