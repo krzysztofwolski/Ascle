@@ -21,24 +21,6 @@
 	});
 	
 	
-	jQuery["postJSON"] = function( url, data, callback ) {
-    // shift arguments if data argument was omitted
-	    if ( jQuery.isFunction( data ) ) {
-	        callback = data;
-	        data = undefined;
-	    }
-	
-	    return jQuery.ajax({
-	        url: url,
-	        type: "POST",
-	        contentType:"application/json; charset=utf-8",
-	        dataType: "json",
-	        data: data,
-	        success: callback
-	    });
-	};
-	
-	
 	
 	$('.subpage').hide();
     $('#myLogin').slideToggle();
@@ -53,62 +35,79 @@
 		  });
 			};
 		
-		
+		var api = "http://kuchnia.mooo.com:5000/login";
 		$('#trustButton').on('click',function () {
 		
-		var login = $('#login').val();
-		var pass = $('#pass').val();	
-		var api = "http://kuchnia.mooo.com:5000/login";
-
-		console.log(login);
-		console.log(pass);
-
-/*
-		$.postJSON(api, {username: 'admin', password: 'admin'}, function (data, status, xhr) {
-	    alert('Nailed it!')
-		});
-		*/
-		
-		
 			$.ajax({
-			    type: 'POST',
-			    url: api,
-			    data: {'login':login  , 'password':pass }, // or JSON.stringify ({name: 'jonas'}),
-			    success: function(response, status, xhr){ 
-				    var ct = xhr.getResponseHeader("content-type") || "";
-				    if (ct.indexOf('html') > -1) {
-				      console.log("bbb");
-				    }
-				    if (ct.indexOf('json') > -1) {
-				      console.log("ccc");
+			   type: "POST",
+//			   Access-Control-Allow-Origin: api,
+			   dataType: 'text',
+			   url: api,
+			  // data: {username: 'admin',password: 'admin'},
+			   username: 'admin',
+			   password: 'admin',
+			   crossDomain : true,
+			})
+			.done(function( data ) {
+		    console.log("done");
+		    })
+		    .fail( function(xhr, textStatus, errorThrown) {
+	        		alert(xhr.responseText);	
+	        		alert(textStatus);		  
+	        });
 
-				    } 
-				},
-				error: function(response, status, xhr){ 
-					console.log("Error", xhr.statusText);  
-				},
-			    contentType: "application/json",
-			    dataType: 'json'
+								
+		/*
+			$.post(api,function(result){
+				console.log(result);
+				alert( "success" );
+				})
+				.done(function() {
+				    alert( "second success" );
+				})
+				.fail( function(xhr, textStatus, errorThrown) {
+	        		alert(xhr.responseText);	
+	        		alert(textStatus);		  
+	        	})
+				.always(function() {
+				    alert( "finished" );
+				});
+				
+		    	changePage($('#showData'));
+		    	// $("$menu").show();
+	   	    */
+	   	    
+	   	    /*
+		   	   $.ajax( {
+					url : "http://kuchnia.mooo.com:5000/login",
+//					dataType : 'json',
+					beforeSend : function(xhr) {
+				          var bytes = Crypto.charenc.Binary.stringToBytes("admin" + ":" + "admin");
+				          var base64 = Crypto.util.bytesToBase64(bytes);
+				          xhr.setRequestHeader("Authorization", "Basic " + base64);
+					},
+					error : function(xhr, ajaxOptions, thrownError) {
+					  reset();
+					  onError('Invalid username or password. Please try again.');
+					  $('#loginform #user_login').focus();
+					},
+					success : function(model) {
+					  cookies();
+				      
+					}
+				});	
+				*/			
+	   	    });
+	   	    
+		  	$('#showMagic').click(function () {
+		     changePage($("#fun"));
+		  	});
+		  	
+		  	$('#logout').click(function () {
+		     changePage($("#myLogin"));
+		      // $("$menu").hide();
 			});
-			
-			
-			/*
-			alert('data: ' + data); 
-			    		console.log("aaa");
-			    		changePage($('#showData'));
-*/
-			
-		});
-	   	 
-	   	 
-	  	$('#showMagic').click(function () {
-	     changePage($("#fun"));
-	  	});
-	  	$('#logout').click(function () {
-	     changePage($("#myLogin"));
-	      // $("$menu").hide();
 
-	  	});
 	
 	
 });
