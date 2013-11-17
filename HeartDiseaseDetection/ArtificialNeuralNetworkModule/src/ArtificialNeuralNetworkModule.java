@@ -9,7 +9,7 @@ public class ArtificialNeuralNetworkModule {
 
 	public static void main(String[] args) throws JsonSyntaxException, IOException {
 
-		DataLoader d = new DataLoader(5/*ID ARG HERE*/);
+		DataLoader d = new DataLoader(8/*ID ARG HERE*/);
 		d.load();
 		d.getData();
 		

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.*;
 
@@ -21,7 +22,7 @@ public class DataLoader {
 	private final String srvAddr = "http://kuchnia.mooo.com:5000/api/";
 	private List<Response> responses;
 	private enum Table{
-		user,sensor,sensortype,measure
+		user,sensor,measure
 	}
 	
 	DataLoader(int id) throws IOException{
@@ -62,8 +63,6 @@ public class DataLoader {
 		}
 		tmp_cookie = tmp_cookie.substring(0,tmp_cookie.indexOf(";"));
 		this.cookie = tmp_cookie.substring(0);
-//		this.cookieName = tmp_cookie.substring(0, tmp_cookie.indexOf("="));
-//		this.cookie = tmp_cookie.substring(tmp_cookie.indexOf("=")+1,tmp_cookie.length());
 		writer.close();
 		con.disconnect();
 	}
@@ -83,8 +82,7 @@ public class DataLoader {
 		con.disconnect();
 		return output.toString();
 	}
-	
-	@SuppressWarnings("incomplete-switch")
+	//http://kuchnia.mooo.com:5000/api/sensor?q={"filters":[ {"name":"user_id","op":"eq","val":8}]}
 	public void load() throws JsonSyntaxException, IOException{
 		String addr;
 		for(Table t : Table.values()){
@@ -97,36 +95,63 @@ public class DataLoader {
 				this.responses.add(tmp);
 				break;
 			case sensor:
-				addr = this.srvAddr + "sensor/" + this.patient_id;
+				String resultsPerPage = "&results_per_page=10000";
+				String filter = String.format("?q={\"filters\":[{\"name\":\"user_id\",\"op\":\"eq\",\"val\":%d}]}", this.patient_id);
+				addr = this.srvAddr + "sensor" + filter+resultsPerPage;
 				this.responses.add(new Gson().fromJson(this.getJson(addr),SensorResponse.class));
 				break;
-			case sensortype:
-				int sensorTypeID = this.responses.get(1).getPrimaryKey();	/*TODO: this is lame solution, but it is sufficient*/
-				addr = this.srvAddr + "sensortype/" + sensorTypeID;
-				this.responses.add(new Gson().fromJson(this.getJson(addr),SensorTypesResponse.class));
-				break;
 			case measure:
-				addr = this.srvAddr + "measure/" + this.patient_id;
-				this.responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
+				int numSensors = this.responses.get(1).getNumResults();
+				SensorResponse tmpSensorResponse = (SensorResponse) this.responses.get(1);
+				List<Sensor> sensors = tmpSensorResponse.getSensors();
+				for(int i = 0;i<numSensors;i++){
+					addr = this.srvAddr + "measure/" + sensors.get(i).getId();
+					this.responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
+				}
 				break;
+			default:
+				throw new RuntimeException("Wooops, something gone wrong during loading data");
 			}
 		}
 	}
 	
-	public List<Response> getData(){
-		 return this.responses;
+	public AnnDataContainer getData(){
+		
+		 return null;
 	}
 }
 
 
 abstract class Response{
 	 Integer id;
+	 Integer num_results;
 	 public abstract Integer getForeginKey();
 	 public abstract Integer getPrimaryKey();
+	 public Integer getNumResults(){
+	    	return this.num_results;
+	    } 
 }
 
 class SensorResponse extends Response{
-	
+	List<Sensor> objects;
+   
+    SensorResponse(){
+    	this.id= null;
+    }
+    public Integer getForeginKey(){
+    	throw new RuntimeException("Do not invoke it for this class!!");
+    }
+    List<Sensor> getSensors(){
+    	return this.objects;
+    }
+	@Override
+	public Integer getPrimaryKey() {
+		throw new RuntimeException("This response does ont have own id. Use List<Sensor> for Primary keys");
+	}
+}
+
+class Sensor {
+	Integer id;
 	String name;
 	Integer sensor_type_id;
 	Float alert_min;
@@ -135,33 +160,11 @@ class SensorResponse extends Response{
     Float warning_max;
     Integer user_id;
     
-    @Override
-    /*TODO: This method returns only ONE FK, need to change this to all FK just for correctness*/
-    public Integer getForeginKey(){
-    	return this.sensor_type_id;
+    public int getId(){
+    	return this.id;
     }
-    
-	@Override
-	public Integer getPrimaryKey() {
-		return this.id;
-	}
 }
 
-class SensorTypesResponse extends Response{
-	String name;
-	String unit;
-	Boolean automatic;
-	
-	@Override
-    public Integer getForeginKey(){
-		throw new RuntimeException("No foregin key in this table! This table should not even exist!!!");
-	}
-
-	@Override
-	public Integer getPrimaryKey() {
-		return this.id;
-	}
-}
 
 class MeasuresResponse extends Response{
 	Integer sensor_id;
