@@ -20,8 +20,6 @@
 	
 	});
 	
-	
-	
 	$('.subpage').hide();
     $('#myLogin').slideToggle();
     
@@ -51,6 +49,8 @@
 			.done(function( data ) {
 		    console.log("done");
 		    changePage($('#showData'));
+
+
 		    })
 		    .fail( function(xhr, textStatus, errorThrown) {
 	        		alert(xhr.responseText);	
@@ -99,6 +99,21 @@
 				});	
 				*/			
 	   	    });
+			$('#addDoctorLi').click(function(){
+	  			changePage($("#addDoctor"));
+		  	});
+		  	$('#addPatientLi').click(function()
+		  	{
+		  		changePage($("#addPatient"));
+		  	});
+		  	$("#patients").click(function(){
+		  		changePage($("#showData"));
+		  	});
+	 
+		  	$("#home").click(function()
+		  	{
+		  		changePage(active);
+	 	  	});
 	   	    
 		  	$('#showMagic').click(function () {
 		     changePage($("#fun"));
@@ -108,8 +123,5 @@
 		     changePage($("#myLogin"));
 		      // $("$menu").hide();
 			});
-
-	
-	
 });
 
