@@ -27,10 +27,11 @@
 			<div class="container">
 				<!-- <a href = "#" class = "navbar-brand">Ascle</a> -->
 				<ul class = "nav navbar-nav navbar-right">
-					<li><a href = "#">Home</a></li>
-					<li><a href="#">Pacjenci</a></li>
+					<li id="home"><a href = "#">Home</a></li>
+					<li id="patients"><a href="#">Pacjenci</a></li>
+					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
+					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
 				</ul>	
-					
 			</div>
 		</div>
 	</div>
@@ -38,31 +39,110 @@
 		<br />
 		<div>
 	&nbsp;	<form class="form-horizontal" method="post" role="form">
-			<fieldset >
+			<fieldset>
 				<legend>Logowanie</legend>
 				<div class="form-group">
 					<label for="inputLogin" class="control-label">LOGIN:&nbsp;</label>
-					<input name="Text1" type="text" class="form-control" placeholder="Twój login" />
+					<input type="text" class="form-control" placeholder="Twój login" id="login" />
 				</div>
 				<div class="form-group">
 					<label for="inputPassword" class="control-label">HASŁO: </label>
-					<input name="Text2" type="password" class="form-control" placeholder="Twoje hasło" />
+					<input type="password" class="form-control" placeholder="Twoje hasło" id="pass" />
 				</div>
 				<br />
 				<input name="Button1" type="button" value="Możesz mi zaufać i wpuścić bez logowania" id="trustButton" class="btn myButton" />
-				<!-- <button name="Button1" id="trustButton" class="btn myButton">
-					Możesz mi zaufać i wpuścić bez logowania
-				</button> -->
 			</fieldset>		
 			</form>
-
-
 		</div>
 		<br />
 		<br />
 		<br />
 		<br />
 	</div>
+	<div class="subpage myForm" id="addDoctor">
+		<div>
+			<form class="form-horizontal" method="post" role="form">
+				<fieldset>
+					<legend>Dodaj lekarza</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
+
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+						</label>
+					</div>
+				</fieldset>
+				</br>
+				<input name="addDoctorButton" type="button" value="Dodaj lekarza" id="addDcotorButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
+
+	<div class="subpage myForm" id="addPatient">
+		<div>
+			<form class="form-horizontal" method="post" role="form">
+				<fieldset>
+					<legend>Dodaj pacjenta</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
+
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+						</label>
+					</div>
+				</fieldset>
+				</br>
+				<input name="addPatientButton" type="button" value="Dodaj pacjenta" id="addPatientButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
+
 	<div id="showData" class="subpage">
 		<form method="post">
 			<div class="auto-style1">
@@ -74,7 +154,6 @@
 				<input type="text" class ="form-control" placeholder="Szukaj">
 				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="2" />
 			</div>
-			
 		</form>
 		<div class="myTable">
 			<table name="patient-info" class="table table-hover table-condensed myTable">
@@ -124,12 +203,14 @@
 		<br></br>
 
 	</div>
-	<br />
+	
 	<div class="bottom">
 		<nav class="navbar navbar-custom" role="navigation">
 			<p>Ascle</p>
 		</div>	
 	</div>
+
+
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 

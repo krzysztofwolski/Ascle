@@ -44,33 +44,6 @@
 
 	
 
-	$('.subpage').hide();
-    $('#myLogin').slideToggle();
-    
-    var active = $('#myLogin');
-	//collapse
-	function changePage(page){
-				active.stop().slideUp('slow', function() {
-	      page.stop().slideDown();
-	      active = page;
-	      active.show();
-		  });
-			};
-		
-		$('#trustButton').on('click',function () {
-
-	    changePage($('#showData'));
-	    // $("$menu").show();
-	   	 });
-	  	$('#showMagic').click(function () {
-	     changePage($("#fun"));
-	  	});
-	  	$('#logout').click(function () {
-	     changePage($("#myLogin"));
-	      // $("$menu").hide();
-
-	  	});
-
 
 		  	
 });
