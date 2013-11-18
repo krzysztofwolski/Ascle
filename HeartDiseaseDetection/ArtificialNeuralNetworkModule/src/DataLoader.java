@@ -190,26 +190,25 @@ public class DataLoader {
 		}
 		for(String name : wantedNames){
 			if(name == "Ból klatki piersiowej"){
-				
-			}
-			else if(name == "Ciśnienie krwi - spoczynek"){
-				
+				cp = vals.get(name);
+			}else if(name == "Ciśnienie krwi - spoczynek"){
+				trestbps = vals.get(name);
 			}else if(name == "Cholesterol"){
-				
+				chol = vals.get(name);
 			}else if(name == "Wysoki poziom cukru"){
-				
+				fbs = vals.get(name);
 			}else if(name == "Elektrokardiograf"){
-				
+				restecg = vals.get(name);
 			}else if(name == "Max. puls"){
-				
+				thalach = vals.get(name);
 			}else if(name == "Przebyta angina"){
-				
+				oldpeak = vals.get(name);
 			}else if(name == "Obnizenie ST"){
-				
+				slope = vals.get(name);
 			}else if(name == "Naczynek na flurorosopii"){
-				
+				ca = vals.get(name);
 			}else if(name == "Thal"){
-				
+				thal = vals.get(name);
 			}
 		}
 		return new AnnDataContainer(age,sex,cp,trestbps,chol,fbs,restecg,thalach,oldpeak,slope,ca,thal);
