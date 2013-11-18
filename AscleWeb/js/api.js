@@ -50,6 +50,7 @@
 			})
 			.done(function( data ) {
 		    console.log("done");
+		    changePage($('#showData'));
 		    })
 		    .fail( function(xhr, textStatus, errorThrown) {
 	        		alert(xhr.responseText);	
