@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+
+
+/*
+ * cp - Ból klatki piersiowej
+ * trestbps - Ci śnienie krwi - spoczynek
+ * chol - Cholesterol
+ * fbs - Wysoki poziom cukru
+ * restecg - Elektrokardiograf
+ * thalach - Max. puls
+ * exang - Przebyta angina
+ * slope - Obnizenie ST
+ * ca - Naczynek na flurorosopii
+ * thal - Thal
+ */
 public class DataLoader {
 	private String cookie;
 	//private String cookieName;
@@ -21,6 +36,7 @@ public class DataLoader {
 	private int patient_id;
 	private final String srvAddr = "http://kuchnia.mooo.com:5000/api/";
 	private List<Response> responses;
+	private List<MeasuresResponse> measuresResponses;
 	private enum Table{
 		user,sensor,measure,sensortype
 	}
@@ -29,6 +45,7 @@ public class DataLoader {
 		this.logIn();
 		this.patient_id = id;
 		responses = new ArrayList<Response>();
+		measuresResponses = new ArrayList<MeasuresResponse>();
 	}
 	private void logIn() throws IOException{
 		String charset = "UTF-8";
@@ -106,7 +123,7 @@ public class DataLoader {
 				List<Sensor> sensors = tmpSensorResponse.getSensors();
 				for(int i = 0;i<numSensors;i++){
 					addr = this.srvAddr + "measure/" + sensors.get(i).getId();
-					this.responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
+					this.measuresResponses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
 				}
 				break;
 			case sensortype:
@@ -121,23 +138,80 @@ public class DataLoader {
 //	AnnDataContainer(Integer vAge,Boolean vSex,Integer vCp,Float vTrestbps,Float vChol,Float vFbs,Float vRestecg,
 //			Float vExang,Float vOldpeak,Float vSlope,Float vCa,Float vThal)
 	public AnnDataContainer getData(){
+		/*
+		 * cp - Ból klatki piersiowej
+		 * trestbps - Ciśnienie krwi - spoczynek
+		 * chol - Cholesterol
+		 * fbs - Wysoki poziom cukru
+		 * restecg - Elektrokardiograf
+		 * thalach - Max. puls
+		 * exang - Przebyta angina
+		 * slope - Obnizenie ST
+		 * ca - Naczynek na flurorosopii
+		 * thal - Thal
+		 */
 		//user response
 		UserResponse uResp = (UserResponse) this.responses.get(0);
 		int age = uResp.age;
 		Boolean sex = uResp.sex;
-		
+		String []wantedNames = {"Ból klatki piersiowej","Ciśnienie krwi - spoczynek","Cholesterol","Wysoki poziom cukru","Elektrokardiograf","Max. puls","Przebyta angina","Obnizenie ST","Naczynek na flurorosopii","Thal"};
 		//Sensor and values
-		int cp = 0;
-		float trestbps = 0;
-		float chol = 0;
-		float fbs = 0;
-		float restecg = 0;
-		float thalach = 0;
-		float oldpeak = 0;
-		float slope = 0;
-		float ca = 0;
-		float thal = 0;
-		
+		float cp = 0;			//0
+		float trestbps = 0; 	//1
+		float chol = 0;			//2
+		float fbs = 0;			//3
+		float restecg = 0;		//4
+		float thalach = 0;		//5
+		float oldpeak = 0;		//6
+		float slope = 0;		//7
+		float ca = 0;			//8
+		float thal = 0;			//9
+		Map<String,Float> vals = new HashMap<String,Float>();
+		SensorTypeResponse typeResponse = (SensorTypeResponse) this.responses.get(this.responses.size()-1);
+		List<SensorType> types = typeResponse.getObjects();
+		for(String name : wantedNames){
+			for(SensorType typeSensor : types){
+				if(typeSensor.getName().equals(name)){
+						int id = typeSensor.id;
+						SensorResponse tmpSensorResponse = (SensorResponse) this.responses.get(1);
+						List<Sensor> sensors = tmpSensorResponse.getSensors();
+						for(Sensor sens : sensors){
+							if(sens.sensor_type_id == id){
+								int idOfSensor = sens.id;
+								for(MeasuresResponse measure : this.measuresResponses){
+									if(idOfSensor == measure.sensor_id){
+										vals.put(name, measure.value);
+									}
+								}
+							}
+						}
+				}
+			}
+		}
+		for(String name : wantedNames){
+			if(name == "Ból klatki piersiowej"){
+				
+			}
+			else if(name == "Ciśnienie krwi - spoczynek"){
+				
+			}else if(name == "Cholesterol"){
+				
+			}else if(name == "Wysoki poziom cukru"){
+				
+			}else if(name == "Elektrokardiograf"){
+				
+			}else if(name == "Max. puls"){
+				
+			}else if(name == "Przebyta angina"){
+				
+			}else if(name == "Obnizenie ST"){
+				
+			}else if(name == "Naczynek na flurorosopii"){
+				
+			}else if(name == "Thal"){
+				
+			}
+		}
 		return new AnnDataContainer(age,sex,cp,trestbps,chol,fbs,restecg,thalach,oldpeak,slope,ca,thal);
 	}
 }
@@ -160,7 +234,7 @@ class SensorResponse extends Response{
     	this.id= null;
     }
     public Integer getForeginKey(){
-    	throw new RuntimeException("Do not invoke it for this class!!");
+    	throw new RuntimeException("Do not invoke it form this class!!");
     }
     List<Sensor> getSensors(){
     	return this.objects;
