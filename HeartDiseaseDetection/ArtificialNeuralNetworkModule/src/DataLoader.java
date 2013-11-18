@@ -22,7 +22,7 @@ public class DataLoader {
 	private final String srvAddr = "http://kuchnia.mooo.com:5000/api/";
 	private List<Response> responses;
 	private enum Table{
-		user,sensor,measure
+		user,sensor,measure,sensortype
 	}
 	
 	DataLoader(int id) throws IOException{
@@ -109,15 +109,36 @@ public class DataLoader {
 					this.responses.add(new Gson().fromJson(this.getJson(addr),MeasuresResponse.class));
 				}
 				break;
+			case sensortype:
+				addr = this.srvAddr + "sensortype?results_per_page=10000";
+				this.responses.add(new Gson().fromJson(this.getJson(addr), SensorTypeResponse.class));
+				break;
 			default:
 				throw new RuntimeException("Wooops, something gone wrong during loading data");
 			}
 		}
 	}
-	
+//	AnnDataContainer(Integer vAge,Boolean vSex,Integer vCp,Float vTrestbps,Float vChol,Float vFbs,Float vRestecg,
+//			Float vExang,Float vOldpeak,Float vSlope,Float vCa,Float vThal)
 	public AnnDataContainer getData(){
+		//user response
+		UserResponse uResp = (UserResponse) this.responses.get(0);
+		int age = uResp.age;
+		Boolean sex = uResp.sex;
 		
-		 return null;
+		//Sensor and values
+		int cp = 0;
+		float trestbps = 0;
+		float chol = 0;
+		float fbs = 0;
+		float restecg = 0;
+		float thalach = 0;
+		float oldpeak = 0;
+		float slope = 0;
+		float ca = 0;
+		float thal = 0;
+		
+		return new AnnDataContainer(age,sex,cp,trestbps,chol,fbs,restecg,thalach,oldpeak,slope,ca,thal);
 	}
 }
 
@@ -197,15 +218,41 @@ class UserResponse extends Response{
 	}
 	@Override
 	public Integer getForeginKey() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public Integer getPrimaryKey() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 }
 
+class SensorTypeResponse extends Response{
+	List<SensorType> objects;
+	SensorTypeResponse(){
+		this.id = null;
+	}
+	List<SensorType> getObjects(){
+		return this.objects;
+	}
+	@Override
+	public Integer getForeginKey() {
+		return null;
+	}
+
+	@Override
+	public Integer getPrimaryKey() {
+		return null;
+	}
+	
+}
+class SensorType{
+	Boolean automatic;
+	Integer id;
+	String name;
+	String unit;
+	
+	String getName(){
+		return this.name;
+	}
+}

@@ -11,7 +11,7 @@ public class ArtificialNeuralNetworkModule {
 
 		DataLoader d = new DataLoader(8/*ID ARG HERE*/);
 		d.load();
-		d.getData();
+		//d.getData();
 		
 	}
 
