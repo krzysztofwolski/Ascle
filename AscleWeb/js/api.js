@@ -1,4 +1,14 @@
-﻿$(document).ready(function() {
+﻿var api_url = "http://kuchnia.mooo.com:5000/";
+
+function user(id,type)
+{
+this.id=id;
+this.type=type;
+}
+
+User = new user(0,0);
+
+$(document).ready(function() {
 	
 	$("#2").on('click',function(){
 		console.log("clicked");
@@ -38,21 +48,28 @@
 		  });
 		};
 		
-		var api = "http://kuchnia.mooo.com:5000/login";
+		
 		$('#trustButton').on('click',function () {
+			var login = $('#login').val();
+			var pass = $('#pass').val();
 		
 			$.ajax({
 			   type: "POST",
 			   dataType: 'text',
-			   url: api,
-			  // data: {username: 'admin',password: 'admin'},
-			   username: 'admin',
-			   password: 'admin',
+			   url: api_url+"login",
+			   username: login,
+			   password: pass,
 			   crossDomain : true,
 			})
 			.done(function( data ) {
-		    console.log("done");
-		    changePage($('#showData'));
+				
+				console.log("cliked");
+				
+				if (isAuthenticated())
+				{
+									    
+			    changePage($('#showData'));
+			    }
 
 
 		    })
@@ -80,48 +97,32 @@
 
 		}
 
-								
-		/*
-			$.post(api,function(result){
-				console.log(result);
-				alert( "success" );
+										
+	   	 });
+	   	 
+	function isAuthenticated()
+	{
+				$.ajax(
+				{
+				url: api_url+"api/stats"
+				
+				
 				})
-				.done(function() {
-				    alert( "second success" );
+				.done(function(result) {
+					return result.data.is_authenticated;
+					User.id = result.data.user_id;
+					User.type = result.data.type;
+				
 				})
 				.fail( function(xhr, textStatus, errorThrown) {
 	        		alert(xhr.responseText);	
 	        		alert(textStatus);		  
-	        	})
-				.always(function() {
-				    alert( "finished" );
-				});
-				
-		    	changePage($('#showData'));
-		    	// $("$menu").show();
-	   	    */
+	        	});
+	
+	
+	}
 	   	    
-	   	    /*
-		   	   $.ajax( {
-					url : "http://kuchnia.mooo.com:5000/login",
-//					dataType : 'json',
-					beforeSend : function(xhr) {
-				          var bytes = Crypto.charenc.Binary.stringToBytes("admin" + ":" + "admin");
-				          var base64 = Crypto.util.bytesToBase64(bytes);
-				          xhr.setRequestHeader("Authorization", "Basic " + base64);
-					},
-					error : function(xhr, ajaxOptions, thrownError) {
-					  reset();
-					  onError('Invalid username or password. Please try again.');
-					  $('#loginform #user_login').focus();
-					},
-					success : function(model) {
-					  cookies();
-				      
-					}
-				});	*/
-							
-	   	   
+	
 			$('#addDoctorLi').click(function(){
 	  			changePage($("#addDoctor"));
 		  	});
