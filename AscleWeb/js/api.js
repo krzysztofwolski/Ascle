@@ -10,26 +10,7 @@ User = new user(0,0);
 
 $(document).ready(function() {
 	
-	$("#2").on('click',function(){
-		console.log("clicked");
-		
-		var api = "http://kuchnia.mooo.com:5000/api/user/1";
-		$.getJSON(api, {'Content-Type': 'application/json'}, function(result)
-		{
-			$("#showpic_2").text("aaa");
-			console.log(result.first_name);
-			console.log($(".test").text());
-			$(".test").text($(".test").text() + " " + result.first_name);
-			
-				/*$.each(result, function(i, field)
-	    	{
-	      		$("div").append(field + " ");
-    		});*/
- 		});
-			
-	
-	});
-	
+
 	$("#menu > #patients").hide();
 	$("#menu > #addDoctorLi").hide();
 	$("#menu > #addPatientLi").hide();
@@ -57,27 +38,32 @@ $(document).ready(function() {
 			   type: "POST",
 			   dataType: 'text',
 			   url: api_url+"login",
-			   username: login,
-			   password: pass,
+			   data: {username: login, password: pass},
 			   crossDomain : true,
-			})
-			.done(function( data ) {
+			   success:
+			   	function( data ,status, xhr) {
+				console.log(data);
 				
-				console.log("cliked");
+				console.log("done");
+				
+				xhr.getResponseHeader('Set-Cookie');
 				
 				if (isAuthenticated())
 				{
 									    
 			    changePage($('#showData'));
 			    }
-
-
-		    })
-		    .fail( function(xhr, textStatus, errorThrown) {
+			   },
+			   error:
+			   	function(xhr, textStatus, errorThrown) {
 	        		alert(xhr.responseText);	
-	        		alert(textStatus);		  
-	        	});
-		     });
+	        		alert(textStatus);	
+	        	}
+			   
+			});
+				        	
+		});
+
 
 		function onLoginSuccessful(type){
 			$("#menu").slideToggle();
@@ -96,19 +82,21 @@ $(document).ready(function() {
 
 
 		}
-
-										
-	   	 });
+	   	 
 	   	 
 	function isAuthenticated()
 	{
 				$.ajax(
 				{
-				url: api_url+"api/stats"
-				
+				url: api_url+"api/stats",
+				xhrFields: 
+				{
+			    withCredentials: true
+			    }
 				
 				})
 				.done(function(result) {
+					console.log(result);
 					return result.data.is_authenticated;
 					User.id = result.data.user_id;
 					User.type = result.data.type;
