@@ -1,12 +1,13 @@
 ﻿var api_url = "http://kuchnia.mooo.com:5000/";
 
-function user(id,type)
+function user(id,type,log)
 {
 this.id=id;
 this.type=type;
+this.is_log;
 }
 
-User = new user(0,0);
+User = new user(0,0,0);
 
 $(document).ready(function() {
 	
@@ -37,21 +38,29 @@ $(document).ready(function() {
 			$.ajax({
 			   type: "POST",
 			   dataType: 'text',
-			   url: api_url+"login",
+			   url: api_url+"login?callback=?",
 			   data: {username: login, password: pass},
 			   crossDomain : true,
 			   success:
-			   	function( data ,status, xhr) {
-				console.log(data);
+			   	function( result ,status, xhr) {
 				
+				var json = jQuery.parseJSON(result);
+												
+				alert(json.message);
 				console.log("done");
 				
 				xhr.getResponseHeader('Set-Cookie');
 				
-				if (isAuthenticated())
+				isAuthenticated();
+				console.log(User);
+				
+				if (User.log=true)
 				{
-									    
-			    changePage($('#showData'));
+					onLoginSuccessful(User.type);
+			    }
+			    else
+			    {
+			    	alert("not logged");
 			    }
 			   },
 			   error:
@@ -86,28 +95,67 @@ $(document).ready(function() {
 	   	 
 	function isAuthenticated()
 	{
+		var json;
 				$.ajax(
 				{
+				contentType: "application/jsonp",
 				url: api_url+"api/stats",
+				crossDomain : true,
 				xhrFields: 
-				{
-			    withCredentials: true
-			    }
-				
-				})
-				.done(function(result) {
-					console.log(result);
-					return result.data.is_authenticated;
-					User.id = result.data.user_id;
-					User.type = result.data.type;
-				
-				})
-				.fail( function(xhr, textStatus, errorThrown) {
+					{
+				    withCredentials: true
+				    },
+			    success:
+			     function(result) {
+			     	console.log("yea");
+			     
+					json = jQuery.parseJSON(result);
+										
+					User.id = json.user_id;
+					User.type = json.type;
+					User.log = json.logged_in;
+					console.log(User);					
+				 },
+				 error:
+				  function(xhr, textStatus, errorThrown) {
 	        		alert(xhr.responseText);	
-	        		alert(textStatus);		  
-	        	});
+	        		alert(textStatus);
+	        	  }
+
+				
+				});
+	}
 	
-	
+	function searchUser(){
+			
+			var pes = $("#user_search").val();
+			var filters = [{"name": "pesel", "op": "equals", "val": pes}];
+			
+			$.ajax(
+				{
+				url: api_url+"api/user",
+				data: {"q": JSON.stringify({"filters": filters})},
+				crossDomain : true,
+				xhrFields: 
+					{
+				    withCredentials: true
+				    },
+			    success:
+			     function(result) {
+			     	if (result.data.num_results){
+			     		alert("no user");
+			     	}
+			    					
+				 },
+				 error:
+				  function(xhr, textStatus, errorThrown) {
+	        		alert(xhr.responseText);	
+	        		alert(textStatus);
+	        	  }
+
+				
+				});
+
 	}
 	   	    
 	
