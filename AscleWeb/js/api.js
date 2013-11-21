@@ -20,6 +20,11 @@
 	
 	});
 	
+	$("#menu > #patients").hide();
+	$("#menu > #addDoctorLi").hide();
+	$("#menu > #addPatientLi").hide();
+	$("#menu").hide();
+
 	$('.subpage').hide();
     $('#myLogin').slideToggle();
     
@@ -31,14 +36,13 @@
 	      active = page;
 	      active.show();
 		  });
-			};
+		};
 		
 		var api = "http://kuchnia.mooo.com:5000/login";
 		$('#trustButton').on('click',function () {
 		
 			$.ajax({
 			   type: "POST",
-//			   Access-Control-Allow-Origin: api,
 			   dataType: 'text',
 			   url: api,
 			  // data: {username: 'admin',password: 'admin'},
@@ -55,7 +59,26 @@
 		    .fail( function(xhr, textStatus, errorThrown) {
 	        		alert(xhr.responseText);	
 	        		alert(textStatus);		  
-	        });
+	        	});
+		     });
+
+		function onLoginSuccessful(type){
+			$("#menu").slideToggle();
+
+			switch(type)
+			{
+				case 0: 
+					$("#menu > #addDoctorLi").slideToggle();
+					break;
+				case 1:
+					$("#menu > #addPatientLi").slideToggle();
+					$("#menu > #patients").slideToggle();
+					break;
+			}
+			
+
+
+		}
 
 								
 		/*
@@ -96,9 +119,9 @@
 					  cookies();
 				      
 					}
-				});	
-				*/			
-	   	    });
+				});	*/
+							
+	   	   
 			$('#addDoctorLi').click(function(){
 	  			changePage($("#addDoctor"));
 		  	});
