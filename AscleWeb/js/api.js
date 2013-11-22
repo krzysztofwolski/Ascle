@@ -4,10 +4,23 @@ function user(id,type,log)
 {
 this.id=id;
 this.type=type;
-this.is_log;
+this.is_log=log;
+
+this.getId = function() {
+        return this.id;
+    };
+    
+this.getType = function() {
+        return this.type;
+    };
+
+this.getIsLog = function() {
+        return this.is_log;
+    };
+    
 }
 
-User = new user(0,0,0);
+User = new user();
 
 $(document).ready(function() {
 	
@@ -30,6 +43,50 @@ $(document).ready(function() {
 		  });
 		};
 		
+	function doingStuff()
+	{
+		alert("Iha");
+	}
+		
+	function isAuthenticated()
+	{
+		var json;
+				$.ajax(
+				{
+				contentType: "application/jsonp",
+				url: api_url+"api/stats",
+				crossDomain : true,
+				xhrFields: 
+					{
+				    withCredentials: true
+				    },
+			    success:
+			     function(result) {
+			     	console.log("yea");
+			     
+					json = jQuery.parseJSON(result);
+										
+					User = new user(json.user_id, json.type, json.logged_in);
+					/*
+					User.id = json.user_id;
+					User.type = json.type;
+					User.is_log = json.logged_in;
+					*/
+					console.log(User);	
+					console.log(User.getId());					
+				 },
+				 error:
+				  function(xhr, textStatus, errorThrown) {
+	        		alert(xhr.responseText);	
+	        		alert(textStatus);
+	        	  }
+
+				
+				});
+	}
+	
+	
+		
 		
 		$('#trustButton').on('click',function () {
 			var login = $('#login').val();
@@ -51,17 +108,20 @@ $(document).ready(function() {
 				
 				xhr.getResponseHeader('Set-Cookie');
 				
-				isAuthenticated();
-				console.log(User);
-				
-				if (User.log=true)
+				//It's very nasty way to check if user is logged but runninig isAuthenticated() 
+				// in the middle of ajax request don't work
+				// TO DO in free time
+				if (json.message=="Success! Logged in.")
 				{
-					onLoginSuccessful(User.type);
+					isAuthenticated();
+					onLoginSuccessful(User.getType());
 			    }
+			    /*
 			    else
 			    {
 			    	alert("not logged");
 			    }
+			    */
 			   },
 			   error:
 			   	function(xhr, textStatus, errorThrown) {
@@ -93,69 +153,70 @@ $(document).ready(function() {
 		}
 	   	 
 	   	 
-	function isAuthenticated()
-	{
-		var json;
-				$.ajax(
-				{
-				contentType: "application/jsonp",
-				url: api_url+"api/stats",
-				crossDomain : true,
-				xhrFields: 
-					{
-				    withCredentials: true
-				    },
-			    success:
-			     function(result) {
-			     	console.log("yea");
-			     
-					json = jQuery.parseJSON(result);
-										
-					User.id = json.user_id;
-					User.type = json.type;
-					User.log = json.logged_in;
-					console.log(User);					
-				 },
-				 error:
-				  function(xhr, textStatus, errorThrown) {
-	        		alert(xhr.responseText);	
-	        		alert(textStatus);
-	        	  }
-
-				
-				});
-	}
+	
 	
 	function searchUser(){
 			
 			var pes = $("#user_search").val();
 			var filters = [{"name": "pesel", "op": "equals", "val": pes}];
 			
-			$.ajax(
-				{
-				url: api_url+"api/user",
-				data: {"q": JSON.stringify({"filters": filters})},
-				crossDomain : true,
-				xhrFields: 
+			console.log(JSON.stringify({"filters": filters}));
+			
+			if(!$.trim($("#user_search").val()).length)
+			{
+				alert("Pole jest puste");
+			}
+			else
+			{
+			
+			console.log(pes);			
+		
+				$.ajax(
 					{
-				    withCredentials: true
-				    },
-			    success:
-			     function(result) {
-			     	if (result.data.num_results){
-			     		alert("no user");
-			     	}
-			    					
-				 },
-				 error:
-				  function(xhr, textStatus, errorThrown) {
-	        		alert(xhr.responseText);	
-	        		alert(textStatus);
-	        	  }
-
-				
-				});
-
+					contentType: "application/jsonp",
+					url: api_url+"api/user",
+					data: {"q": JSON.stringify({"filters": filters})},
+					crossDomain : true,
+					xhrFields: 
+						{
+					    withCredentials: true
+					    },
+				    success:
+				     function(result) {
+				     	
+				    	console.log(result.num_results);
+						if (result.num_results=='0')
+						{
+							alert("Nie ma pacjenta o podanym peselu");
+						}
+						else
+						{
+							$("#get_first-name").html(result.objects[0].first_name);
+							$("#get_last-name").html(result.objects[0].last_name);
+							var sex;
+							if (result.objects[0].first_name)
+							{
+								sex = "Mężczyzna";
+							}
+							else
+							{
+								sex = "Kobieta";
+							}
+							$("#get_sex").html(sex);
+							$("#get_birth-date").html(result.objects[0].birth_date);
+							
+						}
+					
+					 },
+					 error:
+					  function(xhr, textStatus, errorThrown) {
+		        		alert(xhr.responseText);	
+		        		alert(textStatus);
+		        	  }
+	
+					
+					});
+			}
 	}
 	   	    
 	
@@ -182,6 +243,11 @@ $(document).ready(function() {
 		  	$('#logout').click(function () {
 		     changePage($("#myLogin"));
 		      // $("$menu").hide();
+			});
+			
+			
+			$("#searchPatient").click(function(){
+				searchUser();
 			});
 });
 
