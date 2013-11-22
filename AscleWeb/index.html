@@ -50,7 +50,7 @@
 					<input type="password" class="form-control" placeholder="Twoje hasło" id="pass" />
 				</div>
 				<br />
-				<input name="Button1" type="button" value="Możesz mi zaufać i wpuścić bez logowania" id="trustButton" class="btn myButton" />
+				<input name="Button1" type="button" value="Zaloguj" id="trustButton" class="btn myButton" />
 			</fieldset>		
 			</form>
 		</div>
@@ -151,8 +151,8 @@
 		</form>
 		<form class="navbar-form" method="post" role"search">
 			<div class="form-group">
-				<input type="text" class ="form-control" placeholder="Szukaj">
-				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="2" />
+				<input type="text" class ="form-control" placeholder="Szukaj" id="user_search">
+				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="searchPatient" />
 			</div>
 		</form>
 		<div class="myTable">
@@ -160,26 +160,26 @@
 				<caption ><h5>INFORMACJE O PACJENCIE<h5><br/></caption>
 				<thead>
 					<tr>
-						<th>Pole</th>
-						<th>Wartość</th>
+						<th style="height: 28px">Pole</th>
+						<th style="height: 28px">Wartość</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr id="first-name">
+					<tr>
 						<td id="field">Imię</td>
-						<td id="val">Marek</td>
+						<td id="get_first-name">&nbsp;</td>
 					</tr>
-					<tr id="last-name">
-						<td id="field">Nazwisko</td>
-						<td id="val">Romański</td>
+					<tr>
+						<td id="field" style="height: 29px">Nazwisko</td>
+						<td id="get_last-name" style="height: 29px">&nbsp;</td>
 					</tr>
-					<tr id="sex">
+					<tr>
 						<td id="field">Płeć</td>
-						<td id="val">Mężczyzna</td>
+						<td id="get_sex">&nbsp;</td>
 					</tr>
-					<tr id="birth-date">
+					<tr>
 						<td id="field">Data urodzenia</td>
-						<td id="val">1991-04-23</td>
+						<td id="get_birth-date">&nbsp;</td>
 					</tr>
 				</tbody>
 			</table>
