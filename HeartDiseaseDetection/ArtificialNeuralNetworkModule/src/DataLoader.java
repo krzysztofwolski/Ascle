@@ -154,7 +154,7 @@ public class DataLoader {
 		UserResponse uResp = (UserResponse) this.responses.get(0);
 		int age = uResp.age;
 		Boolean sex = uResp.sex;
-		String []wantedNames = {"Ból klatki piersiowej","Ciśnienie krwi - spoczynek","Cholesterol","Wysoki poziom cukru","Elektrokardiograf","Max. puls","Przebyta angina","Obnizenie ST","Naczynek na flurorosopii","Thal"};
+		String []wantedNames = {"Ból klatki piersiowej","Ciśnienie krwi - spoczynek","Cholesterol","Wysoki poziom cukru","Elektrokardiograf","Max. puls","Przebyta angina","Obniżenie ST","Naczynek na fluorosopii","Thal"};
 		//Sensor and values
 		float cp = 0;			//0
 		float trestbps = 0; 	//1
@@ -166,7 +166,7 @@ public class DataLoader {
 		float slope = 0;		//7
 		float ca = 0;			//8
 		float thal = 0;			//9
-		Map<String,Float> vals = new HashMap<String,Float>();
+		HashMap<String,Float> vals = new HashMap<String,Float>();
 		SensorTypeResponse typeResponse = (SensorTypeResponse) this.responses.get(this.responses.size()-1);
 		List<SensorType> types = typeResponse.getObjects();
 		for(String name : wantedNames){
@@ -188,6 +188,7 @@ public class DataLoader {
 				}
 			}
 		}
+		int debugVar = vals.size();
 		for(String name : wantedNames){
 			if(name == "Ból klatki piersiowej"){
 				cp = vals.get(name);
