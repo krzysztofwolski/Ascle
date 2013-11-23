@@ -57,12 +57,12 @@ public class ANN {
 		this.saveNetwork();
 	};
 	
-	public int runDiagnosis(double [][]attr){
-		int var = -1;
+	public double runDiagnosis(double [][]attr){
 		double[] result = {-1};
-		//MLData annData = (MLData)new BasicMLDataSet(this.data.toArray(),null);
 		this.network.compute(this.data.toArray(), result);
-		return var;
+		this.denormalize(result[0], 0, 4);
+		
+		return result[0];
 	}
 	
 	private String loadDataFile(String fileName) throws IOException{
