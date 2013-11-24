@@ -26,7 +26,7 @@ $(document).ready(function() {
 	
 
 	$("#patients").hide();
-	// $("#addDoctorLi").hide();
+	$("#addDoctorLi").hide();
 	$("#addPatientLi").hide();
 	$("#menu").hide();
 
@@ -330,15 +330,22 @@ $(document).ready(function() {
 		  	{
 		  		changePage($("#home"));
 	 	  	});
-	   	    
+
+	   	    $("#sendMessageLi").click(function(){
+	   	    	changePage($("#sendMessage"));
+	   	    });
+
+
 		  	$('#showMagic').click(function () {
 		     changePage($("#fun"));
 		  	});
 		  	
 		  	$('#logout').click(function () {
 		     changePage($("#myLogin"));
-		      // $("$menu").hide();
+		     $("$menu").hide();
 			});
+
+
 			
 			
 			$("#searchPatient").click(function(){

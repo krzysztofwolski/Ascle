@@ -31,7 +31,7 @@
 					<li id="patients"><a href="#">Pacjenci</a></li>
 					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
 					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
-					
+					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
 				</ul>
 				<ul class="nav navbar-right" >
 					<li id="logOutLi"><a href="#">Wyloguj</a>
@@ -73,6 +73,31 @@
 		<br />
 		<br />
 	</div>
+
+	<div class="subpage myForm" id="sendMessage">
+		<div>
+			<form class="form-horizontal" method="post" role="form" id="sendMessageForm">
+				<fieldset>
+					<legend>Wyślij wiadomość</legend>
+					<div class="form-group">
+						<label for="toWhom" class="control-label">Pesel adresata:</label>
+						<input name="toWhom" type="text" class="form-control" placeholder="Pesel"/>
+					</div>
+					<div class="form-group">
+						<label for="message" class="control-label">Wiadomość</label>
+						<textarea name="message" class="form-control" rows="5" id="message"></textarea>
+					</div>
+					<input name="sendMessageButton" type="button" value="Wyślij wiadomość" id="sendMessageButton" class="btn myButton" />
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="subpage myForm" id="messageSent">
+		<div>
+			Wiadomość została wysłana!
+		</div>
+	</div>
+
 	<div class="subpage myForm" id="addDoctor">
 		<div>
 			<form class="form-horizontal" method="post" role="form" id="addDoctorForm">
@@ -171,12 +196,7 @@
 						</label>
 					</div>
 					</br>
-					<div class="form-group">
-						<label for="birthDate" class="control-label">Data Urodzenia</label>
-						<!-- <form class="form-inline" role="form"> -->
-							<input name="birthDate" type="date" id="birthDate" class="form-control"/>
-						<!-- </form> -->
-					</div>
+					
 				</fieldset>
 				</br>
 				<input name="addPatientButton" type="button" value="Dodaj pacjenta" id="addPatientButton" class="btn myButton" />
