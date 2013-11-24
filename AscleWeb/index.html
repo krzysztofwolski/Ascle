@@ -103,37 +103,42 @@
 
 	<div class="subpage myForm" id="addPatient">
 		<div>
-			<form class="form-horizontal" method="post" role="form">
+			<form class="form-horizontal" method="post" role="form" id="addPatientForm">
 				<fieldset>
 					<legend>Dodaj pacjenta</legend>
 					<div class="form-group">
 						<label for="login" class="control-label">Login</label>
-						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login" id="add_patient_login"/>
 					</div>
 					<div class="form-group">
 						<label for="firstName" class="control-label">Imię</label>
-						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię" id="add_patient_first_name"/>
 					</div>
 					<div class="form-group">
 						<label for="lastName" class="control-label">Nazwisko</label>
-						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko" id="add_patient_last_name"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">PESEL</label>
+						<input name="pesel" type="text" class="form-control" placeholder="Podaj hasło" id="add_patient_pesel"/>
 					</div>
 					<div class="form-group">
 						<label for="password" class="control-label">Hasło</label>
-						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+						<input name="password" type="password" class="form-control" placeholder="Podaj pesel" id="add_patient_password"/>
 					</div>
+
 					<div class="form-group">
 						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
-						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło" id="patient_password_comfirm"/>
 					</div>
 					<div class="form-group">
 						<label for="sex" class="control-label">Płeć</label>
 
 						<label class="radio-inline control-label">
-							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+							<input name="patient_sex" type="radio" id="add_patient_sexMale" value="1"/> Mężczyzna
 						</label>
 						<label class="radio-inline control-label">
-							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+							<input name="patient_sex" type="radio" id="add_patient_sexFemale" value="0"/> Kobieta
 						</label>
 					</div>
 				</fieldset>

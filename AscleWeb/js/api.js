@@ -84,56 +84,8 @@ $(document).ready(function() {
 				
 				});
 	}
-	
-	
 		
 		
-		$('#trustButton').on('click',function () {
-			var login = $('#login').val();
-			var pass = $('#pass').val();
-		
-			$.ajax({
-			   type: "POST",
-			   dataType: 'text',
-			   url: api_url+"login?callback=?",
-			   data: {username: login, password: pass},
-			   crossDomain : true,
-			   success:
-			   	function( result ,status, xhr) {
-				
-				var json = jQuery.parseJSON(result);
-												
-				alert(json.message);
-				console.log("done");
-				
-				xhr.getResponseHeader('Set-Cookie');
-				
-				//It's very nasty way to check if user is logged but runninig isAuthenticated() 
-				// in the middle of ajax request don't work
-				// TO DO in free time
-				if (json.message=="Success! Logged in.")
-				{
-					isAuthenticated();
-					onLoginSuccessful(User.getType());
-			    }
-			    /*
-			    else
-			    {
-			    	alert("not logged");
-			    }
-			    */
-			   },
-			   error:
-			   	function(xhr, textStatus, errorThrown) {
-	        		alert(xhr.responseText);	
-	        		alert(textStatus);	
-	        	}
-			   
-			});
-				        	
-		});
-
-
 		function onLoginSuccessful(type){
 			$("#menu").slideToggle();
 
@@ -153,7 +105,7 @@ $(document).ready(function() {
 		}
 	   	 
 	   	 
-	
+	   	 // function search user by pesel
 	
 	function searchUser(){
 			
@@ -218,6 +170,114 @@ $(document).ready(function() {
 					});
 			}
 	}
+	   	    
+	function sendUserDataToSerwer(userData)
+	{
+		console.log(userData);
+		
+		$.ajax(
+		{
+			type: "POST",
+			contentType: "application/jsonp",
+			url: api_url+"api/user",
+			data: JSON.stringify(userData),
+			crossDomain : true,
+			xhrFields: 
+				{
+					withCredentials: true
+				},
+			success:
+				function(result) 
+				{
+				    console.log(result);
+				},
+			error:
+				function(xhr, textStatus, errorThrown) 
+				{
+		        	alert(xhr.responseText);	
+		        	alert(textStatus);
+		        	console.log(xhr.responseText);
+		        }
+		});
+	}	   	 
+	   	    
+	   	    
+	   	 //when clicked on "Zaloguj"
+	   	    
+	   	 $('#trustButton').on('click',function () {
+			var login = $('#login').val();
+			var pass = $('#pass').val();
+		
+			$.ajax({
+			   type: "POST",
+			   dataType: 'text',
+			   url: api_url+"login?callback=?",
+			   data: {username: login, password: pass},
+			   crossDomain : true,
+			   success:
+			   	function( result ,status, xhr) {
+				
+				var json = jQuery.parseJSON(result);
+												
+				alert(json.message);
+				console.log("done");
+				
+				xhr.getResponseHeader('Set-Cookie');
+				
+				//It's very nasty way to check if user is logged but runninig isAuthenticated() 
+				// in the middle of ajax request don't work
+				// TO DO in free time
+				if (json.message=="Success! Logged in.")
+				{
+					isAuthenticated();
+					onLoginSuccessful(User.getType());
+			    }
+			    /*
+			    else
+			    {
+			    	alert("not logged");
+			    }
+			    */
+			   },
+			   error:
+			   	function(xhr, textStatus, errorThrown) {
+	        		alert(xhr.responseText);	
+	        		alert(textStatus);	
+	        	}
+			   
+			});
+				        	
+		});
+	   	    
+	   	    // when clicked on "Dodaj pacjenta"
+	   	    
+	   	    $("#addPatientButton").click(function()
+	   	    {
+				var login = $("#add_patient_login").val();
+				var first_name = $("#add_patient_first_name").val();
+				var last_name =$("#add_patient_last_name").val();
+				var pesel = $("#add_patient_pesel").val();
+				var password = $("#add_patient_password").val();
+				var password_comfirm = $("#patient_password_comfirm").val();
+				var sex = $('input[name=patient_sex]:checked', '#addPatientForm').val()
+				
+				if (password != password_comfirm )
+				{
+					alert("Hasła nie są takie same");
+				}
+				else
+				{
+					var patient = {"login": login, "password": password, "last_name": last_name, 
+					"first_name": first_name, "sex": sex, "password" : password,
+					"pesel": pesel, "type":3};
+
+					sendUserDataToSerwer(patient);
+				
+				}
+				
+	   	    	
+	   	    });
+	   	    
 	   	    
 	
 			$('#addDoctorLi').click(function(){
