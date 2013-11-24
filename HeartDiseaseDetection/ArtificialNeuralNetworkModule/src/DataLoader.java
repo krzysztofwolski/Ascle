@@ -83,13 +83,27 @@ public class DataLoader {
 		writer.close();
 		con.disconnect();
 	}
+	private void sendJson(String addr,Object o) throws IOException{
+		Gson gson = new Gson();
+		String json = gson.toJson(o);
+		
+		URL url = new URL(addr);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("POST");
+		con.setRequestProperty("Content-Type", "application/json");
+		con.setRequestProperty("Cookie", this.cookie);
+		con.setDoOutput(true);
+		OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+		writer.write(json);
+		writer.flush();
+		con.disconnect();
+	}
 	private String getJson(String addr) throws IOException{
 		URL url = new URL(addr);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setRequestProperty("Content-Type", "application/json");
 		con.setRequestProperty("Cookie", this.cookie);
-		
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String line;
 		StringBuffer output = new StringBuffer();
@@ -154,7 +168,7 @@ public class DataLoader {
 		UserResponse uResp = (UserResponse) this.responses.get(0);
 		int age = uResp.age;
 		Boolean sex = uResp.sex;
-		String []wantedNames = {"Ból klatki piersiowej","Ciśnienie krwi - spoczynek","Cholesterol","Wysoki poziom cukru","Elektrokardiograf","Max. puls","Przebyta angina","Obniżenie ST","Naczynek na fluorosopii","Thal"};
+		String []wantedNames = {"Ból klatki piersiowej","Ciśnienie krwi - spoczynek","Cholesterol","Wysoki poziom cukru","Elektrokardiograf","Max. puls","Przebyta angina","Obniżenie ST","Opad ST","Naczynek na fluorosopii","Thal"};
 		//Sensor and values
 		float cp = 0;			//0
 		float trestbps = 0; 	//1
@@ -162,6 +176,7 @@ public class DataLoader {
 		float fbs = 0;			//3
 		float restecg = 0;		//4
 		float thalach = 0;		//5
+		float exang = 0;
 		float oldpeak = 0;		//6
 		float slope = 0;		//7
 		float ca = 0;			//8
@@ -188,32 +203,67 @@ public class DataLoader {
 				}
 			}
 		}
-		int debugVar = vals.size();
 		for(String name : wantedNames){
 			if(name == "Ból klatki piersiowej"){
-				cp = vals.get(name);
+				cp = vals.get(name);//
 			}else if(name == "Ciśnienie krwi - spoczynek"){
-				trestbps = vals.get(name);
+				trestbps = vals.get(name);//
 			}else if(name == "Cholesterol"){
-				chol = vals.get(name);
+				chol = vals.get(name);//
 			}else if(name == "Wysoki poziom cukru"){
-				fbs = vals.get(name);
+				fbs = vals.get(name);//
 			}else if(name == "Elektrokardiograf"){
-				restecg = vals.get(name);
+				restecg = vals.get(name);//
 			}else if(name == "Max. puls"){
-				thalach = vals.get(name);
+				thalach = vals.get(name);//
 			}else if(name == "Przebyta angina"){
-				oldpeak = vals.get(name);
+				exang = vals.get(name); //
 			}else if(name == "Obnizenie ST"){
-				slope = vals.get(name);
+				oldpeak = vals.get(name); //
+			}else if(name == "Opad ST" ){
+				slope = vals.get(name); //
 			}else if(name == "Naczynek na flurorosopii"){
-				ca = vals.get(name);
+				ca = vals.get(name); //
 			}else if(name == "Thal"){
-				thal = vals.get(name);
+				thal = vals.get(name); //
 			}
 		}
-		return new AnnDataContainer(age,sex,cp,trestbps,chol,fbs,restecg,thalach,oldpeak,slope,ca,thal);
+		//Integer vAge,Boolean vSex,Float cp2,Float vTrestbps,Float vChol,Float vFbs,Float vRestecg,Float vThalach,Float vExang,Float vOldpeak,Float vSlope,Float vCa,Float vThal
+		return new AnnDataContainer(age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal);
 	}
+	
+	public void putData(double result) throws JsonSyntaxException, IOException{
+	    final int sensorTypeID = 101;
+	    //http://kuchnia.mooo.com:5000/api/sensor?q={"filters":[{"name":"user_id","op":"eq","val":8},{"name":"sensor_type_id","op":"eq","val":1}]}
+	    //try to get sensor
+	    String filter = String.format("?q={\"filters\":[{\"name\":\"user_id\",\"op\":\"eq\",\"val\":%d},{\"name\":\"sensor_type_id\",\"op\":\"eq\",\"val\":%d}]}", this.patient_id,sensorTypeID);
+	    String addr = this.srvAddr + "sensor" + filter;
+	    SensorResponse response = new Gson().fromJson(this.getJson(addr),SensorResponse.class);
+	    if(response.num_results == 0){
+	    	//no such sensor,so create new one
+	    	Sensor newSensor = new Sensor();
+	    	newSensor.alert_max = null;
+	    	newSensor.alert_min = null;
+	    	newSensor.name = null;
+	    	newSensor.sensor_type_id = sensorTypeID;
+	    	newSensor.user_id = this.patient_id;
+	    	newSensor.warning_max = null;
+	    	newSensor.warning_min = null;
+	    	this.sendJson(this.srvAddr + "sensor", newSensor);
+	    	//with no sensor existing,there is no way that maesure exist.
+	    	//Create new maesure for perviosly created sesnor
+	    	response = new Gson().fromJson(this.getJson(addr),SensorResponse.class);
+	    	MeasuresResponse newMeasure = new MeasuresResponse();
+	    	newMeasure.sensor_id = response.getPrimaryKey(0);
+	    	newMeasure.value = (float)result;
+	    	this.sendJson(this.srvAddr + "measure", newMeasure);
+	    }else{
+	    	MeasuresResponse newMeasure = new MeasuresResponse();
+	    	newMeasure.sensor_id = response.getPrimaryKey(0);
+	    	newMeasure.value = (float)result;
+	    	this.sendJson(this.srvAddr + "measure", newMeasure);
+	    } 
+	}	
 }
 
 
@@ -242,6 +292,9 @@ class SensorResponse extends Response{
 	@Override
 	public Integer getPrimaryKey() {
 		throw new RuntimeException("This response does ont have own id. Use List<Sensor> for Primary keys");
+	}
+	public Integer getPrimaryKey(int item) {
+		return this.objects.get(item).id;
 	}
 }
 

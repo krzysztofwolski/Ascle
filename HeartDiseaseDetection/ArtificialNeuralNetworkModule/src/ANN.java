@@ -57,7 +57,7 @@ public class ANN {
 		this.saveNetwork();
 	};
 	
-	public double runDiagnosis(double [][]attr){
+	public double runDiagnosis(){
 		double[] result = {-1};
 		this.network.compute(this.data.toArray(), result);
 		this.denormalize(result[0], 0, 4);

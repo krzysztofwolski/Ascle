@@ -7,15 +7,16 @@ public class AnnDataContainer {
 	private Float chol;
 	private Float fbs;
 	private Float restecg;
+	private Float thalach;
 	private Float exang;
 	private Float oldpeak;
 	private Float slope;
 	private Float ca;
 	private Float thal;
 	
-	private final int numAttr = 12;
+	private final int numAttr = 13;
 	
-	AnnDataContainer(Integer vAge,Boolean vSex,Float cp2,Float vTrestbps,Float vChol,Float vFbs,Float vRestecg,
+	AnnDataContainer(Integer vAge,Boolean vSex,Float cp2,Float vTrestbps,Float vChol,Float vFbs,Float vRestecg,Float vThalach,
 					Float vExang,Float vOldpeak,Float vSlope,Float vCa,Float vThal){
 		this.age = vAge;
 		if(vSex)
@@ -27,6 +28,7 @@ public class AnnDataContainer {
 		this.chol = vChol;
 		this.fbs = vFbs;
 		this.restecg = vRestecg;
+		this.thalach = vThalach;
 		this.exang = vExang;
 		this.oldpeak = vOldpeak;
 		this.slope = vSlope;
@@ -42,11 +44,12 @@ public class AnnDataContainer {
 	4 chol
 	5 fbs
 	6 restecg
-	7 exang
-	8 oldpeak
-	9 slope
-	10 ca
-	11 thal
+	7 thalach <--- this on is missing!
+	8 exang
+	9 oldpeak
+   10 slope
+   11 ca
+   12 thal
 	*/
 	public double[] toArray(){
 		double[] returnArray = new double[this.numAttr];
@@ -58,11 +61,12 @@ public class AnnDataContainer {
 		returnArray[4] = this.chol;
 		returnArray[5] = this.fbs;
 		returnArray[6] = this.restecg;
-		returnArray[7] = this.exang;
-		returnArray[8] = this.oldpeak;
-		returnArray[9] = this.slope;
-		returnArray[10] = this.ca;
-		returnArray[11] = this.thal;
+		returnArray[7] = this.thalach;
+		returnArray[8] = this.exang;
+		returnArray[9] = this.oldpeak;
+		returnArray[10] = this.slope;
+		returnArray[11] = this.ca;
+		returnArray[12] = this.thal;
 		
 		return returnArray;
 		
