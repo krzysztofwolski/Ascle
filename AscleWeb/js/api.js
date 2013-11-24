@@ -25,9 +25,9 @@ User = new user();
 $(document).ready(function() {
 	
 
-	$("#menu > #patients").hide();
-	$("#menu > #addDoctorLi").hide();
-	$("#menu > #addPatientLi").hide();
+	$("#patients").hide();
+	$("#addDoctorLi").hide();
+	$("#addPatientLi").hide();
 	$("#menu").hide();
 
 	$('.subpage').hide();
@@ -87,8 +87,8 @@ $(document).ready(function() {
 		
 		
 		function onLoginSuccessful(type){
+			console.log(type);
 			$("#menu").slideToggle();
-
 			switch(type)
 			{
 				case 0: 
@@ -99,10 +99,12 @@ $(document).ready(function() {
 					$("#menu > #patients").slideToggle();
 					break;
 			}
+			changePage($("#home"));
+		}
 			
 
 
-		}
+		
 	   	 
 	   	 
 	   	 // function search user by pesel
@@ -324,9 +326,9 @@ $(document).ready(function() {
 		  		changePage($("#showData"));
 		  	});
 	 
-		  	$("#home").click(function()
+		  	$("#homeLi").click(function()
 		  	{
-		  		changePage(active);
+		  		changePage($("#home"));
 	 	  	});
 	   	    
 		  	$('#showMagic').click(function () {
@@ -341,6 +343,16 @@ $(document).ready(function() {
 			
 			$("#searchPatient").click(function(){
 				searchUser();
+			});
+
+			$("#logOutLi").click(function(){
+				$("#patients").hide();
+				$("#addDoctorLi").hide();
+				$("#addPatientLi").hide();
+				$("#menu").hide();
+
+				changePage($("#myLogin"));
+
 			});
 });
 
