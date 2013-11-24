@@ -26,7 +26,7 @@ $(document).ready(function() {
 	
 
 	$("#patients").hide();
-	$("#addDoctorLi").hide();
+	// $("#addDoctorLi").hide();
 	$("#addPatientLi").hide();
 	$("#menu").hide();
 
@@ -87,16 +87,16 @@ $(document).ready(function() {
 		
 		
 		function onLoginSuccessful(type){
-			console.log(type);
+			console.log("typ: "+type);
 			$("#menu").slideToggle();
 			switch(type)
 			{
 				case 0: 
-					$("#menu > #addDoctorLi").slideToggle();
+					$("#addDoctorLi").slideToggle();
 					break;
 				case 1:
-					$("#menu > #addPatientLi").slideToggle();
-					$("#menu > #patients").slideToggle();
+					$("#addPatientLi").slideToggle();
+					$("#patients").slideToggle();
 					break;
 			}
 			changePage($("#home"));
