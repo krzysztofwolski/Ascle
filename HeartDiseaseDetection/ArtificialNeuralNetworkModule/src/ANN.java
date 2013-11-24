@@ -4,11 +4,14 @@ import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.MLDataPair;
 import org.encog.ml.data.MLDataSet;
+
+
 import org.encog.ml.data.basic.BasicMLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
 import org.encog.util.obj.SerializeObject;
+
 
 //end Encog
 import java.io.File;
@@ -20,12 +23,19 @@ import java.io.IOException;
 
 public class ANN {
 	private BasicNetwork network;
+
+//Trainging purpose fields
+//*************************************
 	private final int[] attrIndex = {3,4,9,10,12,16,19,32,38,40,41,44,51};
 	private final int desiredOutputIndex = 58;
-	
 	double [][]selectedAttr;
 	double[][] desiredOutput;
+//*************************************	
 	
+//Run prepared ANN
+//*************************************
+	private AnnDataContainer data;	
+//*************************************
 	public ANN(){
 		network = new BasicNetwork();
 		network.addLayer(new BasicLayer(null,true,13));	//INPUT LAYER
@@ -33,18 +43,26 @@ public class ANN {
 		network.addLayer(new BasicLayer(new ActivationSigmoid(),false,1));	//OUTPUT LAYER
 		network.getStructure().finalizeStructure();
 		network.reset();
+		System.out.println("New network assembled");
 	};
-	
+	public ANN(AnnDataContainer a,String fileName) throws IOException, ClassNotFoundException{
+		File file = new File(fileName);
+		this.network = (BasicNetwork) SerializeObject.load(file);
+		this.data = a;
+		System.out.println("Network ready to perform diagnosis");
+	}
 	public void runTraining() throws IOException{
 		this.prepareDataSet();
 		this.trainNetwork();
 		this.saveNetwork();
 	};
 	
-	public int runDiagnosis(double [][]attr){
-		int type = 0;
+	public double runDiagnosis(){
+		double[] result = {-1};
+		this.network.compute(this.data.toArray(), result);
+		this.denormalize(result[0], 0, 4);
 		
-		return type;
+		return result[0];
 	}
 	
 	private String loadDataFile(String fileName) throws IOException{
@@ -144,4 +162,5 @@ public class ANN {
 		}
 		return false;
 	}
+
 }
