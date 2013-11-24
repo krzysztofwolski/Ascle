@@ -189,15 +189,21 @@ $(document).ready(function() {
 			success:
 				function(result) 
 				{
-				    console.log(result);
+				    alert("Użytkownik dodany");
 				},
 			error:
 				function(xhr, textStatus, errorThrown) 
 				{
 		        	alert(xhr.responseText);	
 		        	alert(textStatus);
-		        	console.log(xhr.responseText);
 		        }
+		});
+	}
+	
+	function getFormValues(formId,values)
+	{
+		$.each($(formId).serializeArray(), function(i, field) {
+		    values[field.name] = field.value;
 		});
 	}	   	 
 	   	    
@@ -253,29 +259,56 @@ $(document).ready(function() {
 	   	    
 	   	    $("#addPatientButton").click(function()
 	   	    {
-				var login = $("#add_patient_login").val();
-				var first_name = $("#add_patient_first_name").val();
-				var last_name =$("#add_patient_last_name").val();
-				var pesel = $("#add_patient_pesel").val();
-				var password = $("#add_patient_password").val();
-				var password_comfirm = $("#patient_password_comfirm").val();
-				var sex = $('input[name=patient_sex]:checked', '#addPatientForm').val()
-				
-				if (password != password_comfirm )
+	   	    
+	   	    	var val={}; 
+	   	    	getFormValues("#addPatientForm",val);
+	    	
+	   	    	if (val.password != val.repeatPassword)
 				{
 					alert("Hasła nie są takie same");
+					return;
 				}
 				else
 				{
-					var patient = {"login": login, "password": password, "last_name": last_name, 
-					"first_name": first_name, "sex": sex, "password" : password,
-					"pesel": pesel, "type":3};
+					var patient= {"login": val.login, "password": val.password, "last_name": val.lastName, 
+					"first_name": val.firstName, "sex": val.sex, "password" : val.password,
+					"pesel": val.pesel, "type":3};
 
+//					console.log(patient);
 					sendUserDataToSerwer(patient);
 				
 				}
 				
+				$('#addPatientForm')[0].reset();
+				
 	   	    	
+	   	    });
+	   	    
+	   	    $("#addDcotorButton").click(function()
+	   	    {
+	   	    	var val={}; 
+	   	    	getFormValues("#addDoctorForm",val);
+	    	
+	   	    	if (val.password != val.repeatPassword)
+				{
+					alert("Hasła nie są takie same");
+					return;
+				}
+				else
+				{
+					var doctor = {"login": val.login, "password": val.password, "last_name": val.lastName, 
+					"first_name": val.firstName, "sex": val.sex, "password" : val.password,
+					"pesel": val.pesel, "type":1};
+	
+//					console.log(doctor);
+					sendUserDataToSerwer(doctor);
+				
+				}
+				
+				$('#addDoctorForm')[0].reset();
+
+	   	    	
+	   	    		   	    
 	   	    });
 	   	    
 	   	    
