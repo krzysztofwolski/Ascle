@@ -20,13 +20,10 @@ else
     exit -1
 fi
 
-echo setting up directory
-mkdir -v dataFiles
-mkdir -v dataFiles/backup
 echo unpacking data files and .jar file
-tar -xf data.tar -C dataFiles
-#move saved ann to backup
-tar -xf prog.jar
 
-echo performing connection test
-#test here
+tar -xvf AnnModule.tar
+cd AnnModule/data
+echo backuping provided network file. Data set back is in tarball
+cp Network.network backup
+cd ..
