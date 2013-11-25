@@ -2,76 +2,242 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>Ascle</title>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta name"viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ascle</title>
 
-<link href="css/mycss.css" rel="stylesheet" type="text/css" />
+	<link href="css/mycss.css" rel="stylesheet" type="text/css" />
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link href="css/bootstrap-flat.min.css" rel="stylesheet" media ="screen"/>
 
-<style type="text/css">
-.subpage {
-	height: 250px;
-}
-.auto-style1 {
-	text-align: right;
-}
-</style>
+	<link href="css/flat-ui.css" rel="stylesheet">
+
+	<!-- /*<style type="text/css"></style>*/ -->
 
 </head>
 
 <body>
-<div class="top">
-	TU BĘDZIE MEGA LOGO<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<form method="post">
-		<div class="auto-style1">
-			<input id="showMagic" name="Button2" type="button" value="look at magic" /></div>
-	</form>
-</div>
-<br />
-<div id="login" class="subpage">
-	<br />
-	<div>
-&nbsp;<form method="post">
-			LOGIN:&nbsp; <input name="Text1" type="text" /><br />
-			HASŁO: <input name="Text2" type="text" /><br />
-			<br />
-			<input name="Button1" type="button" value="Możesz mi zaufać i wpuścić bez logowania" id="trustButton" /></form>
+	<div class="navbar navbar-static-top navbar-custom1" role="banner">
+		<div class="myBanner">
+			<h1 class="c">Ascle</h1>
+			<h1 class="color-clouds"><small>Tutaj ładny tekst</small></h1>
+		</div>
+		
+		<div id="menu" class="navbar navbar-static-top navbar-custom2">
+			<div class="container">
+				<!-- <a href = "#" class = "navbar-brand">Ascle</a> -->
+				<ul class = "nav navbar-nav navbar-right">
+					<li id="home"><a href = "#">Home</a></li>
+					<li id="patients"><a href="#">Pacjenci</a></li>
+					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
+					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
+				</ul>	
+			</div>
+		</div>
 	</div>
-	<br />
-	<br />
-	<br />
-	<br />
-</div>
-<div id="showData" class="subpage">
-	<form method="post">
-		<div class="auto-style1">
-			<input id="logout" name="Button3" type="button" value="logout" /></div>
-	</form>
-	INFORMACJE O PACJENCIE<br />
-	.<br />
-	.<br />
-	.<br />
-	.<br />
-	.</div>
-</br>
-<br />
-<div class="subpage" id="fun">
-<button class="magicbutton" id="showpic_1">Do magic!</button><br></br>
-<button class="magicbutton" id="showpic_2">I'am magic too!</button>
-<div id="images"></div>
-	<br />
-	<br />
-<br></br>
+	<div id="myLogin" class="subpage myLogin">
+		<br />
+		<div>
+	&nbsp;	<form class="form-horizontal" method="post" role="form">
+			<fieldset>
+				<legend>Logowanie</legend>
+				<div class="form-group">
+					<label for="inputLogin" class="control-label">LOGIN:&nbsp;</label>
+					<input type="text" class="form-control" placeholder="Twój login" id="login" />
+				</div>
+				<div class="form-group">
+					<label for="inputPassword" class="control-label">HASŁO: </label>
+					<input type="password" class="form-control" placeholder="Twoje hasło" id="pass" />
+				</div>
+				<br />
+				<input name="Button1" type="button" value="Zaloguj" id="trustButton" class="btn myButton" />
+			</fieldset>		
+			</form>
+		</div>
+		<br />
+		<br />
+		<br />
+		<br />
+	</div>
+	<div class="subpage myForm" id="addDoctor">
+		<div>
+			<form class="form-horizontal" method="post" role="form">
+				<fieldset>
+					<legend>Dodaj lekarza</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
 
-</div>
-<br />
-<div class="bottom">STOPKA</div>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+						</label>
+					</div>
+				</fieldset>
+				</br>
+				<input name="addDoctorButton" type="button" value="Dodaj lekarza" id="addDcotorButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src="js/myjs.js" type="text/javascript"></script>
+	<div class="subpage myForm" id="addPatient">
+		<div>
+			<form class="form-horizontal" method="post" role="form">
+				<fieldset>
+					<legend>Dodaj pacjenta</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
+
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+						</label>
+					</div>
+				</fieldset>
+				</br>
+				<input name="addPatientButton" type="button" value="Dodaj pacjenta" id="addPatientButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
+
+	<div id="showData" class="subpage">
+		<form method="post">
+			<div class="auto-style1">
+				<input id="logout" name="Button3" type="button" value="Wyloguj" class="btn" />
+			</div>
+		</form>
+		<form class="navbar-form" method="post" role"search">
+			<div class="form-group">
+				<input type="text" class ="form-control" placeholder="Szukaj" id="user_search">
+				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="searchPatient" />
+			</div>
+		</form>
+		<div class="myTable">
+			<table name="patient-info" class="table table-hover table-condensed myTable">
+				<caption ><h5>INFORMACJE O PACJENCIE<h5><br/></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Pole</th>
+						<th style="height: 28px">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td id="field">Imię</td>
+						<td id="get_first-name">-</td>
+					</tr>
+					<tr>
+						<td id="field" style="height: 29px">Nazwisko</td>
+						<td id="get_last-name" style="height: 29px">-</td>
+					</tr>
+					<tr>
+						<td id="field">Płeć</td>
+						<td id="get_sex">-</td>
+					</tr>
+					<tr>
+						<td id="field">Data urodzenia</td>
+						<td id="get_birth-date">-</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		.<br />
+		.<br />
+		
+		<div id="container" class="myChart">
+			Wygląda na to, że tu będzie wykres:	
+		</div>
+		
+		.</div>
+
+	<br />
+	<div class="subpage" id="fun">
+		<button class="magicbutton" id="showpic_1">Do magic!</button><br></br>
+		<button class="magicbutton" id="showpic_2">I'am magic too!</button>
+		<div id="images"></div>
+		<br />
+		<br />
+		<br></br>
+
+	</div>
+	
+	<div class="bottom">
+		<nav class="navbar navbar-custom" role="navigation">
+			<p>Ascle</p>
+		</div>	
+	</div>
+
+
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+	<!-- Code for highcharts -->
+	<!--
+	<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+	-->
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<!-- 
+	<script type="text/javascript" src="/code.jquery.com/jquery.js"></script>
+	-->
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+
+	<script type="text/javascript" src="http://www.highcharts.com/samples/data/usdeur.js"></script>
+	<!-- charts setting -->
+	<script src="js/charts.js" type="text/javascript"></script>
+
+	<!-- our functions -->
+	<script src="js/myjs.js" type="text/javascript"></script>
+
+	<!-- API acces -->
+	<script src="js/api.js" type="text/javascript"></script>
+
 </body>
-
 </html>
