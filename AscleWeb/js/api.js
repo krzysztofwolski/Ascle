@@ -84,9 +84,61 @@ $(document).ready(function() {
 				
 				});
 	}
+
+	function loadMessages(id)
+	{
+		val = {};
+		var filters = [{"name": "receiver_user_id", "op":"equals", "val":id}];
+		$.ajax(
+		{
+			async: false,
+			contentType: "application/jsonp",
+			url: api_url+"api/message",
+			data: {"q": JSON.stringify({"filters": filters})},
+			crossDomain : true,
+			xhrFields: 
+			{
+		    	withCredentials: true
+		    },
+		    success:
+		    function(result) 
+		    {
+		    	if (result.num_results=='0')
+				{
+					alert("Nie ma wiadomości");
+				}
+				else
+				{
+					// val[0] = result.objects[0];
+					// val = result.objects;
+					// console.log(val);
+
+					// $.each(result.objects, function(id, isNew, receiver_user_id, sender_user_id, text)
+					$( "#messageList > tbody" ).replaceWith( "<tbody></tbody>" );
+					$.each(result.objects, function(idx, object)
+					{
+
+						$("#messageList > tbody").append("<tr>"+
+							"<td>"+object.sender_user_id+"</td>"+
+							"<td>"+object.text+"</td></tr>"
+						);console.log(object.text + "added");
+
+					});
+
+				}
+			 },
+			error:
+			function(xhr, textStatus, errorThrown) 
+			{
+	    		alert(xhr.responseText);	
+	    		alert(textStatus);
+	    	}		
+		});
+	}
+
 		
 		
-function onLoginSuccessful(user){
+	function onLoginSuccessful(user){
 			var type = user.getType();
 			console.log("typ: "+type);
 			$("#menu").slideToggle();
@@ -97,7 +149,6 @@ function onLoginSuccessful(user){
 					break;
 				case 1:
 					initDoctorPage();
-					
 					break;
 				case 3:
 					initPatientPage(user.getId());
@@ -577,7 +628,11 @@ function onLoginSuccessful(user){
 		     changePage($("#myLogin"));
 		     $("$menu").hide();
 			});
-		
+			
+			$("#messageBoxLi").click(function(){
+				loadMessages(User.getId());
+				changePage($("#messageBox"));
+			});
 			
 			$("#logOutLi").click(function(){
 				hideMenu();

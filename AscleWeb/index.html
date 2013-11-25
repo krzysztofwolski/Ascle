@@ -35,6 +35,7 @@
 				</ul>
 				<ul class="nav navbar-right" >
 					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
+					<li id="messageBoxLi"><a href="#">Wiadomości</a>
 					<li id="logOutLi"><a href="#">Wyloguj</a>
 				</ul>
 			</div>
@@ -50,7 +51,6 @@
 			<br />
 				<form method="post">
 					<input id="test" name="Button5" type="button" value="I need test button" /></form>
-
 			</div>
 		</div>
 	</div>
@@ -105,7 +105,7 @@
 			Wiadomość została wysłana!
 		</div>
 	</div>
-
+	
 	<div class="subpage myForm" id="addDoctor">
 		<div>
 			<form class="form-horizontal" method="post" role="form" id="addDoctorForm">
@@ -212,7 +212,21 @@
 		</div>
 	</div>
 	
-	
+	<div class="subpage" id="messageBox">
+		<div class="myTable">
+			<table id="messageList" name="patient-info" class="table table-hover table-condensed myTable">
+				<caption><h5>Wiadomości</h5></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Od</th>
+						<th style="height: 28px">Wiadomość</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
 	
 	<div id="showCurrentPatient" class="subpage">
 		<div class="myTable">
@@ -230,8 +244,8 @@
 						<td id="patient_first-name">-</td>
 					</tr>
 					<tr>
-						<td id="field" style="height: 29px">Nazwisko</td>
-						<td id="patient_last-name" style="height: 29px">-</td>
+						<td id="field">Nazwisko</td>
+						<td id="patient_last-name">-</td>
 					</tr>
 					<tr>
 						<td id="field">Płeć</td>
