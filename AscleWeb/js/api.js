@@ -27,10 +27,7 @@ $(document).ready(function() {
 	User = new user();
 	$("#test").hide();
 
-	$("#patients").hide();
-	$("#addDoctorLi").hide();
-	$("#addPatientLi").hide();
-	$("#menu").hide();
+	hideMenu();
 
 	$('.subpage').hide();
     $('#myLogin').slideToggle();
@@ -517,6 +514,10 @@ function onLoginSuccessful(user){
 
 		  	$('#showMagic').click(function () {
 		     changePage($("#fun"));
+		  	});
+
+		  	$("#aboutMeLi").click(function(){
+		  		changePage($("#showCurrentPatient"));
 		  	});
 		  	
 		  	$('#logout').click(function () {
