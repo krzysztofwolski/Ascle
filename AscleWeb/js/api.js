@@ -117,11 +117,13 @@ $(document).ready(function() {
 					$( "#messageList > tbody" ).replaceWith( "<tbody></tbody>" );
 					$.each(result.objects, function(idx, object)
 					{
-
+						val2 = {};
+						smarterSearchUser("id", object.sender_user_id, val2);
 						$("#messageList > tbody").append("<tr>"+
-							"<td>"+object.sender_user_id+"</td>"+
+							"<td>"+val2[0].pesel+"</td>"+
 							"<td>"+object.text+"</td></tr>"
-						);console.log(object.text + "added");
+						);
+						console.log(object.text + "added");
 
 					});
 
