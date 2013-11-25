@@ -27,10 +27,7 @@ $(document).ready(function() {
 	User = new user();
 	
 
-	$("#patients").hide();
-	$("#addDoctorLi").hide();
-	$("#addPatientLi").hide();
-	$("#menu").hide();
+	hideMenu();
 
 	$('.subpage').hide();
     $('#myLogin').slideToggle();
@@ -89,23 +86,45 @@ $(document).ready(function() {
 	}
 		
 		
-		function onLoginSuccessful(type){
+		function onLoginSuccessful(user){
+			var type = user.getType();
 			console.log("typ: "+type);
 			$("#menu").slideToggle();
 			switch(type)
 			{
 				case 0: 
-					$("#addDoctorLi").slideToggle();
+					initAdminPage();
 					break;
 				case 1:
-					$("#addPatientLi").slideToggle();
-					$("#patients").slideToggle();
+					initDoctorPage();
+					
+					break;
+				case 3:
+					initPatientPage(user.getId());
 					break;
 			}
 			changePage($("#home"));
 		}
 			
+		function initPatientPage(id)
+		{
+			var result={};
+			smarterSearchUser("id", id, result);
+			console.log(result);
 
+			$("#aboutMeLi").show();
+		}
+
+		function initDoctorPage()
+		{
+			$("#addPatientLi").show();
+			$("#patients").show();
+		}
+
+		function initAdminPage()
+		{
+			$("#addDoctorLi").show();
+		}
 
 		
 	   	 
@@ -280,7 +299,15 @@ $(document).ready(function() {
 		        }
 		});
 	}
+	function hideMenu()
+	{
+		$("#patients").hide();
+		$("#addDoctorLi").hide();
+		$("#addPatientLi").hide();
+		$("#aboutMeLi").hide();
 
+		$("#menu").hide();
+	}
 	
 	function getFormValues(formId,values)
 	{
@@ -321,7 +348,7 @@ $(document).ready(function() {
 					
 					console.log(User);
 					console.log(User.getType());
-					onLoginSuccessful(User.getType());
+					onLoginSuccessful(User);
 					$('#loginForm')[0].reset();
 			    }
 			    /*
@@ -440,12 +467,14 @@ $(document).ready(function() {
 		     changePage($("#fun"));
 		  	});
 		  	
-		  	$('#logout').click(function () {
+		  	/*$('#logout').click(function () {
 		     changePage($("#myLogin"));
 		     $("$menu").hide();
-			});
+			});*/
 
-
+		  	$("#aboutMeLi").click(function(){
+		  		changePage($("#showCurrentPatient"));
+		  	});
 			
 			
 			$("#searchPatient").click(function(){
@@ -453,10 +482,7 @@ $(document).ready(function() {
 			});
 
 			$("#logOutLi").click(function(){
-				$("#patients").hide();
-				$("#addDoctorLi").hide();
-				$("#addPatientLi").hide();
-				$("#menu").hide();
+				hideMenu();
 
 				changePage($("#myLogin"));
 
