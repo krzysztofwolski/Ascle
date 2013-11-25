@@ -599,7 +599,10 @@ $(document).ready(function() {
 				$("#get_sex").html(sex);
 				$("#get_birth-date").html(userData[0].birth_date);
 							
-				
+				$.getScript("js/charts.js", function(){
+//					drawChart();
+					getDataForChart(userData[0].id);
+				});
 			});
 
 	   	    
