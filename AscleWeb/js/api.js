@@ -186,12 +186,17 @@ $(document).ready(function() {
 		}
 		function initDoctorPage()
 		{
+			$("#messageBoxLi").show();
+			$("#sendMessageLi").show();
 			$("#addPatientLi").show();
 			$("#patients").show();
+
 		}
 		function initAdminPage()
 		{
+			$("#sendMessageLi").show();
 			$("#addDoctorLi").show();
+			$("#messageBoxLi").show();
 		}	
 		
 		function hideMenu()
@@ -200,7 +205,10 @@ $(document).ready(function() {
 			$("#addDoctorLi").hide();
 			$("#addPatientLi").hide();
 			$("#aboutMeLi").hide();
+			$("#sendMessageLi").hide();
+			$("#messageBoxLi").hide();
 			$("#menu").hide();
+
 		}
 
 	 
