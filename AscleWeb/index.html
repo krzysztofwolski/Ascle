@@ -25,20 +25,42 @@
 		
 		<div id="menu" class="navbar navbar-static-top navbar-custom2">
 			<div class="container">
-				<!-- <a href = "#" class = "navbar-brand">Ascle</a> -->
-				<ul class = "nav navbar-nav navbar-right">
-					<li id="home"><a href = "#">Home</a></li>
+				<!-- <a href ="#" class="navbar-brand">Ascle</a> -->
+				<ul class = "nav ">
+					<li id="homeLi"><a href = "#">Home</a></li>
 					<li id="patients"><a href="#">Pacjenci</a></li>
 					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
 					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
-				</ul>	
+					<li id="aboutMeLi"><a href="#">Moje wyniki</a></li>
+				</ul>
+				<ul class="nav navbar-right" >
+					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
+					<li id="messageBoxLi"><a href="#">Wiadomości</a>
+					<li id="logOutLi"><a href="#">Wyloguj</a>
+				</ul>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="subpage" id="home">
+		<div class="jumbotron">
+			<div class="container">
+				<h1>Witaj w Ascle</h1></br>
+				Zaopiekujemy się Tobą!
+
+			<br />
+				<form method="post">
+					<input id="test" name="Button5" type="button" value="I need test button" /></form>
 			</div>
 		</div>
 	</div>
+	
+	
+	
 	<div id="myLogin" class="subpage myLogin">
 		<br />
 		<div>
-	&nbsp;	<form class="form-horizontal" method="post" role="form">
+	&nbsp;	<form class="form-horizontal" method="post" role="form" id="loginForm">
 			<fieldset>
 				<legend>Logowanie</legend>
 				<div class="form-group">
@@ -59,9 +81,34 @@
 		<br />
 		<br />
 	</div>
+
+	<div class="subpage myForm" id="sendMessage">
+		<div>
+			<form class="form-horizontal" method="post" role="form" id="sendMessageForm">
+				<fieldset>
+					<legend>Wyślij wiadomość</legend>
+					<div class="form-group">
+						<label for="toWhom" class="control-label">Pesel adresata:</label>
+						<input name="toWhom" type="text" class="form-control" placeholder="Pesel"/>
+					</div>
+					<div class="form-group">
+						<label for="message" class="control-label">Wiadomość</label>
+						<textarea name="message" class="form-control" rows="5" id="message"></textarea>
+					</div>
+					<input name="sendMessageButton" type="button" value="Wyślij wiadomość" id="sendMessageButton" class="btn myButton" />
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="subpage myForm" id="messageSent">
+		<div>
+			Wiadomość została wysłana!
+		</div>
+	</div>
+	
 	<div class="subpage myForm" id="addDoctor">
 		<div>
-			<form class="form-horizontal" method="post" role="form">
+			<form class="form-horizontal" method="post" role="form" id="addDoctorForm">
 				<fieldset>
 					<legend>Dodaj lekarza</legend>
 					<div class="form-group">
@@ -77,6 +124,11 @@
 						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
 					</div>
 					<div class="form-group">
+						<label for="lastName" class="control-label">PESEL</label>
+						<input name="pesel" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+
+					<div class="form-group">
 						<label for="password" class="control-label">Hasło</label>
 						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
 					</div>
@@ -85,15 +137,21 @@
 						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
 					</div>
 					<div class="form-group">
+						<label for="birthDate" class="control-label">Data Urodzenia</label>
+						<input name="birthDate" type="date" id="birthDate" class="form-control"/>
+					</div>
+					<div class="form-group">
 						<label for="sex" class="control-label">Płeć</label>
 
 						<label class="radio-inline control-label">
-							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+							<input name="sex" type="radio" id="sexMale" value="1"/> Mężczyzna
 						</label>
 						<label class="radio-inline control-label">
-							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+							<input name="sex" type="radio" id="sexFemale" value="0"/> Kobieta
 						</label>
 					</div>
+					</br>
+					
 				</fieldset>
 				</br>
 				<input name="addDoctorButton" type="button" value="Dodaj lekarza" id="addDcotorButton" class="btn myButton" />
@@ -103,46 +161,111 @@
 
 	<div class="subpage myForm" id="addPatient">
 		<div>
-			<form class="form-horizontal" method="post" role="form">
+			<form class="form-horizontal" method="post" role="form" id="addPatientForm">
 				<fieldset>
 					<legend>Dodaj pacjenta</legend>
 					<div class="form-group">
 						<label for="login" class="control-label">Login</label>
-						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login" id="add_patient_login"/>
 					</div>
 					<div class="form-group">
 						<label for="firstName" class="control-label">Imię</label>
-						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię" id="add_patient_first_name"/>
 					</div>
 					<div class="form-group">
 						<label for="lastName" class="control-label">Nazwisko</label>
-						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko" id="add_patient_last_name"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">PESEL</label>
+						<input name="pesel" type="text" class="form-control" placeholder="Podaj hasło" id="add_patient_pesel"/>
 					</div>
 					<div class="form-group">
 						<label for="password" class="control-label">Hasło</label>
-						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+						<input name="password" type="password" class="form-control" placeholder="Podaj pesel" id="add_patient_password"/>
 					</div>
+
 					<div class="form-group">
 						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
-						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło" id="patient_password_comfirm"/>
+					</div>
+					<div class="form-group">
+						<label for="birthDate" class="control-label">Data Urodzenia</label>
+						<input name="birthDate" type="date" id="birthDate" class="form-control"/>
 					</div>
 					<div class="form-group">
 						<label for="sex" class="control-label">Płeć</label>
 
 						<label class="radio-inline control-label">
-							<input name="sex" type="radio" id="sexMale" value="true"/> Mężczyzna
+							<input name="patient_sex" type="radio" id="add_patient_sexMale" value="1"/> Mężczyzna
 						</label>
 						<label class="radio-inline control-label">
-							<input name="sex" type="radio" id="sexFemale" value="false"/> Kobieta
+							<input name="patient_sex" type="radio" id="add_patient_sexFemale" value="0"/> Kobieta
 						</label>
 					</div>
+					</br>
+					
 				</fieldset>
 				</br>
 				<input name="addPatientButton" type="button" value="Dodaj pacjenta" id="addPatientButton" class="btn myButton" />
 			</form>
 		</div>
 	</div>
-
+	
+	<div class="subpage" id="messageBox">
+		<div class="myTable">
+			<table id="messageList" name="patient-info" class="table table-hover table-condensed myTable">
+				<caption><h5>Wiadomości</h5></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Od</th>
+						<th style="height: 28px">Wiadomość</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div id="showCurrentPatient" class="subpage">
+		<div class="myTable">
+			<table name="patient-info" class="table table-hover table-condensed myTable">
+				<caption ><h5>INFORMACJE O PACJENCIE<h5><br/></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Pole</th>
+						<th style="height: 28px">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td id="field">Imię</td>
+						<td id="patient_first-name">-</td>
+					</tr>
+					<tr>
+						<td id="field">Nazwisko</td>
+						<td id="patient_last-name">-</td>
+					</tr>
+					<tr>
+						<td id="field">Płeć</td>
+						<td id="patient_sex">-</td>
+					</tr>
+					<tr>
+						<td id="field">Data urodzenia</td>
+						<td id="patient_birth-date">-</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		.<br />
+		.<br />
+		
+		<div id="chartContainer" class="myChart">
+			Wygląda na to, że tu będzie wykres:	
+		</div>
+		
+	</div>
 	<div id="showData" class="subpage">
 		<form method="post">
 			<div class="auto-style1">
@@ -184,8 +307,8 @@
 				</tbody>
 			</table>
 		</div>
-		.<br />
-		.<br />
+		<br />
+		<br />
 		
 		<div id="container" class="myChart">
 			Wygląda na to, że tu będzie wykres:	
@@ -194,15 +317,6 @@
 		.</div>
 
 	<br />
-	<div class="subpage" id="fun">
-		<button class="magicbutton" id="showpic_1">Do magic!</button><br></br>
-		<button class="magicbutton" id="showpic_2">I'am magic too!</button>
-		<div id="images"></div>
-		<br />
-		<br />
-		<br></br>
-
-	</div>
 	
 	<div class="bottom">
 		<nav class="navbar navbar-custom" role="navigation">
@@ -232,9 +346,6 @@
 	<script type="text/javascript" src="http://www.highcharts.com/samples/data/usdeur.js"></script>
 	<!-- charts setting -->
 	<script src="js/charts.js" type="text/javascript"></script>
-
-	<!-- our functions -->
-	<script src="js/myjs.js" type="text/javascript"></script>
 
 	<!-- API acces -->
 	<script src="js/api.js" type="text/javascript"></script>
