@@ -51,8 +51,4 @@ Date lastUpdateTime;
 		return measures;
 	}
 	
-	
-
-	
-
 }

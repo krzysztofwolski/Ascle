@@ -1,14 +1,15 @@
 package com.example.asclemon;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import org.json.JSONException;
-
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 
 import com.example.asclemon.database.DataBase;
 import com.example.asclemon.util.SystemUiHider;
@@ -26,6 +27,7 @@ public class MainMenu extends Activity {
 	View contentView;
 	// DATABASE INITIALIZE --------------------------------------------------------------
 	DataBase db = DataBase.INSTANCE;
+	PendingIntent pendingIntent;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +46,15 @@ public class MainMenu extends Activity {
 		dataBase.start();
 		//example how to add new measure 
 		// adding new measure --------------------------------------------------------------
-		db.getSensor("termometr 2000").addNewMeasure(999.0f, new Date());
+	//	db.getSensor("termometr 2000").addNewMeasure(999.0f, new Date());
 		//and its all.
+		
+		/*Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, 10);
+		Intent intent = new Intent(MainMenu.this, MyReceiver.class);
+		PendingIntent pintent = PendingIntent.getService(MainMenu.this, 0, intent, 0);
+		AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),30 *20 * 1000, pintent);*/
 	}
 	
 	

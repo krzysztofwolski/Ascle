@@ -1,5 +1,7 @@
 package com.example.asclemon;
 
+import java.util.Date;
+
 import com.example.asclemon.database.DataBase;
 
 import android.os.Bundle;
@@ -7,26 +9,73 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 
-public class ManualAcquisition extends Activity {
-
+public class ManualAcquisition extends Activity implements OnClickListener{
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_manual_acquisition);
+		setContentView(R.layout.activity_manual_new);
 		// Show the Up button in the action bar.
-		setupActionBar();
+		setupActionBar();	    
+		Button btn1 = (Button) this.findViewById(R.id.button1);
+		btn1.setOnClickListener(this);
+		Button btn2 = (Button) this.findViewById(R.id.button2);
+		btn2.setOnClickListener(this);		
+	}
+	
+	public void onClick(View v){
 		
+		if(v.getId() == R.id.button1)
+		{
+			DataBase db = DataBase.INSTANCE;
+
+			EditText getValue = (EditText)findViewById(R.id.editText1);
+			if(getValue.getText().length() != 0){
+				float value =  Float.valueOf(getValue.getText().toString()); 
+				db.getSensor("termometr 2000").addNewMeasure(value, new Date());
+			}
+			
+			EditText getValue2 = (EditText)findViewById(R.id.editText3);
+			if(getValue2.getText().length() != 0){
+				float value =  Float.valueOf(getValue2.getText().toString()); 
+					db.getSensor("Miernik 2000").addNewMeasure(value, new Date());
+			}
+			EditText getValue3 = (EditText)findViewById(R.id.editText4);
+			if(getValue3.getText().length() != 0){
+				float value =  Float.valueOf(getValue3.getText().toString()); 
+					db.getSensor("Miernik 2000 (rozkurczowe)").addNewMeasure(value, new Date());
+			}
+			EditText getValue4 = (EditText)findViewById(R.id.editText5);
+			if(getValue4.getText().length() != 0){
+				float value =  Float.valueOf(getValue4.getText().toString()); 
+					db.getSensor("Pulsometr 2000").addNewMeasure(value, new Date());
+			}
+			EditText getValue5 = (EditText)findViewById(R.id.editText2);
+			if(getValue5.getText().length() != 0){
+				float value =  Float.valueOf(getValue5.getText().toString()); 
+					db.getSensor("Waga 2000").addNewMeasure(value, new Date());
+
+			}
+			super.onBackPressed();
+		}
+		if(v.getId() == R.id.button2)
+		{
+			super.onBackPressed();
+		}
+	}
+	
+	public void wyswietl(String string){
 		TextView txt = (TextView) findViewById(R.id.textView1);
-		
-		DataBase db = DataBase.INSTANCE;
-		
-		txt.setText(db.message);
+		txt.setText(string);
 	}
 
 	/**
@@ -67,5 +116,6 @@ public class ManualAcquisition extends Activity {
 		Intent intent = new Intent(this, MainMenu.class);
 	    startActivity(intent);
 	}
+	
 
 }
