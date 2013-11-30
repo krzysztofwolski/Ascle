@@ -1,0 +1,105 @@
+﻿
+
+.myLogin{
+	margin: 0 auto;
+	width: 400px;
+	text-align: center;
+}
+
+.myBanner{
+	width: 80%;
+	margin-left: auto ;
+  	margin-right: auto ;
+  	text-align: left;
+}
+.myTable{
+	margin-left: auto ;
+  	margin-right: auto ;
+	width: 600px;
+	text-align: center;
+}
+.myChart{
+	text-align: center;
+	margin-left: auto ;
+  	margin-right: auto ;
+	width: 80%;
+}
+
+.myButton{
+	background-color: #3498DB;
+	color: CLOUDS;
+	border-radius: 0;
+}
+
+.myForm{
+	margin: 0 auto;
+	width: 700px;
+	text-align: center;
+}
+
+
+
+
+form{
+	text-align: center;
+}
+
+.navbar-custom1{
+	background-color: #3498DB;
+	color: CLOUDS;
+	border-radius: 0;
+}
+.navbar-custom2{
+	background-color: #2980B9;
+	color: CLOUDS;
+	
+}
+.color-clouds{
+	color: CLOUDS;
+}
+.menu-button{
+	background-color: #3498DB;
+	color: CLOUDS;
+	border-radius: 0;
+}
+
+
+.magicbutton {
+	background-color: #c0392b;
+}
+
+
+html{
+	background-color: #3498DB;
+	/*background-color: #ff0000;*/
+
+}
+body {
+	background-color: #3498DB;
+/*	height: 100%;
+	width: 100%;*/
+}
+
+.subpage {
+	background-color: CLOUDS;
+	text-align: center;
+}
+.auto-style1 {
+	text-align: right;
+}
+
+.top {
+	/*border: 1px dashed #FF6600;*/
+	background-color: #3498DB;
+	text-align: center;
+}
+
+
+.bottom {
+	text-align: center;
+	background-color: #3498DB;
+
+	/*border: 1px dashed #FFFF00;*/
+}
+
+

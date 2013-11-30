@@ -1,15 +1,7 @@
-PROJECT_NAME = 'AscleDB'
+APP = {}
+APP['DEBUG'] = True
+APP['TESTING'] = True
+APP['SECRET_KEY'] = 'super-secret-key'
+APP['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
-DEBUG = True
-SECRET_KEY = 'super-secret-key'
-
-SQLALCHEMY_DATABASE_URI = 'sqllite///db.db'
-
-SECURITY_POST_LOGIN_URL = '/'
-SECURITY_PASSWORD_HASH = 'plaintext'
-SECURITY_PASSWORD_SALT = 'password_salt'
-SECURITY_REMEMBER_SALT = 'remember_salt'
-SECURITY_RESET_SALT = 'reset_salt'
-SECURITY_RESET_WITHIN = '5 days'
-SECURITY_CONFIRM_WITHIN = '5 days'
-SECURITY_SEND_REGISTER_EMAIL = False
+HOST = '0.0.0.0'

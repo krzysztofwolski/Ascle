@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta name"viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ascle</title>
+
+	<link href="css/mycss.css" rel="stylesheet" type="text/css" />
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link href="css/bootstrap-flat.min.css" rel="stylesheet" media ="screen"/>
+
+	<link href="css/flat-ui.css" rel="stylesheet">
+
+	<!-- /*<style type="text/css"></style>*/ -->
+
+</head>
+
+<body>
+	<div class="navbar navbar-static-top navbar-custom1" role="banner">
+		<div class="myBanner">
+			<h1 class="c">Ascle</h1>
+			<h1 class="color-clouds"><small>Tutaj ładny tekst</small></h1>
+		</div>
+		
+		<div id="menu" class="navbar navbar-static-top navbar-custom2">
+			<div class="container">
+				<!-- <a href ="#" class="navbar-brand">Ascle</a> -->
+				<ul class = "nav ">
+					<li id="homeLi"><a href = "#">Home</a></li>
+					<li id="patients"><a href="#">Pacjenci</a></li>
+					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
+					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
+					<li id="aboutMeLi"><a href="#">Moje wyniki</a></li>
+				</ul>
+				<ul class="nav navbar-right" >
+					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
+					<li id="messageBoxLi"><a href="#">Wiadomości</a>
+					<li id="logOutLi"><a href="#">Wyloguj</a>
+				</ul>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="subpage" id="home">
+		<div class="jumbotron">
+			<div class="container">
+				<h1>Witaj w Ascle</h1></br>
+				Zaopiekujemy się Tobą!
+
+			<br />
+				<form method="post">
+					<input id="test" name="Button5" type="button" value="I need test button" /></form>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div id="myLogin" class="subpage myLogin">
+		<br />
+		<div>
+	&nbsp;	<form class="form-horizontal" method="post" role="form" id="loginForm">
+			<fieldset>
+				<legend>Logowanie</legend>
+				<div class="form-group">
+					<label for="inputLogin" class="control-label">LOGIN:&nbsp;</label>
+					<input type="text" class="form-control" placeholder="Twój login" id="login" />
+				</div>
+				<div class="form-group">
+					<label for="inputPassword" class="control-label">HASŁO: </label>
+					<input type="password" class="form-control" placeholder="Twoje hasło" id="pass" />
+				</div>
+				<br />
+				<input name="Button1" type="button" value="Zaloguj" id="trustButton" class="btn myButton" />
+			</fieldset>		
+			</form>
+		</div>
+		<br />
+		<br />
+		<br />
+		<br />
+	</div>
+
+	<div class="subpage myForm" id="sendMessage">
+		<div>
+			<form class="form-horizontal" method="post" role="form" id="sendMessageForm">
+				<fieldset>
+					<legend>Wyślij wiadomość</legend>
+					<div class="form-group">
+						<label for="toWhom" class="control-label">Pesel adresata:</label>
+						<input name="toWhom" type="text" class="form-control" placeholder="Pesel"/>
+					</div>
+					<div class="form-group">
+						<label for="message" class="control-label">Wiadomość</label>
+						<textarea name="message" class="form-control" rows="5" id="message"></textarea>
+					</div>
+					<input name="sendMessageButton" type="button" value="Wyślij wiadomość" id="sendMessageButton" class="btn myButton" />
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="subpage myForm" id="messageSent">
+		<div>
+			Wiadomość została wysłana!
+		</div>
+	</div>
+	
+	<div class="subpage myForm" id="addDoctor">
+		<div>
+			<form class="form-horizontal" method="post" role="form" id="addDoctorForm">
+				<fieldset>
+					<legend>Dodaj lekarza</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">PESEL</label>
+						<input name="pesel" type="text" class="form-control" placeholder="Podaj nazwisko"/>
+					</div>
+
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło"/>
+					</div>
+					<div class="form-group">
+						<label for="birthDate" class="control-label">Data Urodzenia</label>
+						<input name="birthDate" type="date" id="birthDate" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
+
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexMale" value="1"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="sex" type="radio" id="sexFemale" value="0"/> Kobieta
+						</label>
+					</div>
+					</br>
+					
+				</fieldset>
+				</br>
+				<input name="addDoctorButton" type="button" value="Dodaj lekarza" id="addDcotorButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
+
+	<div class="subpage myForm" id="addPatient">
+		<div>
+			<form class="form-horizontal" method="post" role="form" id="addPatientForm">
+				<fieldset>
+					<legend>Dodaj pacjenta</legend>
+					<div class="form-group">
+						<label for="login" class="control-label">Login</label>
+						<input name="login" type="text" class="form-control" placeholder="Podaj login" id="add_patient_login"/>
+					</div>
+					<div class="form-group">
+						<label for="firstName" class="control-label">Imię</label>
+						<input name="firstName" type="text" class="form-control" placeholder="Podaj imię" id="add_patient_first_name"/>
+					</div>
+					<div class="form-group">
+						<label for="lastName" class="control-label">Nazwisko</label>
+						<input name="lastName" type="text" class="form-control" placeholder="Podaj nazwisko" id="add_patient_last_name"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">PESEL</label>
+						<input name="pesel" type="text" class="form-control" placeholder="Podaj hasło" id="add_patient_pesel"/>
+					</div>
+					<div class="form-group">
+						<label for="password" class="control-label">Hasło</label>
+						<input name="password" type="password" class="form-control" placeholder="Podaj pesel" id="add_patient_password"/>
+					</div>
+
+					<div class="form-group">
+						<label for="repeatPassword" class="control-label">Powtórz hasło</label>
+						<input name="repeatPassword" type="password" class="form-control" placeholder="Powtórz hasło" id="patient_password_comfirm"/>
+					</div>
+					<div class="form-group">
+						<label for="birthDate" class="control-label">Data Urodzenia</label>
+						<input name="birthDate" type="date" id="birthDate" class="form-control"/>
+					</div>
+					<div class="form-group">
+						<label for="sex" class="control-label">Płeć</label>
+
+						<label class="radio-inline control-label">
+							<input name="patient_sex" type="radio" id="add_patient_sexMale" value="1"/> Mężczyzna
+						</label>
+						<label class="radio-inline control-label">
+							<input name="patient_sex" type="radio" id="add_patient_sexFemale" value="0"/> Kobieta
+						</label>
+					</div>
+					</br>
+					
+				</fieldset>
+				</br>
+				<input name="addPatientButton" type="button" value="Dodaj pacjenta" id="addPatientButton" class="btn myButton" />
+			</form>
+		</div>
+	</div>
+	
+	<div class="subpage" id="messageBox">
+		<div class="myTable">
+			<table id="messageList" name="patient-info" class="table table-hover table-condensed myTable">
+				<caption><h5>Wiadomości</h5></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Od</th>
+						<th style="height: 28px">Wiadomość</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div id="showCurrentPatient" class="subpage">
+		<div class="myTable">
+			<table name="patient-info" class="table table-hover table-condensed myTable">
+				<caption ><h5>INFORMACJE O PACJENCIE<h5><br/></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Pole</th>
+						<th style="height: 28px">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td id="field">Imię</td>
+						<td id="patient_first-name">-</td>
+					</tr>
+					<tr>
+						<td id="field">Nazwisko</td>
+						<td id="patient_last-name">-</td>
+					</tr>
+					<tr>
+						<td id="field">Płeć</td>
+						<td id="patient_sex">-</td>
+					</tr>
+					<tr>
+						<td id="field">Data urodzenia</td>
+						<td id="patient_birth-date">-</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		.<br />
+		.<br />
+		
+		<div id="chartContainer" class="myChart">
+			Wygląda na to, że tu będzie wykres:	
+		</div>
+		
+	</div>
+	<div id="showData" class="subpage">
+		<form method="post">
+			<div class="auto-style1">
+				<input id="logout" name="Button3" type="button" value="Wyloguj" class="btn" />
+			</div>
+		</form>
+		<form class="navbar-form" method="post" role"search">
+			<div class="form-group">
+				<input type="text" class ="form-control" placeholder="Szukaj" id="user_search">
+				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="searchPatient" />
+			</div>
+		</form>
+		<div class="myTable">
+			<table name="patient-info" class="table table-hover table-condensed myTable">
+				<caption ><h5>INFORMACJE O PACJENCIE<h5><br/></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Pole</th>
+						<th style="height: 28px">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td id="field">Imię</td>
+						<td id="get_first-name">-</td>
+					</tr>
+					<tr>
+						<td id="field" style="height: 29px">Nazwisko</td>
+						<td id="get_last-name" style="height: 29px">-</td>
+					</tr>
+					<tr>
+						<td id="field">Płeć</td>
+						<td id="get_sex">-</td>
+					</tr>
+					<tr>
+						<td id="field">Data urodzenia</td>
+						<td id="get_birth-date">-</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br />
+		<br />
+		
+		<div id="container" class="myChart">
+			Wygląda na to, że tu będzie wykres:	
+		</div>
+		
+		.</div>
+
+	<br />
+	
+	<div class="bottom">
+		<nav class="navbar navbar-custom" role="navigation">
+			<p>Ascle</p>
+		</div>	
+	</div>
+
+
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+	<!-- Code for highcharts -->
+	<!--
+	<script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+	-->
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<!-- 
+	<script type="text/javascript" src="/code.jquery.com/jquery.js"></script>
+	-->
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+	<script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+
+	<script type="text/javascript" src="http://www.highcharts.com/samples/data/usdeur.js"></script>
+	<!-- charts setting -->
+	<script src="js/charts.js" type="text/javascript"></script>
+
+	<!-- API acces -->
+	<script src="js/api.js" type="text/javascript"></script>
+
+</body>
+</html>

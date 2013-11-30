@@ -47,3 +47,7 @@ nosetests.xml
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+#####################
+# pliki Krzycha #
+/Other/*

@@ -1,2 +1,3 @@
-from AscleDB import AscleDB
-AscleDB.run(debug=True)
+from AscleDB import app, settings
+
+app.run(settings.HOST)
