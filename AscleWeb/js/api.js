@@ -1,5 +1,8 @@
 ﻿var api_url = "http://kuchnia.mooo.com:5000/";
 
+var mask=[];
+var chartData = [];
+
 function user(id,type,log)
 {
 this.id=id;
@@ -26,6 +29,8 @@ $(document).ready(function() {
 
 	User = new user();
 	$("#test").hide();
+	
+	$("#drawChart").hide();		
 
 	hideMenu();
 
@@ -424,7 +429,40 @@ $(document).ready(function() {
 		$.each($(formId).serializeArray(), function(i, field) {
 		    values[field.name] = field.value;
 		});
-	}	   	 
+	}	   
+	
+	function getFormValues2(formId,values)
+	{
+		$.each($(formId).serializeArray(), function(i, field) {
+		    values[field.name] = field.name;
+		});
+	}	 
+	
+	function sendMaskToChartData()
+	{
+		var val={}; 
+	   	getFormValues2("#maskButtons",val);
+	   	
+		resetMask();
+		
+		$.each(val, function(idx, values)
+		{
+			mask[values].on = true;
+		});
+		
+	   $.getScript("js/charts.js", function(){
+	   		chooseSeries(mask,chartData);
+	   });
+	   
+	}
+	
+	function resetMask()
+	{
+		$.each(mask, function(idx, val)
+		{
+			mask[idx].on = false;
+		});
+	}
 	   	    
 	   	    
 	   	 //when clicked on "Zaloguj"
@@ -601,11 +639,42 @@ $(document).ready(function() {
 							
 				$.getScript("js/charts.js", function(){
 //					drawChart();
-					getDataForChart(userData[0].id);
+					mask = [];
+					getDataForChart(userData[0].id,mask,chartData);
+					console.log(chartData);
+					
+					$.each(mask, function(idx, val)
+					{
+						var check;
+						console.log(val.on);
+						if (val.on == true)
+						    {
+						    check="checked"
+						    }
+					
+						var input = $('<input />', {
+						    'type': 'checkbox',
+						 //   'id': idx,
+						    'name': idx,
+						    'val': true,
+						    "checked":check
+						    
+						});
+						
+						var label = $("<label for="+val.name+idx+"  />").text(val.name);
+												
+						input.appendTo('#seriesChooser');
+						label.appendTo('#seriesChooser');	
+						
+						$("#drawChart").show();						
+					});
 				});
 			});
 
-	   	    
+	   	    $('#drawChart').click(function(){
+	  			sendMaskToChartData();
+		  	});
+
 	   	    
 	
 			$('#addDoctorLi').click(function(){
