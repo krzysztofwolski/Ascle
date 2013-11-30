@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Measure 
 {
-	float value;
-	Date time;
+	public float value;
+	public Date time;
+	
+	
 }

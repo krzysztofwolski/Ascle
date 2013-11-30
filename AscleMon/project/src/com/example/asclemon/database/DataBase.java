@@ -13,10 +13,12 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
+import com.example.asclemon.ManualAcquisition;
 import com.loopj.android.http.*;
 
 import android.R;
 import android.database.sqlite.*;
+import android.widget.EditText;
 import android.content.*;
 
 
@@ -100,12 +102,12 @@ public enum DataBase implements Runnable {
 		addSensor("termometr 2000", sensorTypesIDs.get(0), "C", true);
 		addSensor("Miernik 2000", sensorTypesIDs.get(1), "mm/Hg", true);
 		addSensor("Miernik 2000 (rozkurczowe)", sensorTypesIDs.get(2), "mm/Hg", true);
-		addSensor("Pulsometr  2000", sensorTypesIDs.get(3), "1/s", true);
+		addSensor("Pulsometr 2000", sensorTypesIDs.get(3), "1/s", true);
 		addSensor("Waga 2000", sensorTypesIDs.get(4), "kG", true);
 	}
 	
 	public void updateData() throws InterruptedException{
-		login("test123","test123");
+		login("lubicz","asdf");
 		updateStats("");
 		updateUser(Integer.toString(user.id));
 		//updateSensors("");
@@ -361,7 +363,7 @@ public enum DataBase implements Runnable {
 		
 		client.post(this.context , request, entity ,"application/json",new AsyncHttpResponseHandler() {
 			@Override
-		    public void onSuccess(String response) {
+		    public void onSuccess(String response) {				
 				synchronized(client){
 					System.out.println(response);
 					
@@ -372,8 +374,8 @@ public enum DataBase implements Runnable {
 		    }
 			public void onFinish(){
 				System.out.println("finish");
-				
 			}
+			
 			@Override
 			public void onFailure(java.lang.Throwable error, java.lang.String content)
 		    {

@@ -42,7 +42,7 @@
             android:textColor="#FFFFFF" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/manualButton"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="right|center"
