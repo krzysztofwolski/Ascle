@@ -41,7 +41,8 @@ public class MainMenu extends Activity {
 		// DATABASE INITIALIZE --------------------------------------------------------------
 		// start DataBase updating routine
 		db.setContext(getBaseContext());
-		db.setUserLogin("test123","test123");
+		db.setUserLogin("test123","test123");  // <--- tutaj ustawiasz usera
+		db.sendMessage(123, "jakas tam wiadomoœc testowa"); // <--- w taki sposób wysylasz wiadomoœæ pierwsze to id do któreg owysy³am a 2 parametr to treœæ, (uwaga nie jest filtrowana w ¿aden sposób wiêc wpuszczenie tam g³upiego znaku mo¿e powodowaæ blêd)
 		Thread dataBase = new Thread(db, "dataBaseUpdate");
 		dataBase.start();
 		//example how to add new measure 

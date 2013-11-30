@@ -30,11 +30,16 @@ public enum DataBase implements Runnable {
 	private String api_adres = host_adres + "api/";
 	private int timeout = 1000; // ms
 	private int measureUpdateTimeout = 10000;
-	User user = new User();
+	
 	SimpleDateFormat inputTimeFormat = new SimpleDateFormat ("yyyy-MM-ddHH:mm:ss.SSS"); 
 	SimpleDateFormat outputTimeFormat = new SimpleDateFormat ("yyyy-MM-dd'T'HH:mm:ss.SSS'000'"); 
 	
+	
+	User user = new User();
 	ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+	ArrayList<Message> received = new ArrayList<Message>();
+	ArrayList<Message> sent = new ArrayList<Message>();
+	ArrayList<Message> toSend = new ArrayList<Message>();
 	
 	AsyncHttpClient client = new AsyncHttpClient();	
 	PersistentCookieStore myCookieStore;
@@ -43,7 +48,8 @@ public enum DataBase implements Runnable {
 	
 	enum State{
 		UpdateAll,
-		UpdateMeasure
+		UpdateMeasure,
+		Closing,
 	}
 	
 	State currentState;
@@ -107,7 +113,7 @@ public enum DataBase implements Runnable {
 	}
 	
 	public void updateData() throws InterruptedException{
-		login("lubicz","asdf");
+		login(user.login,user.password);
 		updateStats("");
 		updateUser(Integer.toString(user.id));
 		//updateSensors("");
@@ -291,7 +297,7 @@ public enum DataBase implements Runnable {
 	public void setUserLogin(String login, String password){
 		user.login = login;
 		user.password = password;
-		
+		currentState = State.UpdateAll;
 	}
 	
 
@@ -318,6 +324,10 @@ public enum DataBase implements Runnable {
 						client.wait(timeout);
 						updateUser(Integer.toString(user.id));
 						client.wait(timeout);
+						downloadReceivedMessage("");
+						client.wait(timeout);
+						downloadSendMessage("");
+						client.wait(timeout);
 						updateSensorsTypes("",getSensorTypeIDs());
 						client.wait(timeout);
 						addMySensors(getSensorTypeIDs());
@@ -331,7 +341,18 @@ public enum DataBase implements Runnable {
 					case UpdateMeasure:
 						sendNewMeasures("",getSensorTypeIDs());
 						client.wait(measureUpdateTimeout);
+						downloadReceivedMessage("");
+						client.wait(timeout);
+						sendMessages("");
+						client.wait(timeout);
 						break;
+					case Closing:
+						running = false;
+						user = new User();
+						sensors.clear();
+						
+						client = new AsyncHttpClient();	
+						myCookieStore.clear();
 					}
 				}
 			} catch (InterruptedException e) {
@@ -470,6 +491,168 @@ public enum DataBase implements Runnable {
 		}
 			
 	}
+	
+	private void  downloadReceivedMessage(String filters){
+		String name = "message";
+
+		if(filters.length() == 0){
+			filters = "?q=%7B%22filters%22%3A%5B%7B%22name%22%3A%22receiver_user_id%22%2C%22op%22%3A%22eq%22%2C%22val%22%3A"+user.id+"%7D%5D%7D";
+		}
+		
+		//System.out.println(filters);
+		//filters = "?q=%7B%22filters%22:[";
+		//filters += "%7B%22name%22:%22id%22,%22op%22:%22eq%22,%22val%22:1%7D]%7D";		
+		
+			String request = api_adres + name + filters;
+			
+			System.out.println(request);
+			
+			client.get(request,  new AsyncHttpResponseHandler() {
+				@Override
+			    public void onSuccess(String response) {
+					synchronized(client){
+						System.out.println(response);
+				    	JSONObject json = new JSONObject();
+				    	try {
+							json = new JSONObject(response);
+							JSONArray objects = json.getJSONArray("objects");
+							
+							for(int objectNr = 0 ; objectNr <  objects.length() ; objectNr++ ){
+								JSONObject object = objects.getJSONObject(objectNr);
+								
+								int id = object.getInt("id");
+								int senderId = object.getInt("sender_user_id");
+								int receiverId = object.getInt("receiver_user_id");
+								
+								String text = object.getString("text");
+								boolean isNew = object.getBoolean("new");
+								
+								Message message = new Message(id, senderId, receiverId, text, isNew);
+								boolean exist = false;
+								for(int i = 0; i < received.size(); i++){
+									if(received.get(i).Id == id) exist = true;
+								}
+								if(exist == false)
+									received.add(message);	
+								
+							}
+							
+							System.out.println("objects Amount: " + objects.length());
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				    	client.notify();
+					}
+			    }
+				
+			});
+	}
+	private void  downloadSendMessage(String filters){
+		String name = "message";
+
+		if(filters.length() == 0){
+			filters = "?q=%7B%22filters%22%3A%5B%7B%22name%22%3A%22sender_user_id%22%2C%22op%22%3A%22eq%22%2C%22val%22%3A"+user.id+"%7D%5D%7D";
+		}
+		
+		
+			String request = api_adres + name + filters;
+			
+			System.out.println(request);
+			
+			client.get(request,  new AsyncHttpResponseHandler() {
+				@Override
+			    public void onSuccess(String response) {
+					synchronized(client){
+						System.out.println(response);
+				    	JSONObject json = new JSONObject();
+				    	try {
+							json = new JSONObject(response);
+							JSONArray objects = json.getJSONArray("objects");
+							
+							for(int objectNr = 0 ; objectNr <  objects.length() ; objectNr++ ){
+								JSONObject object = objects.getJSONObject(objectNr);
+								
+								int id = object.getInt("id");
+								int senderId = object.getInt("sender_user_id");
+								int receiverId = object.getInt("receiver_user_id");
+								
+								String text = object.getString("text");
+								boolean isNew = object.getBoolean("new");
+								
+								Message message = new Message(id, senderId, receiverId, text, isNew);
+								
+								boolean exist = false;
+								for(int i = 0; i < sent.size(); i++){
+									if(sent.get(i).Id == id) exist = true;
+								}
+								if(exist == false)
+									sent.add(message);									
+							}
+							
+							System.out.println("objects Amount: " + objects.length());
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				    	client.notify();
+					}
+			    }
+				
+			});
+	}
+	
+	private void sendMessages(String filters){
+		for(int i = 0 ; i < toSend.size(); i++){
+			sendMessage("",toSend.get(i));
+			sent.add(toSend.get(i));
+		}
+		
+		
+		toSend.clear();
+	}
+	
+	private void sendMessage(String filters, Message message){
+		
+		String name = "message";
+		String request = api_adres + name;
+		
+		
+		String req = "{\"sender_user_id\": \"" + user.id + "\",\"receiver_user_id\": "+ message.ReceiverId +", \"text\": \""+ message.text  +"\"}";
+		
+		System.out.println(req);
+		
+		StringEntity entity = null;
+		try {
+			entity = new StringEntity(req);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		entity.setContentType("application/json");
+		//System.out.println(entity.);
+		
+		client.post(this.context , request, entity ,"application/json",new AsyncHttpResponseHandler() {
+			@Override
+		    public void onSuccess(String response) {				
+				synchronized(client){
+					System.out.println(response);
+	
+			    	client.notify();
+				}
+		    }
+			public void onFinish(){
+				System.out.println("finish");
+			}
+			
+			@Override
+			public void onFailure(java.lang.Throwable error, java.lang.String content)
+		    {
+				System.out.println(content);
+		    }
+			
+		});	
+	}
 
 	private void addMySensors(final ArrayList<Integer> sensorTypeIDs){
 /*		 {
@@ -525,7 +708,12 @@ public enum DataBase implements Runnable {
 		}
 	}
 	
-
+	public void sendMessage(int toId, String text){
+		Message message = new Message(-1,user.id,toId,text,false);
+		toSend.add(message);
+	}
+	
+	
 	private void updateSensors(String filters, final ArrayList<Integer> sensorTypeIDs) {
 		String name = "sensor";
 
@@ -585,5 +773,10 @@ public enum DataBase implements Runnable {
 				
 			});
 			
+	}
+
+	public void logout() {
+		currentState = State.Closing;
+
 	}
 }
