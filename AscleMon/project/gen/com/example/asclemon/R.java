@@ -82,7 +82,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_manual=0x7f030005;
         public static final int activity_manual_acquisition=0x7f030006;
         public static final int activity_manual_new=0x7f030007;
-        public static final int activity_stats=0x7f030008;
+        public static final int activity_received_mess=0x7f030008;
+        public static final int activity_stats=0x7f030009;
+        public static final int send_message_activity=0x7f03000a;
     }
     public static final class menu {
         public static final int auto_acquisition=0x7f080000;
@@ -99,12 +101,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int autoON=0x7f060012;
         public static final int back=0x7f060015;
         public static final int button=0x7f060003;
+        public static final int czytajwiadomosc=0x7f060022;
         public static final int dummy_button=0x7f060001;
         public static final int dummy_content=0x7f060002;
         public static final int hello_world=0x7f060006;
         public static final int miernik1=0x7f06001b;
         public static final int miernik11=0x7f06001f;
         public static final int miernik2=0x7f06001c;
+        public static final int null1=0x7f060024;
         public static final int pokazGraf=0x7f060017;
         public static final int pokazStat=0x7f060018;
         public static final int pulsometr=0x7f06001d;
@@ -121,8 +125,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_manual_acquisition=0x7f060007;
         public static final int waga=0x7f060010;
         public static final int wagaa=0x7f06001a;
+        public static final int wiadomosci=0x7f060020;
         public static final int wynik1=0x7f06000c;
         public static final int wynik11=0x7f06000d;
+        public static final int wyslij=0x7f060023;
+        public static final int wyslijwiadomosc=0x7f060021;
     }
     public static final class style {
         /** 

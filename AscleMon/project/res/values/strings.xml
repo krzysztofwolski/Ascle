@@ -33,5 +33,10 @@
     <string name="pulsometr">Pulsometr 2000 [1/s]</string>
     <string name="addmeasures">Add Measures</string>
     <string name="miernik11">Miernik 2000</string>
+    <string name="wiadomosci">Message</string>
+    <string name="wyslijwiadomosc">Send Message</string>
+    <string name="czytajwiadomosc">Read Message</string>
+    <string name="wyslij">Wyślij</string>
+    <string name="null1">" "</string>
 
 </resources>

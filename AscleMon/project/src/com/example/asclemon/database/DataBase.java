@@ -19,6 +19,7 @@ import com.loopj.android.http.*;
 import android.R;
 import android.database.sqlite.*;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.content.*;
 
 
@@ -37,7 +38,7 @@ public enum DataBase implements Runnable {
 	
 	User user = new User();
 	ArrayList<Sensor> sensors = new ArrayList<Sensor>();
-	ArrayList<Message> received = new ArrayList<Message>();
+    public ArrayList<Message> received = new ArrayList<Message>();
 	ArrayList<Message> sent = new ArrayList<Message>();
 	ArrayList<Message> toSend = new ArrayList<Message>();
 	
@@ -316,6 +317,7 @@ public enum DataBase implements Runnable {
 		synchronized (client) {
 			try {
 				while(running){
+					
 					switch(currentState){
 					case UpdateAll:
 						login(user.login,user.password);
@@ -469,7 +471,7 @@ public enum DataBase implements Runnable {
 								
 								sensor.addNewMeasure(value, time);		
 							}
-							
+		
 							System.out.println("objects Amount: " + objects.length());
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -589,7 +591,6 @@ public enum DataBase implements Runnable {
 								if(exist == false)
 									sent.add(message);									
 							}
-							
 							System.out.println("objects Amount: " + objects.length());
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
