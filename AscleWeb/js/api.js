@@ -67,7 +67,7 @@ $(document).ready(function() {
 				    },
 			    success:
 			     function(result) {
-			     	console.log("yea");
+			     	// console.log("yea");
 			     
 					json = jQuery.parseJSON(result);
 										
@@ -77,8 +77,8 @@ $(document).ready(function() {
 					User.type = json.type;
 					User.is_log = json.logged_in;
 					*/
-					console.log(User);	
-					console.log(User.getId());					
+					// console.log(User);	
+					// console.log(User.getId());					
 				 },
 				 error:
 				  function(xhr, textStatus, errorThrown) {
@@ -90,6 +90,112 @@ $(document).ready(function() {
 				});
 	}
 
+	function loadNumberOfNewMessages(id)
+	{
+		val = {};
+		var filters = [{"name": "receiver_user_id", "op":"equals", "val":id},
+						{"name":"new", "op":"equals", "val":true}];
+		// console.log(JSON.stringify({"filters": filters}));
+		$.ajax(
+		{
+			async: true,
+			contentType: "application/jsonp",
+			url: api_url+"api/message",
+			data: {"q": JSON.stringify({"filters": filters})},
+			crossDomain : true,
+			xhrFields: 
+			{
+		    	withCredentials: true
+		    },
+		    success:
+		    function(result) 
+		    {
+		    	if (result.num_results=='0')
+				{
+					$("#messageLabel").text("Wiadomości");
+				}
+				else
+				{
+					
+					var text = result.num_results.toString() + " Wiadomości";
+					$("#messageLabel").text(text);
+				}
+			},
+			error:
+			function(xhr, textStatus, errorThrown) 
+			{
+	    		alert(xhr.responseText);	
+	    		alert(textStatus);
+	    	}		
+		});
+	}
+
+
+	function removeMessage(id)
+	{
+		if(id != null)
+		{
+			$.ajax(
+			{
+				async: false,
+				type: "DELETE",
+				contentType: "application/jsonp",
+				url: api_url+"api/message/" + id,
+				crossDomain : true,
+				xhrFields: 
+					{
+						withCredentials: true
+					},
+				success:
+					function(result) 
+					{
+					    alert("Wiadomość usunięta");
+					},
+				error:
+					function(xhr, textStatus, errorThrown) 
+					{
+			        	alert(xhr.responseText);	
+			        	alert(textStatus);
+			        }
+			});
+		}
+		else
+		{
+			console.log("Usuwanie wiadomości zakończone niepowodzeniem")
+		}
+	}
+
+	function markAsRead(messageData)
+	{
+		if(messageData != null)
+		{
+			messageData.new = false;
+			$.ajax(
+			{
+				type: "PUT",
+				contentType: "application/jsonp",
+				url: api_url+"api/message/" + messageData.id,
+				data: JSON.stringify(messageData),
+				crossDomain : true,
+				xhrFields: 
+					{
+						withCredentials: true
+					},
+				success:
+					function(result) 
+					{
+					    // alert("Wiadomość przeczytana");
+					},
+				error:
+					function(xhr, textStatus, errorThrown) 
+					{
+			        	alert(xhr.responseText);	
+			        	alert(textStatus);
+			        }
+			});
+		}
+	}
+
 	function loadMessages(id)
 	{
 		val = {};
@@ -98,7 +204,7 @@ $(document).ready(function() {
 		{
 			async: false,
 			contentType: "application/jsonp",
-			url: api_url+"api/message",
+			url: api_url+"api/message?results_per_page=150",
 			data: {"q": JSON.stringify({"filters": filters})},
 			crossDomain : true,
 			xhrFields: 
@@ -114,24 +220,22 @@ $(document).ready(function() {
 				}
 				else
 				{
-					// val[0] = result.objects[0];
-					// val = result.objects;
-					// console.log(val);
 
-					// $.each(result.objects, function(id, isNew, receiver_user_id, sender_user_id, text)
 					$( "#messageList > tbody" ).replaceWith( "<tbody></tbody>" );
 					$.each(result.objects, function(idx, object)
 					{
+						markAsRead(object);
 						val2 = {};
 						smarterSearchUser("id", object.sender_user_id, val2);
 						$("#messageList > tbody").append("<tr>"+
 							"<td>"+val2[0].pesel+"</td>"+
-							"<td>"+object.text+"</td></tr>"
+							"<td>"+object.text+"</td>"+
+							"<td><input class='removeMessageButton' type='button' data-button='"
+							+ object.id.toString() +"' value='Usuń'/></td></tr>"
 						);
-						console.log(object.text + "added");
-
+						// console.log(object.text + "added");
+						loadNumberOfNewMessages(id);
 					});
-
 				}
 			 },
 			error:
@@ -143,11 +247,11 @@ $(document).ready(function() {
 		});
 	}
 
-		
+	
 		
 	function onLoginSuccessful(user){
 			var type = user.getType();
-			console.log("typ: "+type);
+			// console.log("typ: "+type);
 			$("#menu").slideToggle();
 			switch(type)
 			{
@@ -155,7 +259,7 @@ $(document).ready(function() {
 					initAdminPage();
 					break;
 				case 1:
-					initDoctorPage();
+					initDoctorPage(user.getId());
 					break;
 				case 3:
 					initPatientPage(user.getId());
@@ -168,7 +272,7 @@ $(document).ready(function() {
 		{
 			var userData={};
 			getUserData(id, userData);
-			console.log(userData);
+			// console.log(userData);
 
 			$("#patient_first-name").html(userData[0].first_name);
 			$("#patient_last-name").html(userData[0].last_name);
@@ -189,8 +293,10 @@ $(document).ready(function() {
 
 			$("#aboutMeLi").show();
 		}
-		function initDoctorPage()
+		function initDoctorPage(id)
 		{
+			loadNumberOfNewMessages(id);
+
 			$("#messageBoxLi").show();
 			$("#sendMessageLi").show();
 			$("#addPatientLi").show();
@@ -224,7 +330,7 @@ $(document).ready(function() {
 			var pes = $("#user_search").val();
 			var filters = [{"name": "pesel", "op": "equals", "val": pes}];
 			
-			console.log(JSON.stringify({"filters": filters}));
+			// console.log(JSON.stringify({"filters": filters}));
 			
 			if(!$.trim($("#user_search").val()).length)
 			{
@@ -233,7 +339,7 @@ $(document).ready(function() {
 			else
 			{
 			
-			console.log(pes);			
+			// console.log(pes);			
 		
 				$.ajax(
 					{
@@ -248,7 +354,7 @@ $(document).ready(function() {
 				    success:
 				     function(result) {
 				     	
-				    	console.log(result.num_results);
+				    	// console.log(result.num_results);
 						if (result.num_results=='0')
 						{
 							alert("Nie ma pacjenta o podanym peselu");
@@ -288,8 +394,8 @@ $(document).ready(function() {
 	// this function assigns only id but it could return all users data
 	// TO DO if someone want...
 	
-	function smarterSearchUser(searchBy,searchingVal,val){
-			
+	function smarterSearchUser(searchBy,searchingVal,val)
+	{
 			var filters = [{"name": searchBy, "op": "equals", "val": searchingVal}];
 		
 				$.ajax(
@@ -309,6 +415,7 @@ $(document).ready(function() {
 				    	if (result.num_results=='0')
 						{
 							alert("Nie ma pacjenta o tych danych");
+							val = null;
 						}
 						else
 						{
@@ -341,7 +448,7 @@ $(document).ready(function() {
 		    success:
 		    function(result) 
 		    {
-		     	console.log(result);
+		     	// console.log(result);
 		    	if (result.num_results=='0')
 				{
 					alert("Nie ma pacjenta o tych danych");
@@ -367,36 +474,48 @@ $(document).ready(function() {
 	   	    
 	function sendUserDataToSerwer(userData)
 	{
-		console.log(userData);
+		// console.log(userData);
 		
-		$.ajax(
+		var userToSend={};
+		smarterSearchUser("pesel", userData.pesel, userToSend )
+		// console.log("Dane pacjenta: ");
+		// console.log(userToSend);
+
+		if(userToSend == null)
 		{
-			type: "POST",
-			contentType: "application/jsonp",
-			url: api_url+"api/user",
-			data: JSON.stringify(userData),
-			crossDomain : true,
-			xhrFields: 
-				{
-					withCredentials: true
-				},
-			success:
-				function(result) 
-				{
-				    alert("Użytkownik dodany");
-				},
-			error:
-				function(xhr, textStatus, errorThrown) 
-				{
-		        	alert(xhr.responseText);	
-		        	alert(textStatus);
-		        }
-		});
+			$.ajax(
+			{
+				type: "POST",
+				contentType: "application/jsonp",
+				url: api_url+"api/user",
+				data: JSON.stringify(userData),
+				crossDomain : true,
+				xhrFields: 
+					{
+						withCredentials: true
+					},
+				success:
+					function(result) 
+					{
+					    alert("Użytkownik dodany");
+					},
+				error:
+					function(xhr, textStatus, errorThrown) 
+					{
+			        	alert(xhr.responseText);	
+			        	alert(textStatus);
+			        }
+			});
+		}
+		else
+		{
+			changePage($("#userAlreadyExists"));
+		}
 	}
 	
 	function sendMessageToSerwer(messageData)
 	{
-		console.log(messageData);
+		// console.log(messageData);
 		
 		$.ajax(
 		{
@@ -437,6 +556,12 @@ $(document).ready(function() {
 		    values[field.name] = field.name;
 		});
 	}	 
+
+	function clearMessageBox()
+	{
+		$("#toWhom").val("");
+		$("#message").val("");
+	}
 	
 	function sendMaskToChartData()
 	{
@@ -483,7 +608,7 @@ $(document).ready(function() {
 				var json = jQuery.parseJSON(result);
 												
 				alert(json.message);
-				console.log("done");
+				// console.log("done");
 				
 				xhr.getResponseHeader('Set-Cookie');
 				
@@ -534,6 +659,7 @@ $(document).ready(function() {
 					"pesel": val.pesel, "birth_date": val.birthDate+"T00:00:00", "type":3};
 
 					
+
 					sendUserDataToSerwer(patient);
 				
 				}
@@ -582,6 +708,8 @@ $(document).ready(function() {
 	   	    				   "text": val.message, "new": true};
 	   	    	
 	   	    	sendMessageToSerwer(messageData);
+	   	    	clearMessageBox();
+	   	    	changePage($("#messageSent"));
 	   	    	   	    	
 	   	    	
 	   	    });
@@ -641,12 +769,12 @@ $(document).ready(function() {
 //					drawChart();
 					mask = [];
 					getDataForChart(userData[0].id,mask,chartData);
-					console.log(chartData);
-					
+					// console.log(chartData);
+					// 
 					$.each(mask, function(idx, val)
 					{
 						var check;
-						console.log(val.on);
+						// console.log(val.on);
 						if (val.on == true)
 						    {
 						    check="checked"
@@ -675,8 +803,19 @@ $(document).ready(function() {
 	  			sendMaskToChartData();
 		  	});
 
-	   	    
-	
+	   	    $("#messageBox").on(
+	   	    	"click",
+	   	    	".removeMessageButton",
+	   	    	function(zEvent)
+		   	    {
+		   	    	console.log("Usuwam Wiadomość");
+		   	    	var data = $(this).attr('data-button');
+		   	    	console.log(data);
+		   	    	removeMessage(data);
+		   	    	loadMessages(User.getId());
+		   	    	changePage($("#messageBox"));
+		   	    });
+		
 			$('#addDoctorLi').click(function(){
 	  			changePage($("#addDoctor"));
 		  	});
@@ -721,5 +860,6 @@ $(document).ready(function() {
 				changePage($("#myLogin"));
 
 			});
+			$
 });
 
