@@ -1,31 +1,23 @@
 package com.example.asclemon.database;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.RunnableScheduledFuture;
 
 import org.json.*;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
-import com.example.asclemon.ManualAcquisition;
 import com.loopj.android.http.*;
 
-import android.R;
-import android.database.sqlite.*;
-import android.widget.EditText;
 import android.content.*;
 
 
 public enum DataBase implements Runnable {
 	INSTANCE;
 
-	public String message = "mój ma³y singleton";
+	public String message = "mï¿½j maï¿½y singleton";
 	private String host_adres =  "http://kuchnia.mooo.com:5000/";
 	private String api_adres = host_adres + "api/";
 	private int timeout = 1000; // ms
@@ -37,7 +29,7 @@ public enum DataBase implements Runnable {
 	
 	User user = new User();
 	ArrayList<Sensor> sensors = new ArrayList<Sensor>();
-	ArrayList<Message> received = new ArrayList<Message>();
+	public ArrayList<Message> received = new ArrayList<Message>();
 	ArrayList<Message> sent = new ArrayList<Message>();
 	ArrayList<Message> toSend = new ArrayList<Message>();
 	
@@ -240,7 +232,7 @@ public enum DataBase implements Runnable {
 						
 					}
 					else{
-					//wywal b³ad o niezalogowaniu	
+					//wywal bï¿½ad o niezalogowaniu	
 						//this.notify();
 					}
 					//System.out.println("CT:" + currentTread.getName());
