@@ -278,8 +278,38 @@
 				<input id="logout" name="Button3" type="button" value="Wyloguj" class="btn" />
 			</div>
 		</form>
+		
+		<input class="btn myButton" name="Button7" type="button" value="Pokaż moich pacjentów" id="showPatients" />
+		<div class="myTable">
+			<table id="patientList" name="patient-info" class="table table-hover table-condensed myTable">
+				<caption><h5>Pacjenci</h5></caption>
+				<thead>
+					<tr>
+					<th></th>
+					<th></th>
+					<th><form method="post">
+						<input name="Button8" type="button" value="Schowaj listę" id="patientListHide" class="btn myButton" /></form>
+						</th>
+					</tr>
+					<tr>
+						<th style="height: 28px">Imię I nazwiko</th>
+						<th style="height: 28px">Pesel</th>
+						<th style="height: 28px">&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 		<form class="navbar-form" method="post" role"search">
+			<div>
+				<br />
+				
+				
+				
+				</div>
 			<div class="form-group">
+				
 				<input type="text" class ="form-control" placeholder="Szukaj" id="user_search">
 				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="searchPatient" />
 			</div>

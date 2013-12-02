@@ -57,10 +57,14 @@ function chooseSeries(mask,data)
 
 function getDataForChart(userId,mask,chartData)
 {
+//	mask = [];
+	toChartData = [];
 	var sensors = {};
 
 	var counter=0;
 	var names = [];
+	
+	console.log(sensors);
 	
 	getSensors(userId,sensors);
 	$.each(sensors, function(index, value)
@@ -96,6 +100,13 @@ function initMast(mask,len,names)
 	{
 		mask[i] = {"on":false, "name":names[i]};
 	}
+	
+	if (mask[0].name == "Lekarz")
+	{
+		mask[0].on = false;
+		mask[1].on = true;
+	}
+	
 }
 
 function aplyMask(mask)
