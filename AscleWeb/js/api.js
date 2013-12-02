@@ -28,7 +28,7 @@ this.getIsLog = function() {
 $(document).ready(function() {
 
 	User = new user();
-	$("#test").hide();
+//	$("#test").hide();
 	
 	$("#drawChart").hide();		
 
@@ -415,7 +415,7 @@ $(document).ready(function() {
 				    	if (result.num_results=='0')
 						{
 							alert("Nie ma pacjenta o tych danych");
-							val = null;
+							val[0] = null;
 						}
 						else
 						{
@@ -432,6 +432,50 @@ $(document).ready(function() {
 					
 					});
 	}
+	
+	
+	function searchAnything(searchBy,searchingVal,searchingTable,val)
+	{
+			var filters = [{"name": searchBy, "op": "equals", "val": searchingVal}];
+		
+				$.ajax(
+					{
+					async: false,
+					contentType: "application/jsonp",
+					url: api_url+"api/"+searchingTable,
+					data: {"q": JSON.stringify({"filters": filters})},
+					crossDomain : true,
+					xhrFields: 
+						{
+					    withCredentials: true
+					    },
+				    success:
+				     function(result) {
+				     	
+				    	if (result.num_results=='0')
+						{
+							alert("Nie ma pacjenta o tych danych");
+							val = null;
+						}
+						else
+						{	
+							$.each(result.obejcts, function(idx, obj)
+							{
+							val[idx] = result.objects[idx];	
+							});
+						}
+					
+					 },
+					 error:
+					  function(xhr, textStatus, errorThrown) {
+		        		alert(xhr.responseText);	
+		        		alert(textStatus);
+		        	  }
+	
+					
+					});
+	}
+
 
 	function getUserData(id, val)
 	{
@@ -472,19 +516,18 @@ $(document).ready(function() {
 
 
 	   	    
-	function sendUserDataToSerwer(userData)
+	function sendUserDataToSerwer(userData,userId)
 	{
 		// console.log(userData);
 		
 		var userToSend={};
 		smarterSearchUser("pesel", userData.pesel, userToSend )
-		// console.log("Dane pacjenta: ");
-		// console.log(userToSend);
 
-		if(userToSend == null)
+		if(userToSend[0] == null)
 		{
 			$.ajax(
 			{
+				async: false,
 				type: "POST",
 				contentType: "application/jsonp",
 				url: api_url+"api/user",
@@ -498,6 +541,8 @@ $(document).ready(function() {
 					function(result) 
 					{
 					    alert("Użytkownik dodany");
+					    console.log(result.id);
+					    userId[0] = result.id;
 					},
 				error:
 					function(xhr, textStatus, errorThrown) 
@@ -541,6 +586,39 @@ $(document).ready(function() {
 		        }
 		});
 	}
+	
+	function sendDataToSerwer(data,table,sensor_id)
+	{
+		// console.log(messageData);
+		
+		$.ajax(
+		{
+			type: "POST",
+			contentType: "application/jsonp",
+			url: api_url+"api/"+table,
+			data: JSON.stringify(data),
+			crossDomain : true,
+			xhrFields: 
+				{
+					withCredentials: true
+				},
+			success:
+				function(result) 
+				{
+					sensor_id[0]=result.id;
+					console.log(result.id)
+					console.log(result);
+//				    alert("Wiadomość wysłana");
+				},
+			error:
+				function(xhr, textStatus, errorThrown) 
+				{
+		        	alert(xhr.responseText);	
+		        	alert(textStatus);
+		        }
+		});
+	}
+
 
 	
 	function getFormValues(formId,values)
@@ -659,8 +737,19 @@ $(document).ready(function() {
 					"pesel": val.pesel, "birth_date": val.birthDate+"T00:00:00", "type":3};
 
 					
-
-					sendUserDataToSerwer(patient);
+					var id =[];
+					sendUserDataToSerwer(patient,id);
+					console.log(id);
+					
+					var sensor = {"sensor_type_id" : 102, "user_id" : id[0], "name": "lekarz"};
+					
+					var sensorId=[];
+					sendDataToSerwer(sensor,"sensor",sensorId);
+					
+					var measure = {"sensor_id" : sensorId[0], "value" : User.getId()};
+					
+					var tmp=[];
+					sendDataToSerwer(measure,"measure",tmp);
 				
 				}
 				
@@ -686,7 +775,8 @@ $(document).ready(function() {
 					"pesel": val.pesel, "birth_date": val.birthDate+"T00:00:00", "type":1};
 	
 //					console.log(doctor);
-					sendUserDataToSerwer(doctor);
+					var id = [];
+					sendUserDataToSerwer(doctor,id);
 				
 				}
 				
@@ -716,12 +806,12 @@ $(document).ready(function() {
 	   	    
 	   	    $("#test").click(function()
 	   	    {
-	   	    	data = { "pesel" : 24680};
+	   	    	data = { "automatic": false, "name": "Lekarz", "unit": "none" };
 				$.ajax(
 				{
-					type: "PUT",
+					type: "POST",
 					contentType: "application/jsonp",
-					url: api_url+"api/user/188",
+					url: api_url+"api/sensortype",
 					data: JSON.stringify(data),
 					crossDomain : true,
 					xhrFields: 
@@ -753,6 +843,7 @@ $(document).ready(function() {
 				
 				$("#get_first-name").html(userData[0].first_name);
 				$("#get_last-name").html(userData[0].last_name);
+				$("#get_pesel").html(userData[0].pesel);
 				var sex;
 				if (userData[0].sex)
 				{
