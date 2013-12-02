@@ -18,7 +18,7 @@
          <activity android:name="Stats"></activity>
          <activity android:name="SendActivity"></activity>
          <activity android:name="Read"></activity>
-         
+         <activity android:name="LogActivity"></activity>
         <activity
             android:name="com.example.asclemon.MainMenu"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -50,7 +50,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.asclemon.MainMenu" />
         </activity>
-		<activity android:name="org.achartengine.GraphicalActivity" />        <activity
+        
+		<activity android:name="org.achartengine.GraphicalActivity" />   
+		     <activity
             android:name="com.example.asclemon.DrugsActivity"
             android:label="@string/title_activity_drugs"
             android:parentActivityName="com.example.asclemon.MainMenu" >

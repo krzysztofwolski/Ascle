@@ -38,8 +38,11 @@ public class SendActivity extends Activity implements OnClickListener{
 			DataBase db = DataBase.INSTANCE;
 
 			EditText getMessage = (EditText)findViewById(R.id.editText1);
-			if(getMessage.getText().length() != 0){
-				db.sendMessage(4, getMessage.getText().toString());
+			EditText getID = (EditText)findViewById(R.id.editText2);
+			if(getMessage.getText().length() != 0 && getID.getText().length() != 0){
+				int id =  Integer.valueOf(getID.getText().toString()); 
+
+				db.sendMessage(id, getMessage.getText().toString());
 			}
 			super.onBackPressed();
 		}

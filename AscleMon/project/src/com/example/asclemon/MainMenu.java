@@ -42,11 +42,19 @@ public class MainMenu extends Activity {
 		
 		// DATABASE INITIALIZE --------------------------------------------------------------
 		// start DataBase updating routine
+	
 		db.setContext(getBaseContext());
-		db.setUserLogin("lubicz","asdf");  // <--- tutaj ustawiasz usera
+		db.setUserLogin(LogActivity.login,LogActivity.pass);  // <--- tutaj ustawiasz usera
 		//db.sendMessage(5, "jakas tam wiadomoœc testowa"); // <--- w taki sposób wysylasz wiadomoœæ pierwsze to id do któreg owysy³am a 2 parametr to treœæ, (uwaga nie jest filtrowana w ¿aden sposób wiêc wpuszczenie tam g³upiego znaku mo¿e powodowaæ blêd)
+		Context context = getApplicationContext();
 		Thread dataBase = new Thread(db, "dataBaseUpdate");
 		dataBase.start();
+		
+		/*CharSequence text = LogActivity.login +" CCC "+ LogActivity.pass;
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();*/
+		
 		//example how to add new measure 
 		// adding new measure --------------------------------------------------------------
 	//	db.getSensor("termometr 2000").addNewMeasure(999.0f, new Date());
@@ -93,5 +101,15 @@ public class MainMenu extends Activity {
 	    startActivity(intent);
 	}
 	
-	
+	public void goToLogout(View view){
+		//db.logout();
+		Context context = getApplicationContext();
+
+		CharSequence text = "wylogowano";
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
+		Intent intent = new Intent(this, LogActivity.class);
+	    startActivity(intent);
+	}
 }
