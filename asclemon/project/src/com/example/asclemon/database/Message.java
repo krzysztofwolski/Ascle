@@ -1,10 +1,12 @@
 package com.example.asclemon.database;
 
+import java.util.ArrayList;
+
 public class Message {
 int Id;
-int SenderId;
+public int SenderId;
 int ReceiverId;
-String text;
+public String text;
 boolean isNew;
 
 

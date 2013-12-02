@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.example.asclemon.database.DataBase;
 import com.example.asclemon.util.SystemUiHider;
@@ -40,11 +42,19 @@ public class MainMenu extends Activity {
 		
 		// DATABASE INITIALIZE --------------------------------------------------------------
 		// start DataBase updating routine
+	
 		db.setContext(getBaseContext());
-		db.setUserLogin("test123","test123");  // <--- tutaj ustawiasz usera
-		db.sendMessage(123, "jakas tam wiadomoœc testowa"); // <--- w taki sposób wysylasz wiadomoœæ pierwsze to id do któreg owysy³am a 2 parametr to treœæ, (uwaga nie jest filtrowana w ¿aden sposób wiêc wpuszczenie tam g³upiego znaku mo¿e powodowaæ blêd)
+		db.setUserLogin(LogActivity.login,LogActivity.pass);  // <--- tutaj ustawiasz usera
+		//db.sendMessage(5, "jakas tam wiadomoœc testowa"); // <--- w taki sposób wysylasz wiadomoœæ pierwsze to id do któreg owysy³am a 2 parametr to treœæ, (uwaga nie jest filtrowana w ¿aden sposób wiêc wpuszczenie tam g³upiego znaku mo¿e powodowaæ blêd)
+		Context context = getApplicationContext();
 		Thread dataBase = new Thread(db, "dataBaseUpdate");
 		dataBase.start();
+		
+		/*CharSequence text = LogActivity.login +" CCC "+ LogActivity.pass;
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();*/
+		
 		//example how to add new measure 
 		// adding new measure --------------------------------------------------------------
 	//	db.getSensor("termometr 2000").addNewMeasure(999.0f, new Date());
@@ -86,5 +96,25 @@ public class MainMenu extends Activity {
 		Intent intent = new Intent(this, DrugsActivity.class);
 	    startActivity(intent);
 	}
+
+	public void goToRead(View view){
+		Intent intent = new Intent(this, Read.class);
+	    startActivity(intent);
+	}
+	public void goToSend(View view){
+		Intent intent = new Intent(this, SendActivity.class);
+	    startActivity(intent);
+	}
 	
+	public void goToLogout(View view){
+		//db.logout();
+		Context context = getApplicationContext();
+
+		CharSequence text = "wylogowano";
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
+		Intent intent = new Intent(this, LogActivity.class);
+	    startActivity(intent);
+	}
 }

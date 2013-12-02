@@ -33,5 +33,17 @@
     <string name="pulsometr">Pulsometr 2000 [1/s]</string>
     <string name="addmeasures">Add Measures</string>
     <string name="miernik11">Miernik 2000</string>
+    <string name="wiadomosci">Message</string>
+    <string name="wyslijwiadomosc">Send Message</string>
+    <string name="czytajwiadomosc">Read Message</string>
+    <string name="wyslij">Wyślij</string>
+    <string name="null1">" "</string>
+    <string name="wyloguj">Logout</string>
+    <string name="witaj_ziomek">Witaj, podaj login i hasło w celu zalogowania się</string>
+    <string name="zaloguj">Zaloguj</string>
+    <string name="login">Login</string>
+    <string name="haslo">Password</string>
+    <string name="iddoktorka">ID Lekarza</string>
+    <string name="tekstwiadomosci">Tekst wiadomości</string>
 
 </resources>

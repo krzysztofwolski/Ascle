@@ -48,6 +48,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="goToLogout"
+                    android:text="@string/wyloguj" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:onClick="goToRead"
+                    android:text="@string/czytajwiadomosc" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:onClick="goToSend"
+                    android:text="@string/wyslijwiadomosc" />
+
             </TableRow>
 
             <TableRow
