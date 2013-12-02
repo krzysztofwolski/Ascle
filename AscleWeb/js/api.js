@@ -477,11 +477,15 @@ $(document).ready(function() {
 		// console.log(userData);
 		
 		var userToSend={};
-		smarterSearchUser("pesel", userData.pesel, userToSend )
+		smarterSearchUser("pesel", userData.pesel, userToSend);
+		if(userToSend[0] == null)
+			smarterSearchUser("login", userData.login, userToSend);
+		else
+			changePage($("#userAlreadyExists"));
 		// console.log("Dane pacjenta: ");
 		// console.log(userToSend);
-
-		if(userToSend == null)
+		console.log(userToSend);
+		if(userToSend[0] == null)
 		{
 			$.ajax(
 			{
@@ -646,25 +650,70 @@ $(document).ready(function() {
 	   	    
 	   	    	var val={}; 
 	   	    	getFormValues("#addPatientForm",val);
-	    	
+	    		var fieldsNotEmpty = true;
 	   	    	if (val.password != val.repeatPassword)
 				{
 					alert("Hasła nie są takie same");
 					return;
 				}
-				else
+				if(val.pesel == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole PESEL jest puste")
+					return;
+				}
+				if(val.login == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Login jest puste")
+					return;
+				}
+				if(val.firstName == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Imię jest puste")
+					return;
+				}
+				if(val.lastName == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Nazwisko jest puste")
+					return;
+				}
+				if(val.password == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Hasło jest puste")
+					return;
+				}
+				console.log(val);
+				if(val.patient_sex == null)
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Płec jest puste")
+					return;
+				}
+				if(val.birthDate == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Data Urodzenia jest puste")
+					return;
+				}
+
+
+				if(fieldsNotEmpty == true)
 				{
 					var patient= {"login": val.login, "password": val.password, "last_name": val.lastName, 
-					"first_name": val.firstName, "sex": val.sex, "password" : val.password,
+					"first_name": val.firstName, "sex": val.patient_sex, "password" : val.password,
 					"pesel": val.pesel, "birth_date": val.birthDate+"T00:00:00", "type":3};
 
 					
 
 					sendUserDataToSerwer(patient);
-				
+					$('#addPatientForm')[0].reset();
 				}
 				
-				$('#addPatientForm')[0].reset();
+				
 				
 	   	    	
 	   	    });
@@ -674,12 +723,57 @@ $(document).ready(function() {
 	   	    	var val={}; 
 	   	    	getFormValues("#addDoctorForm",val);
 	    	
+	   	    	var fieldsNotEmpty = true;
 	   	    	if (val.password != val.repeatPassword)
 				{
 					alert("Hasła nie są takie same");
 					return;
 				}
-				else
+				if(val.pesel == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole PESEL jest puste")
+					return;
+				}
+				if(val.login == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Login jest puste")
+					return;
+				}
+				if(val.firstName == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Imię jest puste")
+					return;
+				}
+				if(val.lastName == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Nazwisko jest puste")
+					return;
+				}
+				if(val.password == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Hasło jest puste")
+					return;
+				}
+				console.log(val);
+				if(val.sex == null)
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Płec jest puste")
+					return;
+				}
+				if(val.birthDate == "")
+				{
+					fieldsNotEmpty = false;
+					alert("Pole Data Urodzenia jest puste")
+					return;
+				}
+
+				if(fieldsNotEmpty == true)
 				{
 					var doctor = {"login": val.login, "password": val.password, "last_name": val.lastName, 
 					"first_name": val.firstName, "sex": val.sex, "password" : val.password,
@@ -687,10 +781,10 @@ $(document).ready(function() {
 	
 //					console.log(doctor);
 					sendUserDataToSerwer(doctor);
-				
+					$('#addDoctorForm')[0].reset();
 				}
 				
-				$('#addDoctorForm')[0].reset();
+				
 
 	   	    	
 	   	    		   	    
