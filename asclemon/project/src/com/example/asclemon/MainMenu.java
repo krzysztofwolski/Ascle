@@ -60,14 +60,19 @@ public class MainMenu extends Activity {
 	
 	
 	public void goToAutoAcquisitionMenu(View view){
-		System.out.println("startuje");
+		db.setUserLogin("test123","test123");  // <--- tutaj ustawiasz usera
+		Thread dataBase = new Thread(db, "dataBaseUpdate");
+		dataBase.start();
+		
+		
 		Intent intent = new Intent(this, AutoAcquisition.class);
-
+		
 	    startActivity(intent);
 	}
 	
 	public void goToManualAcquisitionMenu(View view){
 		//db.syncUser();
+		db.logout();
 		Intent intent = new Intent(this, ManualAcquisition.class);
 	    startActivity(intent);
 	}

@@ -298,6 +298,7 @@ public enum DataBase implements Runnable {
 		user.login = login;
 		user.password = password;
 		currentState = State.UpdateAll;
+		running = true;
 	}
 	
 
