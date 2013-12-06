@@ -20,9 +20,11 @@ this.getIsLog = function() {
     
 }
 
-User = new user();
+
 
 $(document).ready(function() {
+
+	User = new user();
 	
 
 	$("#patients").hide();
@@ -53,6 +55,7 @@ $(document).ready(function() {
 		var json;
 				$.ajax(
 				{
+				async: false,
 				contentType: "application/jsonp",
 				url: api_url+"api/stats",
 				crossDomain : true,
@@ -107,7 +110,7 @@ $(document).ready(function() {
 		
 	   	 
 	   	 
-	   	 // function search user by pesel
+	   	 // function search user by pesel and fill data 
 	
 	function searchUser(){
 			
@@ -172,6 +175,53 @@ $(document).ready(function() {
 					});
 			}
 	}
+	
+	// becouse we must search user in few places maybe smarter would be return user
+	// data and then work with them
+	// this function assigns only id but it could return all users data
+	// TO DO if someone want...
+	
+	function smarterSearchUser(pes,val){
+			
+			var filters = [{"name": "pesel", "op": "equals", "val": pes}];
+			
+			console.log(JSON.stringify({"filters": filters}));
+			
+				$.ajax(
+					{
+					async: false,
+					contentType: "application/jsonp",
+					url: api_url+"api/user",
+					data: {"q": JSON.stringify({"filters": filters})},
+					crossDomain : true,
+					xhrFields: 
+						{
+					    withCredentials: true
+					    },
+				    success:
+				     function(result) {
+				     	
+				    	if (result.num_results=='0')
+						{
+							alert("Nie ma pacjenta o podanym peselu");
+						}
+						else
+						{
+							val[0] = result.objects[0].id;	
+						}
+					
+					 },
+					 error:
+					  function(xhr, textStatus, errorThrown) {
+		        		alert(xhr.responseText);	
+		        		alert(textStatus);
+		        	  }
+	
+					
+					});
+	}
+
+
 	   	    
 	function sendUserDataToSerwer(userData)
 	{
@@ -201,6 +251,36 @@ $(document).ready(function() {
 		        }
 		});
 	}
+	
+	function sendMessageToSerwer(messageData)
+	{
+		console.log(messageData);
+		
+		$.ajax(
+		{
+			type: "POST",
+			contentType: "application/jsonp",
+			url: api_url+"api/message",
+			data: JSON.stringify(messageData),
+			crossDomain : true,
+			xhrFields: 
+				{
+					withCredentials: true
+				},
+			success:
+				function(result) 
+				{
+				    alert("Wiadomość wysłana");
+				},
+			error:
+				function(xhr, textStatus, errorThrown) 
+				{
+		        	alert(xhr.responseText);	
+		        	alert(textStatus);
+		        }
+		});
+	}
+
 	
 	function getFormValues(formId,values)
 	{
@@ -238,7 +318,11 @@ $(document).ready(function() {
 				if (json.message=="Success! Logged in.")
 				{
 					isAuthenticated();
+					
+					console.log(User);
+					console.log(User.getType());
 					onLoginSuccessful(User.getType());
+					$('#loginForm')[0].reset();
 			    }
 			    /*
 			    else
@@ -311,6 +395,22 @@ $(document).ready(function() {
 
 	   	    	
 	   	    		   	    
+	   	    });
+	   	    
+	   	    
+	   	    $("#sendMessageButton").click(function()
+	   	    {
+	   	    	var val={}; 
+	   	    	getFormValues("#sendMessageForm",val);
+	   	    	var val2 = {};
+	   	    	smarterSearchUser(val.toWhom,val2);
+	   	    	
+	   	    	messageData = {"sender_user_id" : User.id, "receiver_user_id": val2[0], 
+	   	    				   "text": val.message, "new": true};
+	   	    					
+	   	    	sendMessageToSerwer(messageData);
+	   	    	   	    	
+	   	    	
 	   	    });
 	   	    
 	   	    
