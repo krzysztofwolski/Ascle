@@ -25,7 +25,7 @@ this.getIsLog = function() {
 $(document).ready(function() {
 
 	User = new user();
-	
+	$("#test").hide();
 
 	$("#patients").hide();
 	$("#addDoctorLi").hide();
@@ -203,7 +203,7 @@ $(document).ready(function() {
 				     	
 				    	if (result.num_results=='0')
 						{
-							alert("Nie ma pacjenta o podanym peselu");
+							alert("Nie ma pacjenta o tych danych");
 						}
 						else
 						{
@@ -413,6 +413,61 @@ $(document).ready(function() {
 	   	    	
 	   	    });
 	   	    
+	   	    $("#test").click(function()
+	   	    {
+	   	    	data = { "pesel" : 13579};
+				$.ajax(
+				{
+					type: "PUT",
+					contentType: "application/jsonp",
+					url: api_url+"api/user/8",
+					data: JSON.stringify(data),
+					crossDomain : true,
+					xhrFields: 
+						{
+							withCredentials: true
+						},
+					success:
+						function(result) 
+						{
+						    alert("Dodano");
+						},
+					error:
+						function(xhr, textStatus, errorThrown) 
+						{
+				        	alert(xhr.responseText);	
+				        	alert(textStatus);
+				        }
+				});
+	   	    	
+	   	    });
+			
+			
+			$("#searchPatient").click(function(){
+				var pes = $("#user_search").val();
+				var userData = {};
+				
+				smarterSearchUser("pesel",pes,userData);
+				
+				console.log(userData);
+				
+							$("#get_first-name").html(userData[0].first_name);
+							$("#get_last-name").html(userData[0].last_name);
+							var sex;
+							if (userData[0].sex)
+							{
+								sex = "Mężczyzna";
+							}
+							else
+							{
+								sex = "Kobieta";
+							}
+							$("#get_sex").html(sex);
+							$("#get_birth-date").html(userData[0].birth_date);
+							
+			});
+
+	   	    
 	   	    
 	
 			$('#addDoctorLi').click(function(){
@@ -444,14 +499,8 @@ $(document).ready(function() {
 		     changePage($("#myLogin"));
 		     $("$menu").hide();
 			});
-
-
+		
 			
-			
-			$("#searchPatient").click(function(){
-				searchUser();
-			});
-
 			$("#logOutLi").click(function(){
 				$("#patients").hide();
 				$("#addDoctorLi").hide();
