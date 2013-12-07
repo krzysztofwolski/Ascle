@@ -108,9 +108,27 @@ function onLoginSuccessful(user){
 			
 		function initPatientPage(id)
 		{
-			var result={};
-			smarterSearchUser("id", id, result);
-			console.log(result);
+			var userData={};
+			getUserData(id, userData);
+			console.log(userData);
+
+			$("#patient_first-name").html(userData[0].first_name);
+			$("#patient_last-name").html(userData[0].last_name);
+			var sex;
+			if (userData[0].sex)
+			{
+				sex = "Mężczyzna";
+			}
+			else
+			{
+				sex = "Kobieta";
+			}
+			$("#patient_sex").html(sex);
+			$("#patient_birth-date").html(userData[0].birth_date);
+
+
+
+
 			$("#aboutMeLi").show();
 		}
 		function initDoctorPage()
@@ -241,6 +259,43 @@ function onLoginSuccessful(user){
 					
 					});
 	}
+
+	function getUserData(id, val)
+	{
+		$.ajax(
+		{
+			async: false,
+			contentType: "application/jsonp",
+			url: api_url+"api/user/"+id,
+			crossDomain : true,
+			xhrFields: 
+				{
+			    withCredentials: true
+			    },
+		    success:
+		    function(result) 
+		    {
+		     	console.log(result);
+		    	if (result.num_results=='0')
+				{
+					alert("Nie ma pacjenta o tych danych");
+				}
+				else
+				{
+					// val[0] = result.objects[0];	
+					val[0] = result;	
+				}
+			
+			 },
+			error:
+		  	function(xhr, textStatus, errorThrown) 
+		  	{
+        		alert(xhr.responseText);	
+        		alert(textStatus);
+        	}
+		});
+	}
+	
 
 
 	   	    
