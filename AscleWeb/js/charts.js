@@ -1,5 +1,14 @@
 ﻿var toChartData = [];
 
+var toChartObject = {};
+var toSeriesData = [];
+
+var date;
+
+var data = [];
+
+var tmp=0;
+
 function drawChart() 
 {
 /*
@@ -30,50 +39,82 @@ function drawChart()
 	});
 }
 
-function getDataForChart(userId)
+function chooseSeries(mask,data)
 {
+	console.log("maska: ")
+	console.log(mask);
+	
+	$.each(data, function(idx, val)
+	{
+		toChartData[idx] = val;
+	});
+	aplyMask(mask);
+	
+	console.log(toChartData);
+	
+	drawChart();
+}
+
+function getDataForChart(userId,mask,chartData)
+{
+//	mask = [];
+	toChartData = [];
 	var sensors = {};
-	var sensor_names = new Array();
-	var measures = new Array();
+
+	var counter=0;
+	var names = [];
+	
+	console.log(sensors);
 	
 	getSensors(userId,sensors);
 	$.each(sensors, function(index, value)
 	{
-		getSensorName(value.sensor_type_id,sensor_names,index);
-		getMeasures(value.id,measures,index);
-	});
 	
-	var toChartObject = {};
+		var sensor_names = new Array();
+    	var measures = new Array();
+	
+    	toSeriesData = [];
+	
+		getSensorName(value.sensor_type_id,sensor_names);
+		getMeasures(value.id,1,index,sensor_names[0]);
+		names[index] = sensor_names[0];
+		counter += 1;
+	
+	});
 
-	
-	$.each(measures, function(index1, value1)
-	{
-	
-		var toSeriesData = [];
-		
-		
-		$.each(value1, function(index2, value2)
-		{
-			var data = [];
-			
-			var date = new Date(value2.timestamp);
-			var val = value2.value;
-			data[0] = date;
-			data[1] = val;
-			
-			toSeriesData[index2] = data;
-			
-		
-		});
-		
-		toChartObject[index1] = {"name": sensor_names[index1], "data": toSeriesData};
-		toChartData[index1] = toChartObject[index1];
-	
-	});
-//	console.log(toChartData);
-	
+	initMast(mask,counter,names);
+	aplyMask(mask);
 	drawChart();
+	
+	$.each(toChartData, function(idx, val)
+	{
+		chartData[idx] = val;
+	});	
 		
+}
+
+function initMast(mask,len,names)
+{
+	mask[0] = {"on":true, "name":names[0]};
+	for (var i=1; i<len; i++)
+	{
+		mask[i] = {"on":false, "name":names[i]};
+	}
+	
+	if (mask[0].name == "Lekarz")
+	{
+		mask[0].on = false;
+		mask[1].on = true;
+	}
+	
+}
+
+function aplyMask(mask)
+{
+	$.each(toChartData, function(idx, val)
+    {
+    	val.visible = mask[idx].on;
+    });
 }
 
 function getSensors(userId,sensors)
@@ -112,7 +153,7 @@ function getSensors(userId,sensors)
 // maybe it could be async: true
 // Check it
 
-function getSensorName(sensorId,name,index)
+function getSensorName(sensorId,name)
 {
 			var filters = [{"name": "id", "op": "equals", "val": sensorId}];
 		
@@ -142,7 +183,7 @@ function getSensorName(sensorId,name,index)
 
 }
 
-function getMeasures(sensorId,measures,index)
+function getMeasures(sensorId,pageNr,index1,sensorName)
 {
 			var filters = [{"name": "sensor_id", "op": "equals", "val": sensorId}];
 		
@@ -150,7 +191,7 @@ function getMeasures(sensorId,measures,index)
 					{
 					async: false,
 					contentType: "application/jsonp",
-					url: api_url+"api/measure?results_per_page=2000",
+					url: api_url+"api/measure?results_per_page=10?page=pageNr", //
 					data: {"q": JSON.stringify({"filters": filters})},
 					crossDomain : true,
 					xhrFields: 
@@ -159,7 +200,56 @@ function getMeasures(sensorId,measures,index)
 					    },
 				    success:
 				     function(result) {
-				     	measures.push(result.objects);
+
+                tmp=0;
+               
+                $.each(result.objects, function(index2, value2)
+                {
+                  data = [];
+                  
+                  date = Date.parse(value2.timestamp);
+                  /*
+                  if (tmp == date)
+                  {
+                    date += 1;
+                  }
+                  
+                  tmp = date;
+                        */
+                        /*
+                  if (date != tmp)
+                  {      
+                  
+                  
+*/
+                  data[0] = date;
+                  data[1] = value2.value;
+                  
+                  toSeriesData[index2+(pageNr-1)*10] = data;
+                  
+                  /*
+                  }
+
+                  
+                  tmp = date;
+                  */
+                
+                });
+                
+                
+               if (pageNr < result.total_pages)
+               {
+                  pageNr += 1;
+                  getMeasures(sensorId,pageNr,index1,sensorName)
+               }
+               else
+               {
+                toChartObject[index1] = {"name": sensorName, "data": toSeriesData, visible:false};
+                toChartData[index1] = toChartObject[index1];
+//                console.log(toChartData);
+               }
+				   
+			     	
 				    
 					 },
 					 error:

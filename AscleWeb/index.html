@@ -35,7 +35,7 @@
 				</ul>
 				<ul class="nav navbar-right" >
 					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
-					<li id="messageBoxLi"><a href="#">Wiadomości</a>
+					<li id="messageBoxLi"><a href="#" id="messageLabel">Wiadomości</a>
 					<li id="logOutLi"><a href="#">Wyloguj</a>
 				</ul>
 			</div>
@@ -89,7 +89,7 @@
 					<legend>Wyślij wiadomość</legend>
 					<div class="form-group">
 						<label for="toWhom" class="control-label">Pesel adresata:</label>
-						<input name="toWhom" type="text" class="form-control" placeholder="Pesel"/>
+						<input name="toWhom" type="text" class="form-control" id="toWhom" placeholder="Pesel"/>
 					</div>
 					<div class="form-group">
 						<label for="message" class="control-label">Wiadomość</label>
@@ -103,6 +103,11 @@
 	<div class="subpage myForm" id="messageSent">
 		<div>
 			Wiadomość została wysłana!
+		</div>
+	</div>
+	<div class="subpage myForm" id="userAlreadyExists">
+		<div>
+			Istnieje już użytkownik o tych danych!
 		</div>
 	</div>
 	
@@ -220,6 +225,7 @@
 					<tr>
 						<th style="height: 28px">Od</th>
 						<th style="height: 28px">Wiadomość</th>
+						<th style="height: 28px">Usuń</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -272,8 +278,38 @@
 				<input id="logout" name="Button3" type="button" value="Wyloguj" class="btn" />
 			</div>
 		</form>
+		
+		<input class="btn myButton" name="Button7" type="button" value="Pokaż moich pacjentów" id="showPatients" />
+		<div class="myTable">
+			<table id="patientList" name="patient-info" class="table table-hover table-condensed myTable">
+				<caption><h5>Pacjenci</h5></caption>
+				<thead>
+					<tr>
+					<th></th>
+					<th></th>
+					<th><form method="post">
+						<input name="Button8" type="button" value="Schowaj listę" id="patientListHide" class="btn myButton" /></form>
+						</th>
+					</tr>
+					<tr>
+						<th style="height: 28px">Imię I nazwiko</th>
+						<th style="height: 28px">Pesel</th>
+						<th style="height: 28px">&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 		<form class="navbar-form" method="post" role"search">
+			<div>
+				<br />
+				
+				
+				
+				</div>
 			<div class="form-group">
+				
 				<input type="text" class ="form-control" placeholder="Szukaj" id="user_search">
 				<input class="btn myButton" name="Button4" type="button" value="Szukaj" id="searchPatient" />
 			</div>
@@ -297,6 +333,10 @@
 						<td id="get_last-name" style="height: 29px">-</td>
 					</tr>
 					<tr>
+						<td id="field" style="height: 29px">Pesel</td>
+						<td id="get_pesel" style="height: 29px">-</td>
+					</tr>
+					<tr>
 						<td id="field">Płeć</td>
 						<td id="get_sex">-</td>
 					</tr>
@@ -307,7 +347,19 @@
 				</tbody>
 			</table>
 		</div>
+		<form method="post">
+		</form>
 		<br />
+		
+		<form method="post" id="maskButtons">
+		<div id="seriesChooser">
+			
+				
+		</div>
+		
+		<input id="drawChart" align="right" class="btn myButton" name="Button6" type="button" value="Rysuj" />
+		</form>
+		
 		<br />
 		
 		<div id="container" class="myChart">
@@ -340,7 +392,7 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-	<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
+	<script type="text/javascript" src="js/highstock.js"></script>
 	<script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.js"></script>
 
 	<script type="text/javascript" src="http://www.highcharts.com/samples/data/usdeur.js"></script>

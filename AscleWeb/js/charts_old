@@ -1,0 +1,203 @@
+﻿var toChartData = [];
+
+function drawChart() 
+{
+/*
+	c_data = [{ name: 'Customer0', data: [[773,1363709520],[774,1363709580]] }, 
+	{ name: 'Customer1', data: [[1546,1363709520],[1548,1363709580]] }];
+*/
+	$('#container').highcharts('StockChart', {
+	    
+	    chart: {
+	    },
+	    
+	    navigator: {
+	    	enabled: true
+	    },
+	    
+	    rangeSelector: {
+	    	selected: 1
+	    },
+	    
+	    series: toChartData  
+	    /*   
+	    [{
+	        name: 'USD to EUR',
+	        data: usdeur
+	    }]
+	    */
+
+	});
+}
+
+function getDataForChart(userId)
+{
+	var sensors = {};
+	var sensor_names = new Array();
+	var measures = new Array();
+	
+	getSensors(userId,sensors);
+	$.each(sensors, function(index, value)
+	{
+		getSensorName(value.sensor_type_id,sensor_names,index);
+		getMeasures(value.id,measures,1);
+		
+		
+		
+	});
+	
+	var toChartObject = {};
+	var tmp=0;
+
+	
+	$.each(measures, function(index1, value1)
+	{
+	
+		var toSeriesData = [];
+		
+		
+		$.each(value1, function(index2, value2)
+		{
+			var data = [];
+			var date;
+			var val;
+			
+			date = Date.parse(value2.timestamp);
+			
+			if (tmp == date)
+			{
+        date += 1;
+			}
+			
+			tmp = date;
+						
+			val = value2.value;
+			data[0] = date;
+			data[1] = val;
+			
+			toSeriesData[index2] = data;
+			
+		
+		});
+		if ( index1 != 1)
+		{
+      var visi = false;
+		}
+		else
+		{
+      var visi = true;
+		}
+		
+		toChartObject[index1] = {"name": sensor_names[index1], "data": toSeriesData, visible:visi};
+		toChartData[index1] = toChartObject[index1];
+	
+	});
+//	console.log(toChartData);
+	
+	drawChart();
+		
+}
+
+function getSensors(userId,sensors)
+{
+			var filters = [{"name": "user_id", "op": "equals", "val": userId}];
+		
+				$.ajax(
+					{
+					async: false,
+					contentType: "application/jsonp",
+					url: api_url+"api/sensor",
+					data: {"q": JSON.stringify({"filters": filters})},
+					crossDomain : true,
+					xhrFields: 
+						{
+					    withCredentials: true
+					    },
+				    success:
+				     function(result) {
+				     	$.each(result.objects , function(index, value)
+				     	{
+				     		sensors[index] = value;
+				      	});
+			     	
+					 },
+					 error:
+					  function(xhr, textStatus, errorThrown) {
+		        		alert(xhr.responseText);	
+		        		alert(textStatus);
+		        	  }
+	
+					
+					});
+}
+
+// maybe it could be async: true
+// Check it
+
+function getSensorName(sensorId,name,index)
+{
+			var filters = [{"name": "id", "op": "equals", "val": sensorId}];
+		
+				$.ajax(
+					{
+					async: false,
+					contentType: "application/jsonp",
+					url: api_url+"api/sensortype",
+					data: {"q": JSON.stringify({"filters": filters})},
+					crossDomain : true,
+					xhrFields: 
+						{
+					    withCredentials: true
+					    },
+				    success:
+				     function(result) {
+				     	name.push(result.objects[0].name);
+					 },
+					 error:
+					  function(xhr, textStatus, errorThrown) {
+		        		alert(xhr.responseText);	
+		        		alert(textStatus);
+		        	  }
+	
+					
+					});
+
+}
+
+function getMeasures(sensorId,measures,pageNr)
+{
+			var filters = [{"name": "sensor_id", "op": "equals", "val": sensorId}];
+		
+				$.ajax(
+					{
+					async: false,
+					contentType: "application/jsonp",
+					url: api_url+"api/measure?results_per_page=100?page=pageNr", //
+					data: {"q": JSON.stringify({"filters": filters})},
+					crossDomain : true,
+					xhrFields: 
+						{
+					    withCredentials: true
+					    },
+				    success:
+				     function(result) {
+				     if (page < 2)//result.total_pages)
+				     {
+                var tmpMeasures = new Array();
+                getMeasures(sensorId,tmpMeasures,pageNr++);
+				     }
+				     
+				     	measures.push(result.objects,tmpMeasures.pop());
+				     	
+				    
+					 },
+					 error:
+					  function(xhr, textStatus, errorThrown) {
+		        		alert(xhr.responseText);	
+		        		alert(textStatus);
+		        	  }
+	
+					
+					});
+}
+
