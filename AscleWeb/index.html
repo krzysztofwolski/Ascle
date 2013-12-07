@@ -31,9 +31,10 @@
 					<li id="patients"><a href="#">Pacjenci</a></li>
 					<li id="addDoctorLi"><a href="#">Dodaj lekarza</a>
 					<li id="addPatientLi"><a href="#">Dodaj pacjenta</a>
-					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
+					<li id="aboutMeLi"><a href="#">Moje wyniki</a></li>
 				</ul>
 				<ul class="nav navbar-right" >
+					<li id="sendMessageLi"><a href="#">Wyślij wiadomość</a></li>
 					<li id="logOutLi"><a href="#">Wyloguj</a>
 				</ul>
 			</div>
@@ -207,7 +208,44 @@
 			</form>
 		</div>
 	</div>
-
+	<div id="showCurrentPatient" class="subpage">
+		<div class="myTable">
+			<table name="patient-info" class="table table-hover table-condensed myTable">
+				<caption ><h5>INFORMACJE O PACJENCIE<h5><br/></caption>
+				<thead>
+					<tr>
+						<th style="height: 28px">Pole</th>
+						<th style="height: 28px">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td id="field">Imię</td>
+						<td id="patient_first-name">-</td>
+					</tr>
+					<tr>
+						<td id="field" style="height: 29px">Nazwisko</td>
+						<td id="patient_last-name" style="height: 29px">-</td>
+					</tr>
+					<tr>
+						<td id="field">Płeć</td>
+						<td id="patient_sex">-</td>
+					</tr>
+					<tr>
+						<td id="field">Data urodzenia</td>
+						<td id="patient_birth-date">-</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		.<br />
+		.<br />
+		
+		<div id="container" class="myChart">
+			Wygląda na to, że tu będzie wykres:	
+		</div>
+		
+	</div>
 	<div id="showData" class="subpage">
 		<form method="post">
 			<div class="auto-style1">
