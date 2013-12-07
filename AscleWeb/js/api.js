@@ -27,7 +27,10 @@ $(document).ready(function() {
 	User = new user();
 	$("#test").hide();
 
-	hideMenu();
+	$("#patients").hide();
+	$("#addDoctorLi").hide();
+	$("#addPatientLi").hide();
+	$("#menu").hide();
 
 	$('.subpage').hide();
     $('#myLogin').slideToggle();
@@ -86,7 +89,7 @@ $(document).ready(function() {
 	}
 		
 		
-		function onLoginSuccessful(user){
+function onLoginSuccessful(user){
 			var type = user.getType();
 			console.log("typ: "+type);
 			$("#menu").slideToggle();
@@ -111,24 +114,28 @@ $(document).ready(function() {
 			var result={};
 			smarterSearchUser("id", id, result);
 			console.log(result);
-
 			$("#aboutMeLi").show();
 		}
-
 		function initDoctorPage()
 		{
 			$("#addPatientLi").show();
 			$("#patients").show();
 		}
-
 		function initAdminPage()
 		{
 			$("#addDoctorLi").show();
+		}	
+		
+		function hideMenu()
+		{
+			$("#patients").hide();
+			$("#addDoctorLi").hide();
+			$("#addPatientLi").hide();
+			$("#aboutMeLi").hide();
+			$("#menu").hide();
 		}
 
-		
-	   	 
-	   	 
+	 
 	   	 // function search user by pesel and fill data 
 	
 	function searchUser(){
@@ -299,15 +306,7 @@ $(document).ready(function() {
 		        }
 		});
 	}
-	function hideMenu()
-	{
-		$("#patients").hide();
-		$("#addDoctorLi").hide();
-		$("#addPatientLi").hide();
-		$("#aboutMeLi").hide();
 
-		$("#menu").hide();
-	}
 	
 	function getFormValues(formId,values)
 	{
@@ -346,8 +345,6 @@ $(document).ready(function() {
 				{
 					isAuthenticated();
 					
-					console.log(User);
-					console.log(User.getType());
 					onLoginSuccessful(User);
 					$('#loginForm')[0].reset();
 			    }
@@ -522,17 +519,17 @@ $(document).ready(function() {
 		     changePage($("#fun"));
 		  	});
 		  	
-		  	/*$('#logout').click(function () {
+		  	$('#logout').click(function () {
 		     changePage($("#myLogin"));
 		     $("$menu").hide();
-			});*/
-
-		  	$("#aboutMeLi").click(function(){
-		  		changePage($("#showCurrentPatient"));
-		  	});
+			});
+		
 			
 			$("#logOutLi").click(function(){
-				hideMenu();
+				$("#patients").hide();
+				$("#addDoctorLi").hide();
+				$("#addPatientLi").hide();
+				$("#menu").hide();
 
 				changePage($("#myLogin"));
 
