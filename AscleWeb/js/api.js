@@ -526,11 +526,7 @@ function onLoginSuccessful(user){
 		
 			
 			$("#logOutLi").click(function(){
-				$("#patients").hide();
-				$("#addDoctorLi").hide();
-				$("#addPatientLi").hide();
-				$("#menu").hide();
-
+				hideMenu();
 				changePage($("#myLogin"));
 
 			});
