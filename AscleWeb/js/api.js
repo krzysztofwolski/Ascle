@@ -181,9 +181,9 @@ $(document).ready(function() {
 	// this function assigns only id but it could return all users data
 	// TO DO if someone want...
 	
-	function smarterSearchUser(pes,val){
+	function smarterSearchUser(searchBy,searchingVal,val){
 			
-			var filters = [{"name": "pesel", "op": "equals", "val": pes}];
+			var filters = [{"name": searchBy, "op": "equals", "val": searchingVal}];
 			
 			console.log(JSON.stringify({"filters": filters}));
 			
@@ -207,7 +207,7 @@ $(document).ready(function() {
 						}
 						else
 						{
-							val[0] = result.objects[0].id;	
+							val[0] = result.objects[0];	
 						}
 					
 					 },
@@ -403,11 +403,11 @@ $(document).ready(function() {
 	   	    	var val={}; 
 	   	    	getFormValues("#sendMessageForm",val);
 	   	    	var val2 = {};
-	   	    	smarterSearchUser(val.toWhom,val2);
+	   	    	smarterSearchUser("pesel",val.toWhom,val2);
 	   	    	
-	   	    	messageData = {"sender_user_id" : User.id, "receiver_user_id": val2[0], 
+	   	    	messageData = {"sender_user_id" : User.id, "receiver_user_id": val2[0].id, 
 	   	    				   "text": val.message, "new": true};
-	   	    					
+	   	    	
 	   	    	sendMessageToSerwer(messageData);
 	   	    	   	    	
 	   	    	
