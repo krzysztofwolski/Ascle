@@ -207,9 +207,7 @@ function onLoginSuccessful(user){
 	function smarterSearchUser(searchBy,searchingVal,val){
 			
 			var filters = [{"name": searchBy, "op": "equals", "val": searchingVal}];
-			
-			console.log(JSON.stringify({"filters": filters}));
-			
+		
 				$.ajax(
 					{
 					async: false,
@@ -470,22 +468,22 @@ function onLoginSuccessful(user){
 				
 				smarterSearchUser("pesel",pes,userData);
 				
-				console.log(userData);
 				
-							$("#get_first-name").html(userData[0].first_name);
-							$("#get_last-name").html(userData[0].last_name);
-							var sex;
-							if (userData[0].sex)
-							{
-								sex = "Mężczyzna";
-							}
-							else
-							{
-								sex = "Kobieta";
-							}
-							$("#get_sex").html(sex);
-							$("#get_birth-date").html(userData[0].birth_date);
+				$("#get_first-name").html(userData[0].first_name);
+				$("#get_last-name").html(userData[0].last_name);
+				var sex;
+				if (userData[0].sex)
+				{
+					sex = "Mężczyzna";
+				}
+				else
+				{
+					sex = "Kobieta";
+				}
+				$("#get_sex").html(sex);
+				$("#get_birth-date").html(userData[0].birth_date);
 							
+				
 			});
 
 	   	    
