@@ -358,9 +358,9 @@ $(document).ready(function() {
 				{
 					var patient= {"login": val.login, "password": val.password, "last_name": val.lastName, 
 					"first_name": val.firstName, "sex": val.sex, "password" : val.password,
-					"pesel": val.pesel, "type":3};
+					"pesel": val.pesel, "birth_date": val.birthDate+"T00:00:00", "type":3};
 
-//					console.log(patient);
+					
 					sendUserDataToSerwer(patient);
 				
 				}
@@ -384,7 +384,7 @@ $(document).ready(function() {
 				{
 					var doctor = {"login": val.login, "password": val.password, "last_name": val.lastName, 
 					"first_name": val.firstName, "sex": val.sex, "password" : val.password,
-					"pesel": val.pesel, "type":1};
+					"pesel": val.pesel, "birth_date": val.birthDate+"T00:00:00", "type":1};
 	
 //					console.log(doctor);
 					sendUserDataToSerwer(doctor);
