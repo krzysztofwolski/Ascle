@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AscleMon</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="button">Button</string>
+    <string name="title_activity_auto_acquisition">AutoAcquisition</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_manual_acquisition">ManualAcquisition</string>
+    <string name="title_activity_graphs">GraphsActivity</string>
+    <string name="title_activity_drugs">DrugsActivity</string>
+    <string name="text">text</string>
+    <string name="Measure1">Measure1</string>
+    <string name="wynik1">wynik1</string>
+    <string name="wynik11"></string>
+    <string name="text2">text2</string>
+    <string name="temp">Temperatura [C]</string>
+    <string name="waga">Waga [kg]</string>
+    <string name="autoOFF">Auto OFF</string>
+    <string name="autoON">Auto ON</string>
+    <string name="testa">Auto ON</string>
+    <string name="testb">Auto OFF</string>
+    <string name="back">Back</string>
+    <string name="send">Send</string>
+    <string name="pokazGraf">Pokaż statystyki graficznie</string>
+    <string name="pokazStat">Pokaż statystyki</string>
+    <string name="temper">Temperatura [C]</string>
+    <string name="wagaa">Waga[kg]</string>
+    <string name="miernik1">Miernik 2000 [mmHg]</string>
+    <string name="miernik2">Miernik 2000 (rozkurczowe) [mm/Hg]</string>
+    <string name="pulsometr">Pulsometr 2000 [1/s]</string>
+    <string name="addmeasures">Add Measures</string>
+    <string name="miernik11">Miernik 2000</string>
+    <string name="wiadomosci">Message</string>
+    <string name="wyslijwiadomosc">Send Message</string>
+    <string name="czytajwiadomosc">Read Message</string>
+    <string name="wyslij">Wyślij</string>
+    <string name="null1">" "</string>
+    <string name="wyloguj">Logout</string>
+    <string name="witaj_ziomek">Witaj, podaj login i hasło w celu zalogowania się</string>
+    <string name="zaloguj">Zaloguj</string>
+    <string name="login">Login</string>
+    <string name="haslo">Password</string>
+    <string name="iddoktorka">ID Lekarza</string>
+    <string name="tekstwiadomosci">Tekst wiadomości</string>
+
+</resources>
