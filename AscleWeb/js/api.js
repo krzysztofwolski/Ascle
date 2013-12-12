@@ -542,12 +542,12 @@ $(document).ready(function() {
 	   	    
 	   	    $("#test").click(function()
 	   	    {
-	   	    	data = { "pesel" : 13579};
+	   	    	data = { "pesel" : 24680};
 				$.ajax(
 				{
 					type: "PUT",
 					contentType: "application/jsonp",
-					url: api_url+"api/user/8",
+					url: api_url+"api/user/188",
 					data: JSON.stringify(data),
 					crossDomain : true,
 					xhrFields: 
